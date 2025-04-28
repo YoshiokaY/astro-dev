@@ -1,0 +1,75 @@
+@use "sass:math";
+
+$fontNoto: "Noto Sans JP", "NotoSansJP", "Noto Sans Japanese", sans-serif;
+$fontGothic:
+  "Helvetica Neue",
+  arial,
+  "游ゴシック体",
+  yugothic,
+  yu gothic,
+  "Hiragino Kaku Gothic ProN",
+  "Hiragino Sans",
+  meiryo,
+  sans-serif;
+$fontMincho: "游明朝体", yumincho, "游明朝", "Yu Mincho", "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN W3", hiraminpron-w3, "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "ヒラギノ明朝 Pro", "Hiragino Mincho Pro", "HGS明朝E", georgia, times, "Times New Roman", serif;
+
+// 画面サイズ
+$containerSize: 1200; // コンテンツ幅
+$containerPadding: 16; // コンテンツ余白
+$brakePoint: 768; // ブレイクポイント
+$pcDesign: 1366; // PCデザインサイズ
+$spDesign: 375; // SPデザインサイズ
+$logoWidth: 200; // ロゴ幅
+
+// 画像パス
+$imgPath: "/img/";
+
+// フォント設定
+$spFontVw: "false"; // SP時にフォントサイズを可変(vw)にする
+$baseFont: $fontNoto;
+// PCサイズ/SPサイズ (使用する際はtext-ｈ1やtext-xmの形で記述。tailwindも同様)
+$h1: 64, 40;
+$h2: 44, 36;
+$h3: 36, 28;
+$h4: 28, 24;
+$h5: 24, 20;
+$xl: 20, 18;
+$lg: 18, 16;
+$base: 16, 14;
+$sm: 14, 12;
+$xs: 12, 10;
+
+:root {
+
+  // カラー（使用する際はcolor-txtやcolor-primeなどの形で記述。tailwindは使用するクラスに合わせてXXX-txtやXXX-prime）
+  --color-txt: #463e2c; // テキストカラー
+  --color-reversal: #fff; // テキスト反転
+  --color-gray: #d6d4d0; // グレースケール
+  --color-prime: #463e2c; // プライムカラー
+  --color-second: red; // セカンドカラー
+  --color-third: blue; // サードカラー
+  --color-body: #fff; //  ボディカラー
+  --color-highlight: #f8f8f7; // ハイライト背景
+
+
+  // SP時
+
+  // 行間・文字間・ウェイト
+  --font-leading: calc(27 / 15);
+  --font-tracking: 0;
+  --font-weight-normal: 400;
+  --font-feature-settings: normal; // "pkna" on, "palt" on, "pwid" on;
+
+  // トランジッション（使用する際は$easing）
+  --transition: 0.4s ease-out;
+
+  // ヘッダー高さ
+  --headerHeight: 7.2rem; // 固定ヘッダーの場合の高さ。固定じゃない場合は0に
+
+  // PC時
+  @media screen and (width >= #{math.div($brakePoint,16)} + em) {
+    --headerHeight: 10.3rem;
+    --font-tracking: 0;
+    --font-leading: calc(30 / 16);
+  }
+}

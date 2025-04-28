@@ -1,0 +1,31 @@
+---
+import astroLogo from '../assets/astro.svg';
+import background from '../assets/background.svg';
+---
+
+<section>
+	<div class='contentInner'>
+		<h2 class='text-h2 font-bold mb-24'>Tailwind4.0アップデートによる変更点</h2>
+		<div class='grid gap-64 mb-64'>
+			<div>
+				<h3 class='text-h3 font-bold mb-24'>
+					カスタムクラスをcssで設定できるように！
+				</h3>
+				<p>
+					案件ごとのカスタムクラスはtailwind.config.jsに記述する必要がありましたが、cssファイルに@themeで設定できるようになりました。<br
+					/>また設定したものがcss変数としてデフォルトで出力されるので、sassやjsでも同じ変数を使えるようになりました。
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style lang='scss'>
+	.contentInner {
+		width: 100%;
+		max-width: var.$containerSize;
+		@include mixin.mq() {
+			padding: 0 fun.rem(var.$containerPadding);
+		}
+	}
+</style>
