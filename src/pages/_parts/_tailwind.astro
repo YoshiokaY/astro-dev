@@ -1,5 +1,9 @@
 ---
-import '../../assets/scss/components/_u_anima.scss';
+import '../../scss/components/_u_anima.scss';
+import img from '../../assets/img/noimage.jpg';
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import ImageImport from '../../components/ImageImport.astro';
 ---
 
 <section>
@@ -14,17 +18,21 @@ import '../../assets/scss/components/_u_anima.scss';
 					案件ごとのカスタムクラスはtailwind.config.jsに記述する必要がありましたが、cssファイルに@themeで設定できるようになりました。<br
 					/>また設定したものがcss変数としてデフォルトで出力されるので、sassやjsでも同じ変数を使えるようになりました。
 				</p>
+				<div class='grid grid-cols-2 gap-28'>
+					<ImageImport src='/src/img/image.png' />
+					<img src='/_assets/img/top/sample.png' alt='' />
+				</div>
 			</div>
 		</div>
 	</div>
-</section>
 
-<style lang='scss'>
-	.contentInner {
-		width: 100%;
-		max-width: var.$containerSize;
-		@include mixin.mq() {
-			padding: 0 fun.rem(var.$containerPadding);
+	<style lang='scss'>
+		.contentInner {
+			width: 100%;
+			max-width: var.$containerSize;
+			@include mixin.mq() {
+				padding: 0 fun.rem(var.$containerPadding);
+			}
 		}
-	}
-</style>
+	</style>
+</section>
