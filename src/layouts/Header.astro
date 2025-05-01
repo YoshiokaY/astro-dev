@@ -1,0 +1,53 @@
+---
+import ImageImport from 'src/components/ImageImport.astro';
+import Gnavi from './Gnavi.astro';
+
+interface Props {
+	slug: string;
+	siteName: string;
+	menu: {
+		link: string;
+		txt: string;
+		blank?: boolean;
+		anchor?: boolean;
+		child?: {
+			link: string;
+			txt: string;
+			blank?: boolean;
+			anchor?: boolean;
+		}[];
+	}[];
+	domain: string;
+}
+
+const { slug, siteName, menu, domain } = Astro.props;
+---
+
+<header>
+	<div class='contentInner'>
+		<div class='flex justify-between items-center'>
+			<a href='/'>
+				{
+					slug == 'top' ? (
+						<h1 class='headerLogo'>
+							<ImageImport
+								src='/src/img/logo.svg'
+								sizes={[80, 80, null, null]}
+								alt={siteName}
+							/>
+						</h1>
+					) : (
+						<div class='headerLogo'>
+							<ImageImport
+								src='/src/img/logo.svg'
+								sizes={[80, 80, null, null]}
+								alt={siteName}
+							/>
+						</div>
+					)
+				}
+			</a>
+			<Gnavi menu={menu} domain={domain} />
+		</div>
+	</div>
+</header>

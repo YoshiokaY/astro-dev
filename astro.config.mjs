@@ -56,8 +56,9 @@ export default defineConfig({
 			preprocessorOptions: {
 				scss: {
 					additionalData: `
-          @use "./src/scss/abstracts/_mixins.scss" as mixin;
-          @use "./src/scss/abstracts/_variables.scss" as var;
+          @use "./src/scss/abstracts/_mixins.scss" as mix;
+          @use "./src/scss/abstracts/_variables.scss" as conf;
+					@use "./src/scss/abstracts/_custom.scss" as var;
           @use "./src/scss/abstracts/_functions.scss" as fun;
           `,
 				},

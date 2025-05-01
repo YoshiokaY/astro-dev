@@ -1,8 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Tailwind from './_parts/_tailwind.astro';
+
+const page = {
+	head: {
+		slug: 'top',
+		title: 'タイトルタイトルタイトル',
+		description: 'テキストテキストテキストテキストテキストテキスト',
+		keywords: 'テキスト,テキスト,テキスト,テキスト,テキスト',
+		url: '',
+	},
+};
 ---
 
-<Layout>
+<Layout page={page.head}>
 	<Tailwind />
 </Layout>

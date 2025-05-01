@@ -8,7 +8,7 @@
   --size-container: #{$containerSize}; // コンテナサイズ
   --size-logo: #{$logoWidth}; // ロゴサイズ
 
-  // line-heightの上下の余白をマージンから消す(mariginに指定)
+  // line-heightの上下の余白をマージンから消す(marginに指定)
   --leading-trim: calc((1em - 1lh) / 2);
 
   // フォント
@@ -73,7 +73,7 @@ $color-prime: var(--color-prime);
 $color-second: var(--color-second);
 $color-third: var(--color-third);
 $color-body: var(--color-body);
-$color-higlight: var(--color-higlight);
+$color-highlight: var(--color-highlight);
 
 // トランジッション
 $easing: var(--transition);

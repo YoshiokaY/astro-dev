@@ -3,22 +3,47 @@ import '../scss/abstracts/_reset.css';
 import '../scss/base/_default.scss';
 import '../scss/base/_general.scss';
 import '../scss/abstracts/_tailwind.css';
+import Head from './Head.astro';
+import Header from './Header.astro';
+import BeginBody from './BeginBody.astro';
+import Footer from './Footer.astro';
+import { common } from '../data/common';
+
+interface Props {
+	page: {
+		slug: string;
+		title: string;
+		description: string;
+		url: string;
+	};
+}
+
+const { page } = Astro.props;
 ---
 
 <!doctype html>
 <html dir='ltr' lang='ja'>
-	<head>
-		<meta charset='UTF-8' />
-		<meta name='viewport' content='width=device-width' />
-		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-		<meta property='og:image' content='/_assets/img/ogp.jpg' />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
+	<Head site={common.head} page={page} />
+	<body class={'page-' + page.slug}>
+		<BeginBody />
+		<Header
+			siteName={common.head.siteName}
+			domain={common.head.domain}
+			menu={common.menu}
+			slug={page.slug}
+		/>
+		<main id='main'>
+			<slot />
+		</main>
+		<Footer copyright={common.head.copyright} />
 	</body>
 </html>
 
 <script>
 	import '../ts/app.js';
 </script>
+<script
+	src='//cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@0.3.8/dist/popover.iife.min.js'
+	integrity='sha256-e4nHKzmwysJ3lb8GTURv5YrPqNFQ7xNcYzn/xop4K+0='
+	crossorigin='anonymous'
+	defer></script>
