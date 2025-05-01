@@ -1,45 +1,58 @@
 ---
-import ImageImport from 'src/components/ImageImport.astro';
-import Gnavi from './Gnavi.astro';
+import ImageImport from "src/components/ImageImport.astro";
+import Gnavi from "./Gnavi.astro";
+
+/**
+ * ヘッダーコンポーネント。
+ */
+interface MenuItem {
+  link: string;
+  txt: string;
+  blank?: boolean;
+  anchor?: boolean;
+  child?: MenuItem[];
+}
 
 interface Props {
-	slug: string;
-	siteName: string;
-	menu: {
-		link: string;
-		txt: string;
-		blank?: boolean;
-		anchor?: boolean;
-		child?: {
-			link: string;
-			txt: string;
-			blank?: boolean;
-			anchor?: boolean;
-		}[];
-	}[];
-	domain: string;
+  /**
+   * 現在のページのスラッグ。トップページかどうかを判別するために使用されます。
+   */
+  slug: string;
+  /**
+   * サイトの名前。ロゴのalt属性として使用されます。
+   */
+  siteName: string;
+  /**
+   * グローバルナビゲーションのメニュー項目を定義する配列。
+   */
+  menu: MenuItem[];
+  /**
+   * サイトのドメイン名。アンカーリンク (`anchor: true`) の場合にURLを生成するために `Gnavi` コンポーネントへ渡されます。
+   */
+  domain: string;
 }
+
 
 const { slug, siteName, menu, domain } = Astro.props;
 ---
 
 <header>
-	<div class='contentInner'>
-		<div class='flex justify-between items-center'>
-			<a href='/'>
+	<div class="contentInner">
+		<div class="flex justify-between items-center">
+			<a href="/">
 				{
-					slug == 'top' ? (
-						<h1 class='headerLogo'>
+					slug === "top" ? (
+						<h1 class="headerLogo">
 							<ImageImport
-								src='/src/img/logo.svg'
+								src="/src/img/logo.svg"
 								sizes={[80, 80, null, null]}
 								alt={siteName}
 							/>
 						</h1>
 					) : (
-						<div class='headerLogo'>
+						<div class="headerLogo">
 							<ImageImport
-								src='/src/img/logo.svg'
+								src="/src/img/logo.svg"
 								sizes={[80, 80, null, null]}
 								alt={siteName}
 							/>

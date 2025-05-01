@@ -76,45 +76,45 @@ const {
 ---
 
 <head
-	prefix={page.slug == 'top'
-		? 'og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#'
-		: 'og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# http://ogp.me/ns/fb# article: http://ogp.me/ns/article#'}
+	prefix={page.slug == "top"
+		? "og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#"
+		: "og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"}
 >
-	<meta charset='utf-8' />
+	<meta charset="utf-8" />
   <BeginHead />
-	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta
-		name='viewport'
-		content='width=device-width,initial-scale=1.0,shrink-to-fit=no'
+		name="viewport"
+		content="width=device-width,initial-scale=1.0,shrink-to-fit=no"
 	/>
-	<meta name='format-detection' content='telephone=no' />
+	<meta name="format-detection' content='telephone=no" />
 	<title>{page.title}</title>
-	<meta name='description' content={page.description} />
-	<meta property='og:type' content={page.slug == 'top' ? 'website' : 'article'} />
-	<meta property='og:local' content='ja_JP' />
-	<meta property='og:site_name' content={site.siteName} />
-	<meta property='og:title' content={page.title} />
-	<meta property='og:description' content={page.description} />
-	<meta property='og:url' content={site.domain + page.url} />
-	<meta property='og:image' content={site.ogImg} />
+	<meta name="description" content={page.description} />
+	<meta property="og:type" content={page.slug == "top" ? "website" : "article"} />
+	<meta property="og:local" content="ja_JP" />
+	<meta property="og:site_name" content={site.siteName} />
+	<meta property="og:title" content={page.title} />
+	<meta property="og:description" content={page.description} />
+	<meta property="og:url" content={site.domain + page.url} />
+	<meta property="og:image" content={site.ogImg} />
   {site.facebookID && (
     <meta property="fb:app_id", content={site.facebookID} />
   )}
-	<meta name='twitter:card' content='summary_large_image' />
-	<meta name='twitter:title' content={page.title} />
-	<meta name='twitter:description' content={page.description} />
-	<meta name='twitter:image' content={site.ogImg} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={page.title} />
+	<meta name="twitter:description" content={page.description} />
+	<meta name="twitter:image" content={site.ogImg} />
   {site.twitterName && (
-    <meta name="twitter:site", content={'@' + site.twitterName} />
+    <meta name="twitter:site", content={"@" + site.twitterName} />
   )}
-	<link rel='icon' href={site.favicon} />
+	<link rel="icon" href={site.favicon} />
   {site.svgIcon && (
     <link rel="icon" href={site.svgIcon} type="image/svg+xml" />
   )}
   {site.touchIcon && (
     <link rel="apple-touch-icon" sizes="180x180" href={site.touchIcon} />
   )}
-	<link rel='canonical' href={site.domain + page.url} />
+	<link rel="canonical" href={site.domain + page.url} />
   {site.webfont &&(
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

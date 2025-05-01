@@ -1,4 +1,6 @@
-module.exports = {
+// .prettierrc.mjs
+/** @type {import("prettier").Config} */
+export default {
   plugins: ["prettier-plugin-astro"],
   printWidth: 999,
   tabWidth: 2,
@@ -15,5 +17,12 @@ module.exports = {
   htmlWhitespaceSensitivity: "css",
   endOfLine: "lf",
   embeddedLanguageFormatting: "off",
+  overrides: [
+    {
+      files: "*.astro",
+      options: {
+        parser: "astro",
+      },
+    },
+  ],
 };
-

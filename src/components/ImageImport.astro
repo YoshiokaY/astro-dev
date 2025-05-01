@@ -1,5 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 
 /**
  * レスポンシブに対応した画像表示コンポーネント。
@@ -14,9 +15,9 @@ interface Props {
 	 */
 	alt?: string;
 	/**
-	 * 画像の幅と高さの配列。[PC幅, PC高さ, SP幅, SP高さ] の順で指定します。SP用のサイズがない場合は PC と同じ値を指定するか、null を指定します。
+	 * 画像の幅と高さの配列。[PC幅, PC高さ, SP幅, SP高さ] の順で指定します。SP用のサイズがない場合は PC と同じ値を指定するか、0 を指定します。
 	 */
-	sizes?: [number | null, number | null, number | null, number | null];
+	sizes?: number[];
 	/**
 	 * 画像に適用するCSSクラス。
 	 */
@@ -49,12 +50,14 @@ const spSrc = imgName + '_sp' + imgType;
  * @param {string} src - 画像のパス。
  * @returns {Promise<string | undefined>} - 解決された画像の src、または undefined (見つからない場合)。
  */
-const resolveImage = async (src: string): Promise<string | undefined> => {
-	if (src.startsWith('/src/img/') && allImages[src]) {
-		const module = await allImages[src]();
-		return module.default.src;
-	}
-	return src;
+ const resolveImage = async (src: string): Promise<string | undefined> => {
+  if (src.startsWith('/src/img/') && allImages[src]) {
+    const module = await allImages[src]();
+    // getImage 関数を使って最適化された画像オブジェクトを取得
+    const optimizedImage = await getImage({src:module.default,format:module.default.format});
+    return optimizedImage.src; // 最適化された画像の public URL を返します
+  }
+  return src;
 };
 
 /**
@@ -76,7 +79,7 @@ if (sp) {
 		<picture>
 			{pcImage && (
 				<source
-					media='(min-width: 768px)'
+					media="(min-width: 768px)"
 					srcset={pcImage}
 					width={sizes ? sizes[0] : null}
 					height={sizes ? sizes[1] : null}
@@ -85,24 +88,24 @@ if (sp) {
 			{spImage && (
 				<img
 					src={spImage}
-					alt={alt ? alt : ''}
+					alt={alt ? alt : ""}
 					width={sizes ? sizes[2] : null}
 					height={sizes ? sizes[3] : null}
 					class={className}
-					loading={lazy ? 'lazy' : 'eager'}
-					decoding='async'
+					loading={lazy ? "lazy" : "eager"}
+					decoding="async"
 				/>
 			)}
 		</picture>
 	) : (
 		<img
 			src={pcImage}
-			alt={alt ? alt : ''}
+			alt={alt ? alt : ""}
 			width={sizes ? sizes[0] : null}
 			height={sizes ? sizes[1] : null}
 			class={className}
-			loading={lazy ? 'lazy' : 'eager'}
-			decoding='async'
+			loading={lazy ? "lazy" : "eager"}
+			decoding="async"
 		/>
 	)
 }

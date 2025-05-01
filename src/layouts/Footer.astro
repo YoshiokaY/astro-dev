@@ -1,6 +1,7 @@
 ---
-import ImageImport from 'src/components/ImageImport.astro';
-
+/**
+ * フッターコンポーネント
+ */
 interface Props {
 	copyright: string;
 }
@@ -9,11 +10,11 @@ const { copyright } = Astro.props;
 ---
 
 <footer>
-	<div class='highlight'>
-		<div class='contentInner'>フッター</div>
+	<div class="bg-highlight">
+		<div class="contentInner">フッター</div>
 	</div>
-	<div class='bg-prime text-reversal'>
-		<p class='text-sm text-center'>
+	<div class="bg-prime text-reversal">
+		<p class="text-sm text-center">
 			&copy; {new Date().getFullYear()}
 			{copyright}
 		</p>

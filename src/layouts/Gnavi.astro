@@ -1,4 +1,7 @@
 ---
+/**
+ * グロナビコンポーネント
+ */
 interface MenuItem {
   link: string;
   txt: string;
@@ -8,62 +11,63 @@ interface MenuItem {
 }
 
 interface Props {
+  /**
+   * グローバルナビゲーションのメニュー項目を定義する配列。
+   */
   menu: MenuItem[];
+  /**
+   * サイトのドメイン名。アンカーリンク (`anchor: true`) の場合にURLを生成するために使用されます。
+   */
   domain: string;
 }
 
 const { menu, domain } = Astro.props;
 ---
 
-<nav class='headerNavi'>
-	<h2 class='txtHidden'>グローバルナビゲーション</h2>
-	<button class='ac_menu'><span>メニューを開く</span></button>
-	<div class='naviWrapper'>
-		<div class='overflow-y-auto h-full md:overflow-y-visible'>
-			<ul
-				class='flex flex-col items-center md:flex-row md:gap-40 md:justify-end gap-28'
-				id='navi'
-			>
-				{
-					menu.map((item) => (
-						<li class={item.child ? 'has-child' : null}>
-							<a
-								href={item.anchor ? domain + item.link : item.link}
-								target={item.blank ? '_blank' : '_self'}
-							>
-								{item.txt}
-							</a>
-							{item.child && (
+<nav class="headerNavi">
+  <h2 class="txtHidden">グローバルナビゲーション</h2>
+  <button class="ac_menu"><span>メニューを開く</span></button>
+  <div class="naviWrapper">
+    <div class="overflow-y-auto h-full md:overflow-y-visible">
+      <ul
+        class="flex flex-col items-center md:flex-row md:gap-40 md:justify-end gap-28"
+        id="navi"
+      >
+        {
+          menu.map((item) => (
+            <li class={item.child ? "has-child" : null}>
+              <a
+                href={item.anchor ? domain + item.link : item.link}
+                target={item.blank ? "_blank" : "_self"}
+              >
+                {item.txt}
+              </a>
+              {item.child && (
                 <button class="spAccordion"><span class="txtHidden">子メニューを表示します</span></button>
-								<ul class="subMenu">
-									{item.child.map((child) => (
-										<li>
-											<a
-												href={child.anchor ? domain + child.link : child.link}
-												target={child.blank ? '_blank' : '_self'}
-											>
-												{child.txt}
-											</a>
-										</li>
-									))}
-								</ul>
-							)}
-						</li>
-					))
-				}
-			</ul>
-		</div>
-	</div>
+                <ul class="subMenu">
+                  {item.child.map((child) => (
+                    <li>
+                      <a
+                        href={child.anchor ? domain + child.link : child.link}
+                        target={child.blank ? "_blank" : "_self"}
+                      >
+                        {child.txt}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
 </nav>
 
-<style lang='scss'>
+<style lang="scss">
 	.headerNavi {
-    display: block;
     position: relative;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
 		&::before {
 			position: fixed;
 			inset: 0 0 auto auto;

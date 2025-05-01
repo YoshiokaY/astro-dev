@@ -1,18 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Tailwind from './_parts/_tailwind.astro';
+import MV from './_parts/_mv.astro';
 
 const page = {
 	head: {
 		slug: 'top',
 		title: 'タイトルタイトルタイトル',
 		description: 'テキストテキストテキストテキストテキストテキスト',
-		keywords: 'テキスト,テキスト,テキスト,テキスト,テキスト',
 		url: '',
 	},
+  contents: {
+    mv: {
+      img: [
+        {
+          src: '/src/img/mv.jpg',
+          size:[1366,518,375,480]
+        },
+      ]
+    }
+  }
 };
 ---
 
 <Layout page={page.head}>
+  <MV img={page.contents.mv.img} />
 	<Tailwind />
 </Layout>

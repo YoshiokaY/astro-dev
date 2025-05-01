@@ -1,0 +1,31 @@
+---
+import ImageImport from "../../components/ImageImport.astro";
+
+interface Props {
+	img: {
+    src: string;
+    size: number[];
+	}[];
+}
+
+const { img } = Astro.props;
+
+---
+
+<div class="top_mv">
+  <div class="c_slide">
+    <div class="splide mvSlide">
+      <div class="c_slide_arrow">
+        <div class="splide__track">
+          <div class="splide__list">
+            {img.map((item) => (
+              <div class="splide__slide">
+                <ImageImport src={item.src} sizes={item.size} sp class="w-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
