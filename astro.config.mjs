@@ -64,8 +64,11 @@ export default defineConfig({
 				},
 			},
 		},
+
 		plugins: [
+			// @ts-ignore
 			tailwindcss(),
+			// @ts-ignore
 			viteImagemin({
 				plugins: {
 					jpg: imageminMozjpeg({ quality: 85 }),

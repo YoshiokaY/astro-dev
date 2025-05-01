@@ -1,19 +1,15 @@
 ---
+interface MenuItem {
+  link: string;
+  txt: string;
+  blank?: boolean;
+  anchor?: boolean;
+  child?: MenuItem[];
+}
+
 interface Props {
-	menu: 
-		{
-			link: string;
-			txt: string;
-			blank?: boolean;
-			anchor?: boolean;
-			child?: {
-				link: string;
-				txt: string;
-				blank?: boolean;
-				anchor?: boolean;
-			}[];
-		}[];
-	domain: string;
+  menu: MenuItem[];
+  domain: string;
 }
 
 const { menu, domain } = Astro.props;
@@ -62,7 +58,12 @@ const { menu, domain } = Astro.props;
 
 <style lang='scss'>
 	.headerNavi {
+    display: block;
     position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 		&::before {
 			position: fixed;
 			inset: 0 0 auto auto;
