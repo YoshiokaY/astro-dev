@@ -1,7 +1,7 @@
 @use "sass:map";
 @use "sass:math";
 @use "sass:string";
-@use "variables" as *;
+@use "config" as *;
 
 // rem変換
 @function rem($pxSize) {

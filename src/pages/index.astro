@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Tailwind from './_parts/_tailwind.astro';
 import MV from './_parts/_mv.astro';
+import Tab from './_parts/_tab.astro';
 
 const page = {
 	head: {
@@ -14,16 +15,50 @@ const page = {
     mv: {
       img: [
         {
-          src: '/src/img/mv.jpg',
+          src: '/src/img/mv_img001.jpg',
+          size:[1366,518,375,480]
+        },
+        {
+          src: '/src/img/mv_img002.jpg',
+          size:[1366,518,375,480]
+        },
+        {
+          src: '/src/img/mv_img003.jpg',
           size:[1366,518,375,480]
         },
       ]
-    }
+    },
+    tab: [
+      {
+        tabList: 'タブA',
+        tabPanel: {
+          ttl: 'タブAの中身',
+          txt: 'あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。<br>テキストテキストテキスト'
+        }
+      },
+      {
+        tabList: 'タブB',
+        tabPanel: {
+          ttl: 'タブBの中身',
+          txt: 'テキストテキストテキストテキストテキストテキストテキストテキスト'
+        }
+      },
+      {
+        tabList: 'タブC',
+        tabPanel: {
+          ttl: 'タブCの中身',
+          txt: 'あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。'
+        }
+      },
+    ]
   }
 };
 ---
 
 <Layout page={page.head}>
   <MV img={page.contents.mv.img} />
-	<Tailwind />
+  <div class="grid gap-60">
+    <Tab tab={page.contents.tab} />
+    <Tailwind />
+  </div>
 </Layout>

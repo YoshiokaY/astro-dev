@@ -1,75 +1,83 @@
-@use "sass:math";
-
-$fontNoto: "Noto Sans JP", "NotoSansJP", "Noto Sans Japanese", sans-serif;
-$fontGothic:
-  "Helvetica Neue",
-  arial,
-  "游ゴシック体",
-  yugothic,
-  yu gothic,
-  "Hiragino Kaku Gothic ProN",
-  "Hiragino Sans",
-  meiryo,
-  sans-serif;
-$fontMincho: "游明朝体", yumincho, "游明朝", "Yu Mincho", "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN W3", hiraminpron-w3, "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "ヒラギノ明朝 Pro", "Hiragino Mincho Pro", "HGS明朝E", georgia, times, "Times New Roman", serif;
-
-// 画面サイズ
-$containerSize: 1200; // コンテンツ幅
-$containerPadding: 16; // コンテンツ余白
-$brakePoint: 768; // ブレイクポイント
-$pcDesign: 1366; // PCデザインサイズ
-$spDesign: 375; // SPデザインサイズ
-$logoWidth: 200; // ロゴ幅
-
-// 画像パス
-$imgPath: "/img/";
-
-// フォント設定
-$spFontVw: "false"; // SP時にフォントサイズを可変(vw)にする
-$baseFont: $fontNoto;
-// PCサイズ/SPサイズ (使用する際はtext-ｈ1やtext-xmの形で記述。tailwindも同様)
-$h1: 64, 40;
-$h2: 44, 36;
-$h3: 36, 28;
-$h4: 28, 24;
-$h5: 24, 20;
-$xl: 20, 18;
-$lg: 18, 16;
-$base: 16, 14;
-$sm: 14, 12;
-$xs: 12, 10;
+@use "config" as *;
+@use "mixins" as *;
+@use "functions" as *;
+@use "sass:list";
 
 :root {
+  // サイズ
+  --size-container: #{$containerSize}; // コンテナサイズ
+  --size-logo: #{$logoWidth}; // ロゴサイズ
 
-  // カラー（使用する際はcolor-txtやcolor-primeなどの形で記述。tailwindは使用するクラスに合わせてXXX-txtやXXX-prime）
-  --color-txt: #463e2c; // テキストカラー
-  --color-reversal: #fff; // テキスト反転
-  --color-gray: #d6d4d0; // グレースケール
-  --color-prime: #463e2c; // プライムカラー
-  --color-second: red; // セカンドカラー
-  --color-third: blue; // サードカラー
-  --color-body: #fff; //  ボディカラー
-  --color-highlight: #f8f8f7; // ハイライト背景
+  // line-heightの上下の余白をマージンから消す(marginに指定)
+  --leading-trim: calc((1em - 1lh) / 2);
 
-
-  // SP時
-
-  // 行間・文字間・ウェイト
-  --font-leading: calc(27 / 15);
-  --font-tracking: 0;
-  --font-weight-normal: 400;
-  --font-feature-settings: normal; // "pkna" on, "palt" on, "pwid" on;
-
-  // トランジッション（使用する際は$easing）
-  --transition: 0.4s ease-out;
-
-  // ヘッダー高さ
-  --headerHeight: 7.2rem; // 固定ヘッダーの場合の高さ。固定じゃない場合は0に
-
+  // フォント
+  --font-family-base: #{$baseFont};
+  --font-setting-base: var(--font-weight-normal) var(--font-size-base) / var(--font-leading) var(--font-family-base);
+  // SP時のフォントサイズにvwを使用
+  @if $spFontVw == "true" {
+    --font-size-heading-1: #{spSize(list.nth($h1, 2))};
+    --font-size-heading-2: #{spSize(list.nth($h2, 2))};
+    --font-size-heading-3: #{spSize(list.nth($h3, 2))};
+    --font-size-heading-4: #{spSize(list.nth($h4, 2))};
+    --font-size-heading-5: #{spSize(list.nth($h5, 2))};
+    --font-size-large-2: #{spSize(list.nth($xl, 2))};
+    --font-size-large-1: #{spSize(list.nth($lg, 2))};
+    --font-size-base: #{spSize(list.nth($base, 2))};
+    --font-size-small-1: #{spSize(list.nth($sm, 2))};
+    --font-size-small-2: #{spSize(list.nth($xs, 2))};
+  } @else {
+    --font-size-heading-1: #{rem(list.nth($h1, 2))};
+    --font-size-heading-2: #{rem(list.nth($h2, 2))};
+    --font-size-heading-3: #{rem(list.nth($h3, 2))};
+    --font-size-heading-4: #{rem(list.nth($h4, 2))};
+    --font-size-heading-5: #{rem(list.nth($h5, 2))};
+    --font-size-large-2: #{rem(list.nth($xl, 2))};
+    --font-size-large-1: #{rem(list.nth($lg, 2))};
+    --font-size-base: #{rem(list.nth($base, 2))};
+    --font-size-small-1: #{rem(list.nth($sm, 2))};
+    --font-size-small-2: #{rem(list.nth($xs, 2))};
+  }
   // PC時
-  @media screen and (width >= #{math.div($brakePoint,16)} + em) {
-    --headerHeight: 10.3rem;
-    --font-tracking: 0;
-    --font-leading: calc(30 / 16);
+  @include mq() {
+    --font-size-heading-1: #{rem(list.nth($h1, 1))};
+    --font-size-heading-2: #{rem(list.nth($h2, 1))};
+    --font-size-heading-3: #{rem(list.nth($h3, 1))};
+    --font-size-heading-4: #{rem(list.nth($h4, 1))};
+    --font-size-heading-5: #{rem(list.nth($h5, 1))};
+    --font-size-large-2: #{rem(list.nth($xl, 1))};
+    --font-size-large-1: #{rem(list.nth($lg, 1))};
+    --font-size-base: #{rem(list.nth($base, 1))};
+    --font-size-small-1: #{rem(list.nth($sm, 1))};
+    --font-size-small-2: #{rem(list.nth($xs, 1))};
   }
 }
+
+$containerSize2: 1200;
+
+// フォントサイズ
+$text-h1: var(--font-size-heading-1);
+$text-h2: var(--font-size-heading-2);
+$text-h3: var(--font-size-heading-3);
+$text-h4: var(--font-size-heading-4);
+$text-h5: var(--font-size-heading-5);
+$text-xl: var(--font-size-large-2);
+$text-lg: var(--font-size-large-1);
+$text-base: var(--font-size-base);
+$text-sm: var(--font-size-small-1);
+$text-xs: var(--font-size-small-2);
+
+// カラーパレット
+$color-txt: var(--color-txt);
+$color-reversal: var(--color-reversal);
+$color-gray: var(--color-gray);
+$color-prime: var(--color-prime);
+$color-second: var(--color-second);
+$color-third: var(--color-third);
+$color-body: var(--color-body);
+$color-highlight: var(--color-highlight);
+
+// トランジッション
+$easing: var(--transition);
+
+

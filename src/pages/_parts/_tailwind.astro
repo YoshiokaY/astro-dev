@@ -1,25 +1,35 @@
 ---
-import '../../scss/components/_u_anima.scss';
-import ImageImport from '../../components/ImageImport.astro';
+import ImageImport from "../../components/ImageImport.astro";
 ---
 
 <section>
-	<div class='contentInner scrollIn -up'>
-		<h2 class='text-h2 font-bold mb-24'>Tailwind4.0アップデートによる変更点</h2>
-		<div class='grid gap-64 mb-64'>
-			<div>
-				<h3 class='text-h3 font-bold mb-24'>
-					カスタムクラスをcssで設定できるように！
-				</h3>
-				<p>
-					案件ごとのカスタムクラスはtailwind.config.jsに記述する必要がありましたが、cssファイルに@themeで設定できるようになりました。<br
-					/>また設定したものがcss変数としてデフォルトで出力されるので、sassやjsでも同じ変数を使えるようになりました。
-				</p>
-				<div class='grid grid-cols-2 gap-28'>
-					<ImageImport src='/src/img/image.png' sp />
-					<img src='/_assets/img/top/sample.png' alt='' />
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="contentInner scrollIn -up">
+    <h2 class="text-h2 mb-24 font-bold">Tailwind4.0アップデートによる変更点</h2>
+    <div class="mb-64 grid gap-64">
+      <div>
+        <h3 class="text-h3 mb-24 font-bold">
+          カスタムクラスをcssで設定できるように！
+        </h3>
+        <p>
+          案件ごとのカスタムクラスはtailwind.config.jsに記述する必要がありましたが、cssファイルに@themeで設定できるようになりました。<br
+          />また設定したものがcss変数としてデフォルトで出力されるので、sassやjsでも同じ変数を使えるようになりました。
+        </p>
+        <div class="grid grid-cols-2 gap-28">
+          <ImageImport src="/src/img/image.png" sp />
+          <img src="/_assets/img/top/sample.png" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<style lang="scss">
+  section {
+    height: 3rem;
+    color: $color-second;
+    width: 3rem;
+    &::after {
+      content: "";
+    }
+  }
+</style>

@@ -45,16 +45,18 @@ const { slug, siteName, menu, domain } = Astro.props;
 						<h1 class="headerLogo">
 							<ImageImport
 								src="/src/img/logo.svg"
-								sizes={[80, 80, null, null]}
+								sizes={[80, 80]}
 								alt={siteName}
+                lazy={false}
 							/>
 						</h1>
 					) : (
 						<div class="headerLogo">
 							<ImageImport
 								src="/src/img/logo.svg"
-								sizes={[80, 80, null, null]}
+								sizes={[80, 80]}
 								alt={siteName}
+                lazy={false}
 							/>
 						</div>
 					)
@@ -64,3 +66,13 @@ const { slug, siteName, menu, domain } = Astro.props;
 		</div>
 	</div>
 </header>
+
+<style lang="scss">
+  header {
+    z-index: 800;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: $color-reversal;
+  }
+</style>

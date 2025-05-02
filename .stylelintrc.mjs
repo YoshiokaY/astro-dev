@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('stylelint').Config} */
+export default {
   extends: ["stylelint-config-standard-scss", "stylelint-config-recess-order", "stylelint-config-prettier-scss"],
   rules: {
     "scss/at-rule-no-unknown": [

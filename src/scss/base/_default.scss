@@ -157,4 +157,14 @@
       pointer-events: none;
     }
   }
+  @include mq(sp) {
+    html:has(.headerNavi.-open) {
+      overflow: hidden;
+
+      body {
+        overflow: auto;
+        scrollbar-gutter: stable;
+      }
+    }
+  }
 }

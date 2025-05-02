@@ -1,0 +1,297 @@
+@use "../abstracts" as *;
+
+/* スライド  */
+
+.c_slide {
+  &_arrow {
+    position: relative;
+
+    &:has(.splide__pagination) {
+      padding-bottom: 3rem;
+    }
+  }
+
+  .splide__slide {
+    img {
+      width: 100%;
+    }
+  }
+
+  .splide {
+    opacity: 0;
+
+    &.is-initialized {
+      opacity: 1;
+      transition: opacity $easing;
+    }
+  }
+  /// -----------------矢印//
+  .splide__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 500;
+    display: block;
+    height: spSize(42);
+    aspect-ratio: 1;
+    margin: auto;
+    color: transparent;
+    text-indent: -9999px;
+    cursor: pointer;
+    background: $color-prime;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: background-color $easing;
+    @include mq() {
+      height: 6rem;
+    }
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: auto;
+      content: "";
+      @include mask(arrow, $color-reversal, 40%);
+
+      mask-position: 55% center;
+    }
+
+    svg {
+      display: none;
+    }
+    @include hover {
+      background-color: $color-gray;
+    }
+
+    &:disabled {
+      opacity: 0;
+    }
+  }
+
+  .splide__arrow--prev {
+    left: 2.5rem;
+    transform: scaleX(-1) translateY(-50%);
+    @include mq() {
+      left: 2rem;
+    }
+  }
+
+  .splide__arrow--next {
+    right: 2.5rem;
+    @include mq() {
+      right: 2rem;
+    }
+  }
+
+  /// -----------------ページャー//
+  .splide__pagination {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 10;
+    gap: 0 1.6rem;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: calc(rem($containerSize) + (1.6rem * 2));
+    height: fit-content;
+    padding-inline: 2rem;
+    margin: auto;
+
+    &:not(:has(li:nth-child(2))) {
+      display: none;
+    }
+
+    @include mq() {
+      justify-content: center;
+      padding-inline: 1.6rem;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      width: auto;
+      height: auto;
+      margin: 0;
+
+      button {
+        position: relative;
+        display: block;
+        height: 0.8rem;
+        aspect-ratio: 1;
+        padding: 0;
+        color: transparent;
+        cursor: pointer;
+        border: none;
+        border-radius: 50%;
+        @include mq() {
+          height: 1.2rem;
+        }
+
+        &::after {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          margin: auto;
+          content: "";
+          background-color: $color-gray;
+          border-radius: 50%;
+        }
+      }
+
+      .splide__pagination__page {
+        &.is-active {
+          &::after {
+            background-color: $color-prime;
+          }
+        }
+      }
+    }
+  }
+
+  /// -----------------プログレスバー//
+
+  .c_slide_bar_wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: spSize(215);
+    height: 1.6rem;
+    padding: 0 0.65rem;
+    background-color: $color-reversal;
+    border: 0.2rem solid #e2e2e2;
+    border-radius: 999rem;
+    @include mq() {
+      max-width: 28.9rem;
+      height: 1.2rem;
+      padding-inline: 0.5rem;
+    }
+  }
+
+  .c_slide_bar {
+    width: 0;
+    height: 0.6rem;
+    background: $color-prime;
+    border-radius: 999rem;
+    @include mq() {
+      height: 0.5rem;
+    }
+  }
+
+  /// -----------------再生/停止ボタン//
+  .splide__toggle {
+    position: relative;
+    display: block;
+    width: spSize(40);
+    height: spSize(40);
+    aspect-ratio: 1;
+    color: transparent;
+    text-indent: -9999px;
+    cursor: pointer;
+    background-color: $color-prime;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    @include mq() {
+      height: 4rem;
+    }
+
+    @include hover {
+      background-color: $color-gray;
+    }
+
+    &__play,
+    &__pause {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      margin: auto;
+      @include mask(play, $color-reversal, 35%);
+    }
+
+    &__play {
+      mask-position: 55% center;
+    }
+
+    &__pause {
+      display: none;
+      @extend %pause;
+    }
+
+    &.is-active {
+      .splide__toggle__pause {
+        display: block;
+      }
+    }
+  }
+
+  /// -----------------スライド番号//
+  .c_slide_counter {
+    position: relative;
+    display: flex;
+    gap: 1.7rem;
+    justify-content: space-between;
+    width: fit-content;
+    // max-width: spSize(75);
+    font-weight: bold;
+    line-height: 1;
+    @include fontsize(24);
+    @include mq() {
+      gap: 3.7rem;
+      width: 100%;
+      max-width: 9.5rem;
+    }
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: fit-content;
+      height: fit-content;
+      margin: auto;
+      content: "/";
+    }
+
+    .c_slide_counter_current {
+      color: $color-prime;
+    }
+  }
+
+  .c_slide_controller {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.3rem;
+    align-items: center;
+    width: 100%;
+    max-width: spSize(268);
+    margin: 1rem auto 0;
+    @include mq() {
+      max-width: 46.1rem;
+      margin-top: 1.8rem;
+    }
+
+    &_grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+      align-items: center;
+      @include mq() {
+        grid-template-columns: auto 1fr;
+        gap: 1.75rem;
+      }
+    }
+  }
+}
+
+// @keyframes line_animation01 {
+//   0% {
+//     stroke-dasharray: 0, calc(24 * 3.14);
+//   }
+
+//   100% {
+//     stroke-dasharray: calc(24 * 3.14), calc(24 * 3.14);
+//   }
+// }
+
+/* /スライド  */

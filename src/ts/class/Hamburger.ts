@@ -1,17 +1,22 @@
-//ハンバーガーメニュー
+// ハンバーガーメニュー
 export class Hamburger {
   /**
-   * ナビゲーション要素
-   * @parm {string}
+   * ナビゲーション要素のCSSセレクター
+   * @param {string} target - ナビゲーション要素を指定するCSSセレクター
    */
   target: string;
 
   /**
-   * 展開時のクラス名
-   * @parm {string}
+   * メニュー展開時に付与するクラス名
+   * @param {string} open - メニューが開いている状態を示すクラス名
    */
   open: string;
 
+  /**
+   * ハンバーガーメニューのインスタンスを生成し、イベントリスナーを設定します。
+   * @param {string} [TARGET=".headerNavi"] - ナビゲーション要素を指定するCSSセレクター（デフォルト: ".headerNavi"）
+   * @param {string} [OPEN="-open"] - メニュー展開時に付与するクラス名（デフォルト: "-open"）
+   */
   constructor(TARGET: string = ".headerNavi", OPEN: string = "-open") {
     this.target = TARGET;
     this.open = OPEN;
@@ -21,6 +26,9 @@ export class Hamburger {
     const wrap = nav?.querySelector(".naviWrapper");
     const close_btn = nav?.querySelector(".closeBtn");
 
+    /**
+     * メニューの開閉を切り替えるクリックイベントリスナー
+     */
     btn?.addEventListener("click", () => {
       nav?.classList.toggle(OPEN);
       if (nav?.classList.contains(OPEN)) {
@@ -31,59 +39,56 @@ export class Hamburger {
         btn_label.textContent = "メニューを開く";
       }
     });
+
+    /**
+     * メニューを閉じるクリックイベントリスナー（閉じるボタン用）
+     */
     close_btn?.addEventListener("click", () => {
-      menuClose();
+      this.menuClose(nav, btn, btn_label, OPEN);
     });
+
+    /**
+     * メニュー領域外をクリックした際にメニューを閉じるイベントリスナー
+     */
     wrap?.addEventListener("click", (e) => {
       const target = e.target as HTMLElement;
       if (target.closest("#navi") === null) {
-        menuClose();
+        this.menuClose(nav, btn, btn_label, OPEN);
       }
     });
 
-    const menuClose = () => {
-      nav?.classList.remove(OPEN);
-      btn.setAttribute("aria-expanded", "false");
-      btn_label.textContent = "メニューを開く";
-    };
-    function subMenu() {
-      const ac = document.querySelectorAll(".spAccordion");
-      const HEIGHT = "--subHeightOpen"; //開いた時の高さ
-      const OFFSET_TIME = 5; //ディレイ
-      let openFlg = false;
-      const SPEED: number = 250;
+    // サブメニュー
+    const subOpen = nav?.querySelectorAll(".spAccordion");
+    let openFlg = false;
 
-      ac.forEach((btn) => {
-        btn?.addEventListener("click", () => {
-          const subMenu = btn.closest("div")?.nextElementSibling as HTMLElement;
-          if (!openFlg) {
-            subMenu.classList.add("-open"); // クラスの追加
-            btn.classList.add("-open");
-
-            const height = subMenu.offsetHeight; //高さ取得
-            subMenu.style.setProperty(HEIGHT, "0"); //アニメーション開始用の0
-
-            // open付与から少しだけ遅らせた方が動作が安定する
-            setTimeout(() => {
-              // ※ コンテンツの高さはopenを付けたあとで取得しないと iOSで０になる
-              subMenu.style.setProperty(HEIGHT, `${height}px`);
-              openFlg = true;
-            }, OFFSET_TIME);
-          } else if (openFlg) {
-            // アニメーション
-            subMenu.style.setProperty(HEIGHT, "0");
-            btn.classList.remove("-open");
-
-            // アニメーション完了後にopenクラスを削除。（CSS側のアニメーション時間+少しだけ余裕をもたせている）
-            setTimeout(() => {
-              subMenu.classList.remove("-open"); // クラスを削除
-              openFlg = false;
-              subMenu.style.setProperty(HEIGHT, "auto"); //アニメーションの後始末
-            }, SPEED + OFFSET_TIME);
-          }
-        });
+    /**
+     * サブメニューの開閉を切り替えるイベントリスナー
+     */
+    subOpen?.forEach((btn) => {
+      btn?.addEventListener("click", () => {
+        const hasChild = btn.closest(".has-child") as HTMLElement;
+        if (!openFlg) {
+          hasChild.classList.add(OPEN);
+          openFlg = true;
+        } else if (openFlg) {
+          hasChild.classList.remove(OPEN);
+          openFlg = false;
+        }
       });
-    }
-    subMenu();
+    });
+  }
+
+  /**
+   * メニューを閉じる処理
+   * @param {Element | null} nav - ナビゲーション要素
+   * @param {HTMLElement | null} btn - ハンバーガーボタン要素
+   * @param {HTMLElement | null} btn_label - ハンバーガーボタン内のテキスト要素
+   * @param {string} openClass - メニュー展開時に付与するクラス名
+   * @private
+   */
+  private menuClose(nav: Element | null, btn: HTMLElement | null, btn_label: HTMLElement | null, openClass: string): void {
+    nav?.classList.remove(openClass);
+    btn?.setAttribute("aria-expanded", "false");
+    btn_label!.textContent = "メニューを開く";
   }
 }

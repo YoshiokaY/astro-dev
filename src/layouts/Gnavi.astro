@@ -28,14 +28,11 @@ const { menu, domain } = Astro.props;
   <h2 class="txtHidden">グローバルナビゲーション</h2>
   <button class="ac_menu"><span>メニューを開く</span></button>
   <div class="naviWrapper">
-    <div class="overflow-y-auto h-full md:overflow-y-visible">
-      <ul
-        class="flex flex-col items-center md:flex-row md:gap-40 md:justify-end gap-28"
-        id="navi"
-      >
+    <div class="contentInner">
+      <ul id="navi">
         {
           menu.map((item) => (
-            <li class={item.child ? "has-child" : null}>
+            <li class={(item.child ? "has-child" : null)}>
               <a
                 href={item.anchor ? domain + item.link : item.link}
                 target={item.blank ? "_blank" : "_self"}
@@ -62,6 +59,7 @@ const { menu, domain } = Astro.props;
         }
       </ul>
     </div>
+    <button class="closeBtn txtHidden">メニューを閉じる</button>
   </div>
 </nav>
 
@@ -78,12 +76,12 @@ const { menu, domain } = Astro.props;
 			content: '';
 			border-radius: 50%;
 			opacity: 0;
-      background-color: var.$color-reversal;
+      background-color: $color-reversal;
 			transition:
 				transform 0.6s cubic-bezier(0.6, -0.01, 0.1, 1),
 				opacity 0.2s ease-out 0.3s;
 			transform: translateZ(0) scale(0);
-			@include mix.mq() {
+			@include mq() {
 				content: none;
 			}
 		}
@@ -104,7 +102,7 @@ const { menu, domain } = Astro.props;
           &::after {
             top: 0;
             bottom: 0;
-            transition: rotate var.$easing;
+            transition: rotate $easing;
             rotate: 45deg;
           }
 
@@ -115,7 +113,7 @@ const { menu, domain } = Astro.props;
       }
 
       .naviWrapper {
-        @include mix.mq(sp) {
+        @include mq(sp) {
           visibility: visible;
           opacity: 1;
 
@@ -133,9 +131,10 @@ const { menu, domain } = Astro.props;
 		inset: 0 0 0 auto;
 		z-index: 999;
 		aspect-ratio: 1/1;
-		margin: auto;
     height: 6rem;
-		@include mix.mq() {
+    margin: auto;
+
+		@include mq() {
 			display: none;
 		}
 
@@ -145,48 +144,44 @@ const { menu, domain } = Astro.props;
 			margin: auto;
 			color: transparent;
 			text-indent: -999rem;
-      background-color: var.$color-prime;
+      background-color: $color-prime;
       height: 0.5rem;
       border-radius: 999rem;
-      width: 100%;
-			transition: background-color var.$easing;
+      width: 90%;
+			transition: background-color $easing;
 
 			&::before,
 			&::after {
 				position: absolute;
-				inset: 0;
+				inset: -1.3rem 0 auto;
 				display: block;
 				width: 100%;
 				margin: auto;
 				content: '';
-				transition: rotate var.$easing;
-        background-color: var.$color-prime;
-      height: 0.5rem;
-      border-radius: 999rem;
+				transition: rotate $easing;
+        background-color: $color-prime;
+        height: 0.5rem;
+        border-radius: 999rem;
 			}
-
-      &::before {
-        top: -0.7rem;
-        bottom: auto;
-      }
 
 			&::after {
 				top: auto;
-				bottom: -0.7rem;
+				bottom: -1.3rem;
 			}
 		}
 	}
 	// SP時メニュー背景
 	.naviWrapper {
-		position: absolute;
+		position: fixed;
 		inset: 0;
 		z-index: 998;
+    width: 100%;
 		height: 100dvh;
-		padding: calc(17.6rem / 2) calc(20 / 375 * 100%);
 		visibility: hidden;
+    padding-top: var(--headerHeight);
 		opacity: 0;
 		transition: opacity 0.3s ease-out 0.4s;
-		@include mix.mq() {
+		@include mq() {
 			position: relative;
 			width: 100%;
 			height: 100%;
@@ -205,46 +200,52 @@ const { menu, domain } = Astro.props;
 		margin: auto;
 		visibility: hidden;
 		opacity: 0;
-		@include mix.mq() {
+    flex-direction: column;
+    gap: 2.8rem;
+    align-items: center;
+		@include mq() {
 			visibility: visible;
 			opacity: 1;
+      display: flex;
+      gap: 4rem;
+      justify-content: flex-end;
+      flex-direction: row;
 		}
 
 		> li {
       position: relative;
+      @include mq(sp) {
+        border-bottom: 0.1rem solid $color-prime;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
 			a {
 				position: relative;
-				display: block;
+        padding-block: 1em;
+        display: block;
+        width: 100%;
+        @include mq() {
+          padding-block: 0 0.5em;
+        }
 				// 下線/矢印
 				&::before {
-					@include mix.mq() {
+					@include mq() {
 						position: absolute;
 						inset: auto 0 0;
 						width: 0;
 						height: 0.2rem;
 						margin: auto;
 						content: '';
-						background-color: var.$color-prime;
+						background-color: $color-prime;
 						transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 						rotate: none;
 					}
 				}
-				@include mix.hover {
-					@include mix.mq() {
-						color: var.$color-prime;
-
-						&::before {
-							width: 100%;
-						}
-					}
-				}
-			}
-
-			// 現在ページ
-			&.-current {
-				@include mix.mq() {
-					.naviLink {
-						pointer-events: none;
+				@include hover {
+					@include mq() {
+						color: $color-prime;
 
 						&::before {
 							width: 100%;
@@ -254,55 +255,43 @@ const { menu, domain } = Astro.props;
 			}
 			/// -----------------サブメニュー//
 			&.has-child {
-				@include mix.mq(sp) {
+				@include mq(sp) {
 					overflow: hidden;
 				}
 
 				.spAccordion {
 					position: absolute;
-					inset: 0 0 0 auto;
-					aspect-ratio: 1/1;
+					inset: 1em 0 auto auto;
+					aspect-ratio: 1;
 					margin: auto;
-          @include mix.mq() {
+          height: 2.4rem;
+          @include mq() {
             display: none;
           }
 
-					> span {
+          &::before,
+					&::after {
+						position: absolute;
+						inset: 0;
 						display: block;
-						width: 100%;
-						height: 100%;
-						color: transparent;
-						text-indent: -999rem;
-
-						&::before,
-						&::after {
-							position: absolute;
-							inset: 0;
-							display: block;
-							width: 100%;
-							margin: auto;
-							content: '';
-							transition: rotate var.$easing;
-						}
+						width: 2rem;
+            height: 0.2rem;
+						margin: auto;
+            background-color: $color-prime;
+						content: '';
+						transition: rotate $easing;
+					}
 
 						&::before {
 							rotate: 90deg;
 						}
-					}
-
-					&.-open {
-						> span {
-							&::before {
-								rotate: none;
-							}
-						}
-					}
 				}
 
 				// サブメニュー本体
 				> ul.subMenu {
-					@include mix.mq() {
+					@include mq() {
 						position: absolute;
+            padding: 1.6rem;
 						inset: 0 0 auto -25%;
 						width: 150%;
 						overflow: visible;
@@ -310,42 +299,47 @@ const { menu, domain } = Astro.props;
 						opacity: 0;
 						transition:
 							top 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),
-							opacity var.$easing;
-            background-color: var.$color-highlight;
-            color: var.$color-prime;
+							opacity $easing;
+            background-color: $color-highlight;
+            color: $color-prime;
 					}
-					@include mix.mq(sp) {
+					@include mq(sp) {
+            padding-left: 1em;
+            width: 100%;
 						position: relative;
 						height: 0;
 						max-height: none;
 						visibility: hidden;
-						transition:
-							height var.$easing,
-							opacity var.$easing;
-
-						&.-open {
-							height: var(--subHeaderHeight);
-							visibility: visible;
-							opacity: 1;
-						}
+            transition: height $easing;
 					}
 
 					> li {
 						> a {
-							@include mix.mq() {
+							@include mq() {
+                width: 100%;
+                display: block;
 								&::before {
 									right: auto;
 								}
 							}
 						}
 					}
-
-					&.-open {
-						height: var(--subHeightOpen, auto);
-					}
 				}
-				@include mix.mq() {
-					@include mix.hover {
+        &.-open {
+          @include mq(sp) {
+            .spAccordion {
+              &::before {
+							rotate: none;
+						}
+            }
+            > ul.subMenu {
+              height: auto;
+							visibility: visible;
+						}
+					}
+        }
+				@include mq() {
+					@include hover {
 						ul.subMenu {
 							top: 100%;
 							visibility: visible;
@@ -365,3 +359,10 @@ const { menu, domain } = Astro.props;
 		}
 	}
 </style>
+
+<script>
+  import { Hamburger } from '../ts/class/Hamburger';
+  window.addEventListener('DOMContentLoaded', () => {
+	new Hamburger(); // ハンバーガー
+});
+</script>

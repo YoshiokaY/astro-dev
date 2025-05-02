@@ -1,5 +1,7 @@
 ---
 import ImageImport from "../../components/ImageImport.astro";
+import "@splidejs/splide/dist/css/splide-core.min.css";
+import "../../scss/components/_c_slide.scss";
 
 interface Props {
 	img: {
@@ -26,6 +28,25 @@ const { img } = Astro.props;
           </div>
         </div>
       </div>
+      <div class="c_slide_controller">
+        <div class="c_slide_controller_grid">
+          <div class="c_slide_counter">
+            <span class="c_slide_counter_current"></span>
+            <span class="c_slide_counter_length"></span>
+          </div>
+          <div class="c_slide_bar_wrap">
+            <div class="c_slide_bar"></div>
+          </div>
+        </div>
+        <button class="splide__toggle" type="button">
+          <span class="splide__toggle__play">再生</span>
+          <span class="splide__toggle__pause">一時停止</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  import '../../ts/utils/slide';
+</script>
