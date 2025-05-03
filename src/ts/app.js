@@ -1,16 +1,9 @@
-import { Accordion } from "./class/Accordion";
-import { Modal } from "./class/Modal";
-import { ScrollAnimation } from "./class/Animation";
-import { Tab } from "./class/Tab";
-import { SmoothScroll } from "./class/SmoothScroll";
+import { ScrollAnimation } from "@/ts/class/Animation";
+import { Hamburger } from "@/ts/class/Hamburger";
+import { SmoothScroll } from "@/ts/class/SmoothScroll";
 
 window.addEventListener("DOMContentLoaded", () => {
-  new Modal(); // モーダル
-  new Tab(); // タブ
+  new Hamburger(); // ハンバーガー
   new ScrollAnimation(); // アニメーション
   new SmoothScroll(); // スムーススクロール
-});
-
-window.addEventListener("load", () => {
-  new Accordion(); // アコーディオン
 });

@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import LowerTitle from "@/components/LowerTitle.astro";
 import Breadcrumbs from "@/components/Breadcrumbs.astro";
-import Linklist from "@/pages/sample/_parts/LinkList.astro";
+import LinkList from "@/pages/sample/_parts/_linklist.astro";
 
 const page = {
   head: {
@@ -45,6 +45,6 @@ const page = {
   <LowerTitle title={page.contents.lowerTitle} />
   <Breadcrumbs bread={page.head.breadcrumbs} />
   <div class="grid gap-60">
-    <Linklist list={page.contents.list} />
+    <LinkList list={page.contents.list} />
   </div>
 </Layout>

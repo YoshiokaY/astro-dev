@@ -1,76 +1,57 @@
-class Hamburger {
+class Tab {
   /**
-   * ナビゲーション要素のCSSセレクター
-   * @param {string} target - ナビゲーション要素を指定するCSSセレクター
+   * タブのクラス
+   * @parm {string}
    */
   target;
   /**
-   * メニュー展開時に付与するクラス名
-   * @param {string} open - メニューが開いている状態を示すクラス名
+   * タブ展開時のクラス
+   * @parm {string}
    */
   open;
-  /**
-   * ハンバーガーメニューのインスタンスを生成し、イベントリスナーを設定します。
-   * @param {string} [TARGET=".headerNavi"] - ナビゲーション要素を指定するCSSセレクター（デフォルト: ".headerNavi"）
-   * @param {string} [OPEN="-open"] - メニュー展開時に付与するクラス名（デフォルト: "-open"）
-   */
-  constructor(TARGET = ".headerNavi", OPEN = "-open") {
+  constructor(TARGET = ".c_tab", OPEN = "-open") {
     this.target = TARGET;
     this.open = OPEN;
-    const nav = document.querySelector(TARGET);
-    const btn = nav?.querySelector(".ac_menu");
-    const btn_label = nav?.querySelector(".ac_menu span");
-    const wrap = nav?.querySelector(".naviWrapper");
-    const close_btn = nav?.querySelector(".closeBtn");
-    btn?.addEventListener("click", () => {
-      nav?.classList.toggle(OPEN);
-      if (nav?.classList.contains(OPEN)) {
-        btn.setAttribute("aria-expanded", "true");
-        btn_label.textContent = "メニューを閉じる";
-      } else {
-        btn.setAttribute("aria-expanded", "false");
-        btn_label.textContent = "メニューを開く";
-      }
-    });
-    close_btn?.addEventListener("click", () => {
-      this.menuClose(nav, btn, btn_label, OPEN);
-    });
-    wrap?.addEventListener("click", (e) => {
-      const target = e.target;
-      if (target.closest("#navi") === null) {
-        this.menuClose(nav, btn, btn_label, OPEN);
-      }
-    });
-    const subOpen = nav?.querySelectorAll(".spAccordion");
-    let openFlg = false;
-    subOpen?.forEach((btn2) => {
-      btn2?.addEventListener("click", () => {
-        const hasChild = btn2.closest(".has-child");
-        if (!openFlg) {
-          hasChild.classList.add(OPEN);
-          openFlg = true;
-        } else if (openFlg) {
-          hasChild.classList.remove(OPEN);
-          openFlg = false;
-        }
+    const btns = document.querySelectorAll(TARGET + "_list li button");
+    function onTabClick(e) {
+      const event = e.target;
+      const parent = event.closest(TARGET);
+      const tabContents = parent?.querySelectorAll(TARGET + "_content");
+      const tabArr = Array.prototype.slice.call(tabContents);
+      const item = parent?.querySelectorAll(TARGET + "_list li button");
+      const itemArr = Array.prototype.slice.call(item);
+      const index = itemArr.indexOf(e.target);
+      itemArr.forEach((el) => {
+        el.classList.remove(OPEN);
+        el.setAttribute("aria-pressed", "false");
+        el.setAttribute("tabindex", "0");
       });
+      event.classList.add(OPEN);
+      event.setAttribute("aria-pressed", "true");
+      event.setAttribute("tabindex", "-1");
+      tabArr.forEach((tab) => {
+        tab.setAttribute("hidden", "");
+        tab.setAttribute("tabindex", "-1");
+      });
+      tabArr[index].removeAttribute("hidden");
+      tabArr[index].focus({ preventScroll: true });
+    }
+    btns.forEach((btn) => {
+      btn.addEventListener("click", onTabClick);
     });
-  }
-  /**
-   * メニューを閉じる処理
-   * @param {Element | null} nav - ナビゲーション要素
-   * @param {HTMLElement | null} btn - ハンバーガーボタン要素
-   * @param {HTMLElement | null} btn_label - ハンバーガーボタン内のテキスト要素
-   * @param {string} openClass - メニュー展開時に付与するクラス名
-   * @private
-   */
-  menuClose(nav, btn, btn_label, openClass) {
-    nav?.classList.remove(openClass);
-    btn?.setAttribute("aria-expanded", "false");
-    btn_label.textContent = "メニューを開く";
+    if (btns.length > 0) {
+      const url = new URL(window.location.href);
+      const hash = url.hash;
+      if (hash) {
+        const number = Number(hash.slice(-1));
+        if (!isNaN(number)) {
+          btns[number - 1].click();
+        }
+      }
+    }
   }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  new Hamburger();
+  new Tab();
 });

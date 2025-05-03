@@ -1,0 +1,84 @@
+---
+interface Props {
+  tab: {
+    tabList: string;
+    tabPanel: {
+      ttl: string;
+      txt: string;
+    };
+  }[];
+}
+
+const { tab } = Astro.props;
+---
+
+<section>
+  <div class="contentInner">
+    <h2 class="text-h2 text-prime font-bold md:mb-28">タブコンポーネント</h2>
+    <div class="c_tab">
+      <ul class="c_tab_list">
+        {
+          tab.map((item, i) => (
+            <li>
+              <button
+                id={"tab-" + (i + 1)}
+                aria-controls={"tabpanel-" + (i + 1)}
+                class={i === 0 ? "-open" : null}
+                aria-pressed={i === 0 ? "true" : "false"}
+                tabindex={i === 0 ? "-1" : "0"}
+              >
+                {item.tabList}
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        tab.map((item, i) => (
+          <div
+            class="c_tab_content"
+            role="tabpanel"
+            id={"tabpanel" + (i + 1)}
+            aria-labelledby={"tab" + (i + 1)}
+            hidden={i === 0 ? null : "hidden"}
+          >
+            <h3 class="text-h3 mb-16 font-bold">{item.tabPanel.ttl}</h3>
+            <p set:html={item.tabPanel.txt} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .c_tab {
+    &_list {
+      display: flex;
+      gap: 1.6rem;
+      justify-content: center;
+      button {
+        &[tabindex="-1"] {
+          color: $color-prime;
+          pointer-events: none;
+          background-color: $color-reversal;
+        }
+      }
+    }
+
+    &_content {
+      animation: fade $easing;
+
+      &[hidden] {
+        opacity: 0;
+      }
+    }
+  }
+</style>
+
+<script>
+  import { Tab } from "@/ts/class/Tab";
+  window.addEventListener("DOMContentLoaded", () => {
+    new Tab();
+  });
+</script>
