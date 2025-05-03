@@ -182,83 +182,6 @@ class Modal {
   }
 }
 
-class Hamburger {
-  /**
-   * ナビゲーション要素
-   * @parm {string}
-   */
-  target;
-  /**
-   * 展開時のクラス名
-   * @parm {string}
-   */
-  open;
-  constructor(TARGET = ".headerNavi", OPEN = "-open") {
-    this.target = TARGET;
-    this.open = OPEN;
-    const nav = document.querySelector(TARGET);
-    const btn = nav?.querySelector(".ac_menu");
-    const btn_label = nav?.querySelector(".ac_menu span");
-    const wrap = nav?.querySelector(".naviWrapper");
-    const close_btn = nav?.querySelector(".closeBtn");
-    btn?.addEventListener("click", () => {
-      nav?.classList.toggle(OPEN);
-      if (nav?.classList.contains(OPEN)) {
-        btn.setAttribute("aria-expanded", "true");
-        btn_label.textContent = "メニューを閉じる";
-      } else {
-        btn.setAttribute("aria-expanded", "false");
-        btn_label.textContent = "メニューを開く";
-      }
-    });
-    close_btn?.addEventListener("click", () => {
-      menuClose();
-    });
-    wrap?.addEventListener("click", (e) => {
-      const target = e.target;
-      if (target.closest("#navi") === null) {
-        menuClose();
-      }
-    });
-    const menuClose = () => {
-      nav?.classList.remove(OPEN);
-      btn.setAttribute("aria-expanded", "false");
-      btn_label.textContent = "メニューを開く";
-    };
-    function subMenu() {
-      const ac = document.querySelectorAll(".spAccordion");
-      const HEIGHT = "--subHeightOpen";
-      const OFFSET_TIME = 5;
-      let openFlg = false;
-      const SPEED = 250;
-      ac.forEach((btn2) => {
-        btn2?.addEventListener("click", () => {
-          const subMenu2 = btn2.closest("div")?.nextElementSibling;
-          if (!openFlg) {
-            subMenu2.classList.add("-open");
-            btn2.classList.add("-open");
-            const height = subMenu2.offsetHeight;
-            subMenu2.style.setProperty(HEIGHT, "0");
-            setTimeout(() => {
-              subMenu2.style.setProperty(HEIGHT, `${height}px`);
-              openFlg = true;
-            }, OFFSET_TIME);
-          } else if (openFlg) {
-            subMenu2.style.setProperty(HEIGHT, "0");
-            btn2.classList.remove("-open");
-            setTimeout(() => {
-              subMenu2.classList.remove("-open");
-              openFlg = false;
-              subMenu2.style.setProperty(HEIGHT, "auto");
-            }, SPEED + OFFSET_TIME);
-          }
-        });
-      });
-    }
-    subMenu();
-  }
-}
-
 class ScrollAnimation {
   /**
    * アニメーションを付与する要素
@@ -412,14 +335,13 @@ class SmoothScroll {
   }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-	new Modal(); // モーダル
-	new Hamburger(); // ハンバーガー
-	new Tab(); // タブ
-	new ScrollAnimation(); // アニメーション
-	new SmoothScroll(); // スムーススクロール
+window.addEventListener("DOMContentLoaded", () => {
+  new Modal(); // モーダル
+  new Tab(); // タブ
+  new ScrollAnimation(); // アニメーション
+  new SmoothScroll(); // スムーススクロール
 });
 
-window.addEventListener('load', () => {
-	new Accordion(); // アコーディオン
+window.addEventListener("load", () => {
+  new Accordion(); // アコーディオン
 });

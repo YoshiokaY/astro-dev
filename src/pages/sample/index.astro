@@ -1,0 +1,50 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import LowerTitle from "@/components/LowerTitle.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import Linklist from "@/pages/sample/_parts/LinkList.astro";
+
+const page = {
+  head: {
+    slug: "sample",
+    title: "コンポーネント｜XXXXX",
+    description: "テキストテキストテキストテキストテキストテキスト",
+    url: "sample",
+    breadcrumbs: [
+      {
+        text: "TOP",
+        link: "/",
+      },
+      {
+        text: "コンポーネント",
+        link: "about",
+      },
+    ],
+  },
+  contents: {
+    lowerTitle: "コンポーネント",
+    list: [
+      {
+        txt: "タブコンポーネント",
+        link: "tab",
+      },
+      {
+        txt: "アコーディオンコンポーネント",
+        link: "accordion",
+      },
+      {
+        txt: "モーダルコンポーネント",
+        link: "modal",
+      },
+    ],
+  },
+};
+---
+
+<Layout page={page.head}>
+  <LowerTitle title={page.contents.lowerTitle} />
+  <Breadcrumbs bread={page.head.breadcrumbs} />
+  <div class="grid gap-60">
+    <Linklist list={page.contents.list} />
+  </div>
+</Layout>

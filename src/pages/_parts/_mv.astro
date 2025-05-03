@@ -1,17 +1,16 @@
 ---
-import ImageImport from "../../components/ImageImport.astro";
+import ImageImport from "@/components/ImageImport.astro";
 import "@splidejs/splide/dist/css/splide-core.min.css";
 import "../../scss/components/_c_slide.scss";
 
 interface Props {
-	img: {
+  img: {
     src: string;
     size: number[];
-	}[];
+  }[];
 }
 
 const { img } = Astro.props;
-
 ---
 
 <div class="top_mv">
@@ -20,11 +19,18 @@ const { img } = Astro.props;
       <div class="c_slide_arrow">
         <div class="splide__track">
           <div class="splide__list">
-            {img.map((item) => (
-              <div class="splide__slide">
-                <ImageImport src={item.src} sizes={item.size} sp class="w-full" />
-              </div>
-            ))}
+            {
+              img.map((item) => (
+                <div class="splide__slide">
+                  <ImageImport
+                    src={item.src}
+                    sizes={item.size}
+                    sp
+                    class="w-full"
+                  />
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>
@@ -48,5 +54,5 @@ const { img } = Astro.props;
 </div>
 
 <script>
-  import '../../ts/utils/slide';
+  import "../../ts/utils/slide";
 </script>

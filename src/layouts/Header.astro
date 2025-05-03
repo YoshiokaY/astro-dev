@@ -1,5 +1,5 @@
 ---
-import ImageImport from "src/components/ImageImport.astro";
+import ImageImport from "@/components/ImageImport.astro";
 import Gnavi from "./Gnavi.astro";
 
 /**
@@ -32,39 +32,38 @@ interface Props {
   domain: string;
 }
 
-
 const { slug, siteName, menu, domain } = Astro.props;
 ---
 
 <header>
-	<div class="contentInner">
-		<div class="flex justify-between items-center">
-			<a href="/">
-				{
-					slug === "top" ? (
-						<h1 class="headerLogo">
-							<ImageImport
-								src="/src/img/logo.svg"
-								sizes={[80, 80]}
-								alt={siteName}
+  <div class="contentInner">
+    <div class="flex items-center justify-between">
+      <a href="/">
+        {
+          slug === "top" ? (
+            <h1 class="headerLogo">
+              <ImageImport
+                src="/src/img/logo.svg"
+                sizes={[80, 80]}
+                alt={siteName}
                 lazy={false}
-							/>
-						</h1>
-					) : (
-						<div class="headerLogo">
-							<ImageImport
-								src="/src/img/logo.svg"
-								sizes={[80, 80]}
-								alt={siteName}
+              />
+            </h1>
+          ) : (
+            <div class="headerLogo">
+              <ImageImport
+                src="/src/img/logo.svg"
+                sizes={[80, 80]}
+                alt={siteName}
                 lazy={false}
-							/>
-						</div>
-					)
-				}
-			</a>
-			<Gnavi menu={menu} domain={domain} />
-		</div>
-	</div>
+              />
+            </div>
+          )
+        }
+      </a>
+      <Gnavi menu={menu} domain={domain} />
+    </div>
+  </div>
 </header>
 
 <style lang="scss">

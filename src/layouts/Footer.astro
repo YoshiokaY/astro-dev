@@ -3,20 +3,20 @@
  * フッターコンポーネント
  */
 interface Props {
-	copyright: string;
+  copyright: string;
 }
 
 const { copyright } = Astro.props;
 ---
 
 <footer>
-	<div class="bg-highlight">
-		<div class="contentInner h-300">フッター</div>
-	</div>
-	<div class="bg-prime text-reversal">
-		<p class="text-sm text-center py-20">
-			&copy; {new Date().getFullYear()}
-			{copyright}
-		</p>
-	</div>
+  <div class="bg-highlight">
+    <div class="contentInner h-300">フッター</div>
+  </div>
+  <div class="bg-prime text-reversal">
+    <p class="py-20 text-center text-sm">
+      &copy; {new Date().getFullYear()}
+      {copyright}
+    </p>
+  </div>
 </footer>

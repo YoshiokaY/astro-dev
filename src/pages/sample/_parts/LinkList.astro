@@ -1,0 +1,43 @@
+---
+/**
+ * リンクリストコンポーネントの Props 型定義。
+ */
+interface Props {
+  list: {
+    txt: string;
+    link: string;
+  }[];
+}
+
+const { list } = Astro.props;
+---
+
+<section>
+  <div class="contentInner">
+    <h2 class="text-h2 mb-28">コンポーネントリスト</h2>
+    <ul>
+      {
+        list.map((item) => (
+          <li>
+            <a href={item.link}>{item.txt}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style lang="scss">
+  li {
+    position: relative;
+    &::before {
+      content: "";
+      display: inline-block;
+      aspect-ratio: 1;
+      height: 0.6em;
+      margin-right: 0.3em;
+      background-color: $color-prime;
+      border-radius: 50%;
+    }
+  }
+</style>

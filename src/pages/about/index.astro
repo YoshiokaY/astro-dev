@@ -1,19 +1,32 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "@/layouts/Layout.astro";
+import LowerTitle from "@/components/LowerTitle.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
 
 const page = {
-	head: {
-		slug: 'about',
-		title: '概要｜Astro-dev',
-		description: 'テキストテキストテキストテキストテキストテキスト',
-		url: '',
-	},
+  head: {
+    slug: "about",
+    title: "XXXについて｜XXXXX",
+    description: "テキストテキストテキストテキストテキストテキスト",
+    url: "",
+    breadcrumbs: [
+      {
+        text: "TOP",
+        link: "/",
+      },
+      {
+        text: "XXXについて",
+        link: "about",
+      },
+    ],
+  },
   contents: {
-
-  }
+    lowerTitle: "XXXについて",
+  },
 };
 ---
 
 <Layout page={page.head}>
-
+  <LowerTitle title={page.contents.lowerTitle} />
+  <Breadcrumbs bread={page.head.breadcrumbs} />
 </Layout>

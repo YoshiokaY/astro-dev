@@ -1,0 +1,86 @@
+---
+/**
+ * パンくずリストコンポーネント。
+ */
+interface Props {
+  /**
+   * パンくずリストの各要素のデータ配列。
+   * 各要素はテキストとリンクを持つオブジェクトです。
+   */
+  bread: {
+    /**
+     * パンくずのテキスト。
+     */
+    text: string;
+    /**
+     * パンくずのリンク先URL。
+     */
+    link: string;
+  }[];
+}
+
+const { bread } = Astro.props;
+
+/**
+ * 指定されたインデックスが最後の要素かどうかを判定します。
+ * @param index 現在の要素のインデックス
+ * @returns 最後の要素の場合はtrue、それ以外の場合はfalse
+ */
+const isLastItem = (index: number): boolean => index === bread.length - 1;
+---
+
+<div class="mb-40">
+  <div class="contentInner">
+    <nav id="breadcrumbs">
+      <ol
+        class="flex gap-30 md:gap-34"
+        itemscope
+        itemtype="https://schema.org/BreadcrumbList"
+      >
+        {
+          bread.map((item, i) => (
+            <li
+              itemprop="itemListElement"
+              itemscope
+              itemtype="https://schema.org/ListItem"
+            >
+              {isLastItem(i) ? (
+                <span itemprop="name">{item.text}</span>
+              ) : (
+                <a href={item.link} itemprop="item">
+                  <span itemprop="name">{item.text}</span>
+                </a>
+              )}
+              <meta itemprop="position" content={String(i + 1)} />
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<style lang="scss">
+  li {
+    &:not(:last-child) {
+      position: relative;
+      &::after {
+        position: absolute;
+        inset: 0.1em -2rem 0 auto;
+        height: 0.5em;
+        aspect-ratio: 1;
+        margin: auto;
+        content: "";
+        border: 0.1rem solid $color-prime;
+        border-width: 0.2rem 0.2rem 0 0;
+        rotate: 45deg;
+      }
+    }
+    a {
+      transition: opacity $easing;
+      @include hover {
+        opacity: 0.7;
+      }
+    }
+  }
+</style>
