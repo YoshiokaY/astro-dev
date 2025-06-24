@@ -1,0 +1,30 @@
+---
+import "@/scss/vendors/_reset.css";
+import "@/scss/base/_default.scss";
+import "@/scss/base/_general.scss";
+import "@/scss/vendors/_tailwind.css";
+import "@/scss/pages/_top.scss";
+import Layout from "@/layouts/Layout.astro";
+import About from "@/pages/_parts/_about.astro";
+
+const page = {
+  head: {
+    slug: "top",
+    title: "タイトルタイトルタイトル",
+    description: "テキストテキストテキストテキストテキストテキスト",
+    url: "",
+  },
+  contents: {},
+};
+---
+
+<Layout page={page.head}>
+  <div class="grid gap-60">
+    <About />
+    <div class="contentInner">
+      <p>
+        あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。
+      </p>
+    </div>
+  </div>
+</Layout>

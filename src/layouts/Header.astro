@@ -1,0 +1,49 @@
+---
+import ImageImport from "@/components/ImageImport.astro";
+import Gnavi from "./Gnavi.astro";
+
+/**
+ * ヘッダーコンポーネント。
+ */
+interface MenuItem {
+  link: string;
+  txt: string;
+  blank?: boolean;
+  anchor?: boolean;
+  child?: MenuItem[];
+}
+
+interface Props {
+  /**
+   * 現在のページのスラッグ。トップページかどうかを判別するために使用されます。
+   */
+  slug: string;
+  /**
+   * サイトの名前。ロゴのalt属性として使用されます。
+   */
+  siteName: string;
+  /**
+   * グローバルナビゲーションのメニュー項目を定義する配列。
+   */
+  menu: MenuItem[];
+  /**
+   * サイトのドメイン名。アンカーリンク (`anchor: true`) の場合にURLを生成するために `Gnavi` コンポーネントへ渡されます。
+   */
+  domain: string;
+}
+
+const { slug, siteName, menu, domain } = Astro.props;
+---
+
+<header class="l_header">
+  <div class="contentInner">ヘッダー</div>
+</header>
+
+<style lang="scss" is:global>
+  .l_header {
+    position: fixed;
+    width: 100%;
+    height: 20rem;
+    border: 0.4rem solid $color-prime;
+  }
+</style>

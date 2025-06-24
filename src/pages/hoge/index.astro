@@ -1,0 +1,39 @@
+---
+import "@/scss/vendors/_reset.css";
+import "@/scss/base/_default.scss";
+import "@/scss/base/_general.scss";
+import "@/scss/vendors/_tailwind.css";
+import "@/scss/pages/_sample.scss";
+import Layout from "@/layouts/Layout.astro";
+import LowerTitle from "@/components/LowerTitle.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import Hoge from "@/pages/hoge/_parts/_hoge.astro";
+
+const page = {
+  head: {
+    slug: "hoge",
+    title: "XXXについて｜XXXXX",
+    description: "テキストテキストテキストテキストテキストテキスト",
+    url: "",
+    breadcrumbs: [
+      {
+        text: "TOP",
+        link: "/",
+      },
+      {
+        text: "XXXについて",
+        link: "hoge",
+      },
+    ],
+  },
+  contents: {
+    lowerTitle: "XXXについて",
+  },
+};
+---
+
+<Layout page={page.head}>
+  <LowerTitle title={page.contents.lowerTitle} />
+  <Breadcrumbs bread={page.head.breadcrumbs} />
+  <Hoge />
+</Layout>
