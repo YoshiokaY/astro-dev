@@ -1,0 +1,67 @@
+@use "../abstracts" as *;
+
+// コンテナ
+.contentInner {
+  width: 100%;
+  max-width: rem($containerSize + $containerPadding * 2);
+  padding: 0 spSize($containerPadding);
+  margin: auto;
+  @include mq() {
+    padding: 0 rem($containerPadding);
+  }
+}
+
+// PC/SP出しわけ
+.pcOnly {
+  @include mq(sp) {
+    display: none !important;
+  }
+}
+
+.spOnly {
+  @include mq() {
+    display: none !important;
+  }
+}
+
+// スクリーンリーダー用
+.txtHidden {
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+// 数字リセット（親要素以上に指定）//
+.countReset {
+  counter-reset: number 0;
+}
+
+// キーボード操作時のみに表示
+.skipLink {
+  &:focus-visible {
+    z-index: 99;
+    width: 100%;
+    height: 1.5em;
+    color: $color-reversal;
+    outline-offset: 0;
+    background-color: $color-prime;
+    clip: unset;
+    clip-path: none;
+  }
+}
+
+// frameコンテナ
+.frameWrapper {
+  iframe {
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 452/360;
+    border: 0;
+  }
+}

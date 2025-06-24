@@ -1,0 +1,29 @@
+---
+/**
+ * フッターコンポーネント
+ */
+interface Props {
+  copyright: string;
+}
+
+const { copyright } = Astro.props;
+---
+
+<footer class="l_footer">
+  <div class="bg-highlight">
+    <div class="contentInner h-300">フッター</div>
+  </div>
+  <div class="bg-prime text-reversal">
+    <p class="py-20 text-center text-sm">
+      &copy; {new Date().getFullYear()}
+      {copyright}
+    </p>
+  </div>
+</footer>
+
+<style lang="scss" is:global>
+  .l_footer {
+    height: 20rem;
+    border: 0.4rem solid $color-second;
+  }
+</style>

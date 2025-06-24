@@ -1,0 +1,43 @@
+---
+import Head from "@/layouts/Head.astro";
+import Header from "@/layouts/Header.astro";
+import BeginBody from "@/layouts/BeginBody.astro";
+import Footer from "@/layouts/Footer.astro";
+import { common } from "@/data/common"; // グローバルなサイト設定
+
+/**
+ * レイアウトコンポーネントの Props 型定義。
+ * 現在のページ情報
+ */
+interface Props {
+  page: {
+    slug: string;
+    title: string;
+    description: string;
+    url: string;
+  };
+}
+
+const { page } = Astro.props;
+---
+
+<!doctype html>
+<html dir="ltr" lang="ja">
+  <Head site={common.head} page={page} />
+  <body class={"page-" + page.slug}>
+    <BeginBody />
+    <Header
+      siteName={common.head.siteName}
+      domain={common.head.domain}
+      menu={common.menu}
+      slug={page.slug}
+    />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer copyright={common.head.copyright} />
+    <script>
+      import "../js/app.js";
+    </script>
+  </body>
+</html>

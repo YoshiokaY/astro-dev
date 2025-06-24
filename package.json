@@ -1,0 +1,72 @@
+{
+  "name": "astro-dev",
+  "private": true,
+  "version": "1.0.1",
+  "type": "module",
+  "scripts": {
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "eslint 'src/**/*.{js,ts,astro,json}' --fix",
+    "lint:css": "stylelint 'src/**/*.scss' --fix",
+    "lint:markup": "markuplint 'htdocs/**/*.{html,php}' --fix --config .markuplintrc",
+    "lint:all": "run-p lint lint:css lint:markup",
+    "lint:ci": "run-s lint:js:ci lint:css:ci lint:markup:ci",
+    "lint:js:ci": "eslint 'src/**/*.{js,ts,astro,json}' --format json --output-file eslint-report.json",
+    "lint:css:ci": "stylelint 'src/**/*.scss' --formatter json > stylelint-report.json",
+    "lint:markup:ci": "markuplint 'htdocs/**/*.{html,php}' -f JSON > markuplint-report.json"
+  },
+  "browserslist": [
+    "last 2 version",
+    "not dead"
+  ],
+  "dependencies": {
+    "astro": "^5.10.0"
+  },
+  "devDependencies": {
+    "@acab/reset.css": "^0.11.0",
+    "@astrojs/check": "^0.9.0",
+    "@eslint/js": "^9.29.0",
+    "@markuplint/astro-parser": "^4.6.19",
+    "@tailwindcss/vite": "^4.1.4",
+    "@types/imagemin-mozjpeg": "^8.0.4",
+    "@types/imagemin-svgo": "^10.0.5",
+    "@types/imagemin-webp": "^7.0.3",
+    "@types/jquery": "^3.5.32",
+    "@types/node": "^22.15.3",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "@vheemstra/vite-plugin-imagemin": "^2.0.0",
+    "astro-relative-links": "^0.4.2",
+    "chokidar-cli": "^3.0.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-astro": "^1.0.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "globals": "^16.2.0",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^10.0.0",
+    "imagemin-svgo": "^11.0.1",
+    "imagemin-webp": "^8.0.0",
+    "jquery": "^3.7.1",
+    "markuplint": "^4.12.0",
+    "npm-run-all2": "^7.0.0",
+    "prettier": "^3.5.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "sass": "^1.89.2",
+    "sharp": "^0.33.0",
+    "stylelint": "^16.21.0",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-recess-order": "^6.0.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "tailwindcss": "^4.1.10",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.34.1",
+    "vite-node": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
