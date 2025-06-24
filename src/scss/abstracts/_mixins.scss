@@ -28,6 +28,21 @@
   }
 }
 
+// @mixin mq($type: pc, $value1: $brakePoint) {
+//   $reverse: "";
+//   $widthType: "min";
+//   @if $type == sp {
+//     // PC用（spMaxサイズ < w）
+//     $reverse: "not";
+//   } @else {
+//     // SP用（w <= spMaxサイズ）
+//     // そのままでOK
+//   }
+//   @media #{$reverse} screen and (#{$widthType}-width: math.div($value1, 16) + em) {
+//     @content;
+//   }
+// }
+
 // ホバークエリ
 // ------------------------------------------------
 // キーボードフォーカスとホバーを一括で設定する

@@ -40,17 +40,15 @@ $sm: 14, 12;
 $xs: 12, 10;
 
 :root {
-
   // カラー（使用する際はcolor-txtやcolor-primeなどの形で記述。tailwindは使用するクラスに合わせてXXX-txtやXXX-prime）
-  --color-txt: #463e2c; // テキストカラー
+  --color-txt: #333; // テキストカラー
   --color-reversal: #fff; // テキスト反転
   --color-gray: #d6d4d0; // グレースケール
-  --color-prime: #463e2c; // プライムカラー
-  --color-second: red; // セカンドカラー
-  --color-third: blue; // サードカラー
+  --color-prime: #ff0; // プライムカラー
+  --color-second: #f00; // セカンドカラー
+  --color-third: #00f; // サードカラー
   --color-body: #fff; //  ボディカラー
   --color-highlight: #f8f8f7; // ハイライト背景
-
 
   // SP時
 
@@ -68,7 +66,7 @@ $xs: 12, 10;
 
   // PC時
   @media screen and (width >= #{math.div($brakePoint,16)} + em) {
-    --headerHeight: 10.3rem;
+    --headerHeight: 20rem;
     --font-tracking: 0;
     --font-leading: calc(30 / 16);
   }

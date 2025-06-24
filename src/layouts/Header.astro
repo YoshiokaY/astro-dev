@@ -35,43 +35,15 @@ interface Props {
 const { slug, siteName, menu, domain } = Astro.props;
 ---
 
-<header>
-  <div class="contentInner">
-    <div class="flex items-center justify-between">
-      <a href="/">
-        {
-          slug === "top" ? (
-            <h1 class="headerLogo">
-              <ImageImport
-                src="/src/img/logo.svg"
-                sizes={[80, 80]}
-                alt={siteName}
-                lazy={false}
-              />
-            </h1>
-          ) : (
-            <div class="headerLogo">
-              <ImageImport
-                src="/src/img/logo.svg"
-                sizes={[80, 80]}
-                alt={siteName}
-                lazy={false}
-              />
-            </div>
-          )
-        }
-      </a>
-      <Gnavi menu={menu} domain={domain} />
-    </div>
-  </div>
+<header class="l_header">
+  <div class="contentInner">ヘッダー</div>
 </header>
 
-<style lang="scss">
-  header {
-    z-index: 800;
+<style lang="scss" is:global>
+  .l_header {
     position: fixed;
-    top: 0;
     width: 100%;
-    background: $color-reversal;
+    height: 20rem;
+    border: 0.4rem solid $color-prime;
   }
 </style>

@@ -1,14 +1,9 @@
 ---
-import "../scss/abstracts/_reset.css";
-import "../scss/base/_default.scss";
-import "../scss/base/_general.scss";
-import "../scss/base/_animation.scss";
-import "../scss/abstracts/_tailwind.css";
-import Head from "./Head.astro";
-import Header from "./Header.astro";
-import BeginBody from "./BeginBody.astro";
-import Footer from "./Footer.astro";
-import { common } from "../data/common"; // グローバルなサイト設定
+import Head from "@/layouts/Head.astro";
+import Header from "@/layouts/Header.astro";
+import BeginBody from "@/layouts/BeginBody.astro";
+import Footer from "@/layouts/Footer.astro";
+import { common } from "@/data/common"; // グローバルなサイト設定
 
 /**
  * レイアウトコンポーネントの Props 型定義。
@@ -41,14 +36,8 @@ const { page } = Astro.props;
       <slot />
     </main>
     <Footer copyright={common.head.copyright} />
+    <script>
+      import "../js/app.js";
+    </script>
   </body>
 </html>
-
-<script>
-  import "../ts/app.js";
-</script>
-<script
-  src="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@0.3.8/dist/popover.iife.min.js"
-  integrity="sha256-e4nHKzmwysJ3lb8GTURv5YrPqNFQ7xNcYzn/xop4K+0="
-  crossorigin="anonymous"
-  defer></script>

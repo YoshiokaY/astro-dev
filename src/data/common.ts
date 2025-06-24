@@ -61,6 +61,10 @@ export const common: CommonConfig = {
           blank: true,
           anchor: true,
         },
+        {
+          link: "/sample/filter/",
+          txt: "フィルター",
+        },
       ],
     },
   ],

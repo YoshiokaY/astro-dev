@@ -9,7 +9,7 @@ interface Props {
 const { copyright } = Astro.props;
 ---
 
-<footer>
+<footer class="l_footer">
   <div class="bg-highlight">
     <div class="contentInner h-300">フッター</div>
   </div>
@@ -20,3 +20,10 @@ const { copyright } = Astro.props;
     </p>
   </div>
 </footer>
+
+<style lang="scss" is:global>
+  .l_footer {
+    height: 20rem;
+    border: 0.4rem solid $color-second;
+  }
+</style>

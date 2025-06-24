@@ -1,7 +1,11 @@
 ---
+import "@/scss/vendors/_reset.css";
+import "@/scss/base/_default.scss";
+import "@/scss/base/_general.scss";
+import "@/scss/vendors/_tailwind.css";
+import "@/scss/pages/_top.scss";
 import Layout from "@/layouts/Layout.astro";
-import Mv from "@/pages/_parts/_mv.astro";
-import Tailwind from "@/pages/_parts/_tailwind.astro";
+import About from "@/pages/_parts/_about.astro";
 
 const page = {
   head: {
@@ -10,30 +14,17 @@ const page = {
     description: "テキストテキストテキストテキストテキストテキスト",
     url: "",
   },
-  contents: {
-    mv: {
-      img: [
-        {
-          src: "/src/img/mv_img001.jpg",
-          size: [1366, 518, 375, 480],
-        },
-        {
-          src: "/src/img/mv_img002.jpg",
-          size: [1366, 518, 375, 480],
-        },
-        {
-          src: "/src/img/mv_img003.jpg",
-          size: [1366, 518, 375, 480],
-        },
-      ],
-    },
-  },
+  contents: {},
 };
 ---
 
 <Layout page={page.head}>
-  <Mv img={page.contents.mv.img} />
   <div class="grid gap-60">
-    <Tailwind />
+    <About />
+    <div class="contentInner">
+      <p>
+        あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。
+      </p>
+    </div>
   </div>
 </Layout>

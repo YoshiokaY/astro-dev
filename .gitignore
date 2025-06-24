@@ -13,16 +13,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# E2E test files
-check/*
-!check/check.ts
-!check/check.auto.ts
-!check/design
-check/design/*
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+
 
 # macOS-specific files
 .DS_Store
