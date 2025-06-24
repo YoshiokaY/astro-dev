@@ -1,0 +1,74 @@
+name: CI
+# トリガー設定
+on:
+  pull_request:
+    branches:
+      - staging
+      - main # 必要に応じてリポジトリを追加
+    types:
+      - opened
+      - synchronize
+      - reopened
+# 並行実行の制御
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  Linters:
+    name: Linters
+    runs-on: ubuntu-latest
+    steps:
+      # リポジトリのチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 全履歴を取得（変更ファイルの検出用）
+
+      # 依存関係のインストール
+      - name: Install dependencies
+        run: npm install
+
+      # 変更されたファイルの検出（オプション）
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            src/**/*.{js,ts,scss}
+            htdocs/**/*.html
+
+      # JavaScript/TypeScriptのリント
+      - name: Run ESLint
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npm run lint
+        continue-on-error: true # エラーでも続行
+
+      # ESLintのレポート生成
+      - name: ESLint Report
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          eslint_flags: "src/**/*.{js,ts}"
+          fail_level: error
+
+      # SCSSのリント
+      - name: Run Stylelint
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npm run lint:css
+        continue-on-error: true
+
+      # Stylelintのレポート生成
+      - name: Stylelint Report
+        uses: reviewdog/action-stylelint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          stylelint_input: "src/**/*.scss"
+          fail_level: error
+
+      # HTMLのリント
+      - name: Run Markuplint
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: sh ./markuplint-check.sh
+        continue-on-error: false #リポート機能が無いのでエラーの場合警告を出す

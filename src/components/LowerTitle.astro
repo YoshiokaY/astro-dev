@@ -1,0 +1,28 @@
+---
+/**
+ * 下層タイトルコンポーネント。
+ */
+interface Props {
+  /**
+   * 下層タイトル
+   */
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="bg-highlight">
+  <div class="contentInner">
+    <h1 class="c_ttl_lower">{title}</h1>
+  </div>
+</div>
+
+<style lang="scss">
+  .c_ttl_lower {
+    font-size: $text-h1;
+    text-align: center;
+    font-weight: bold;
+    padding-block: 1em;
+  }
+</style>
