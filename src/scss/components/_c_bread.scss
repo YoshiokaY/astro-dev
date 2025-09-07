@@ -1,0 +1,33 @@
+@use "../abstracts" as *;
+
+/* パンくず  */
+@layer components {
+  .c_bread {
+    li {
+      &:not(:last-child) {
+        position: relative;
+
+        &::after {
+          position: absolute;
+          inset: 0.1em -2rem 0 auto;
+          height: 0.5em;
+          aspect-ratio: 1;
+          margin: auto;
+          content: "";
+          border: 0.1rem solid $color-prime;
+          border-width: 0.2rem 0.2rem 0 0;
+          rotate: 45deg;
+        }
+      }
+
+      a {
+        transition: opacity $easing;
+        @include hover {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+}
+
+/* /パンくず  */

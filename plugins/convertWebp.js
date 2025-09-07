@@ -14,6 +14,7 @@ function simpleWebpIntegration(options = {}) {
       /\/favicon/, // ファビコン
       /\/apple-touch-icon/, // アップルタッチアイコン
       /\/android-chrome/, // Androidアイコン
+      /noWebp/, // noWebpを含むファイル名は除外
     ],
     supportedExtensions = [".jpg", ".jpeg", ".png", ".gif"], // WebP変換対象の拡張子
   } = options;

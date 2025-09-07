@@ -14,6 +14,11 @@ yarn-error.log*
 pnpm-debug.log*
 
 
+# Local files
+CLAUDE.md
+package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
 
 # macOS-specific files
 .DS_Store
