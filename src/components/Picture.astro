@@ -1,0 +1,79 @@
+---
+/**
+ * レスポンシブに対応した画像表示コンポーネント。
+ */
+interface Props {
+  /**
+   * PC用の画像ソースパス。`/src/img/` から始まるパス、または外部URLを指定します。
+   */
+  src: string;
+  /**
+   * 画像の代替テキスト。
+   */
+  alt?: string;
+  /**
+   * 画像の幅と高さの配列。[PC幅, PC高さ, SP幅, SP高さ] の順で指定します。SP用のサイズがない場合は PC と同じ値を指定するか、0 を指定します。
+   */
+  sizes?: number[];
+  /**
+   * 画像に適用するCSSクラス。
+   */
+  class?: string;
+  /**
+   * 画像の遅延読み込みを行うかどうか。デフォルトは true。
+   */
+  lazy?: boolean;
+  /**
+   * SP用の画像ソース (`src` に `_sp` を付加したパス) を使用するかどうか。デフォルトは false。
+   */
+  sp?: boolean;
+}
+
+const {
+  src,
+  alt,
+  sizes,
+  class: className,
+  lazy = true,
+  sp = false,
+} = Astro.props;
+
+const [imgName, imgType] = src.split(/(?=\.[^.]+$)/);
+const spSrc = imgName + "_sp" + imgType;
+---
+
+{
+  sp ? (
+    <picture>
+      {src && (
+        <source
+          media="(min-width: 768px)"
+          srcset={src}
+          width={sizes ? sizes[0] : null}
+          height={sizes ? sizes[1] : null}
+        />
+      )}
+      {spSrc && (
+        <img
+          src={spSrc}
+          alt={alt ? alt : ""}
+          width={sizes ? sizes[2] : null}
+          height={sizes ? sizes[3] : null}
+          class={className}
+          loading={lazy ? "lazy" : "eager"}
+          decoding="async"
+        />
+      )}
+    </picture>
+  ) : (
+    <img
+      src={src}
+      alt={alt ? alt : ""}
+      width={sizes ? sizes[0] : null}
+      height={sizes ? sizes[1] : null}
+      class={className}
+      loading={lazy ? "lazy" : "eager"}
+      decoding="async"
+    />
+  )
+}

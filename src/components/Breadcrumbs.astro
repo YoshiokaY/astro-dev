@@ -33,7 +33,7 @@ const isLastItem = (index: number): boolean => index === bread.length - 1;
   <div class="contentInner">
     <nav id="breadcrumbs">
       <ol
-        class="flex gap-30 md:gap-34"
+        class="c_bread flex gap-30 md:gap-34"
         itemscope
         itemtype="https://schema.org/BreadcrumbList"
       >
@@ -59,28 +59,3 @@ const isLastItem = (index: number): boolean => index === bread.length - 1;
     </nav>
   </div>
 </div>
-
-<style lang="scss">
-  li {
-    &:not(:last-child) {
-      position: relative;
-      &::after {
-        position: absolute;
-        inset: 0.1em -2rem 0 auto;
-        height: 0.5em;
-        aspect-ratio: 1;
-        margin: auto;
-        content: "";
-        border: 0.1rem solid $color-prime;
-        border-width: 0.2rem 0.2rem 0 0;
-        rotate: 45deg;
-      }
-    }
-    a {
-      transition: opacity $easing;
-      @include hover {
-        opacity: 0.7;
-      }
-    }
-  }
-</style>
