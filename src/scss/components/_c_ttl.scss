@@ -1,0 +1,13 @@
+@use "../abstracts" as *;
+
+/* 見出し  */
+@layer components {
+  .c_ttl_lower {
+    padding-block: 1em;
+    font-size: $text-h1;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+/* /見出し  */

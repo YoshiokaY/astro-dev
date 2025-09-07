@@ -133,6 +133,11 @@
     padding-top: var(--headerHeight);
   }
 
+  p {
+    font: var(--font-setting-base);
+    font-feature-settings: var(--font-feature-settings);
+  }
+
   a,
   button {
     color: inherit;

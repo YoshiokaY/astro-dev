@@ -63,7 +63,8 @@
     "tailwindcss": "^4.1.10",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.34.1",
-    "vite-node": "^2.0.0"
+    "vite-node": "^2.0.0",
+    "vite-plugin-sass-glob-import": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0",
