@@ -1,13 +1,10 @@
 ---
-import "@/scss/vendors/_reset.css";
-import "@/scss/base/_default.scss";
-import "@/scss/base/_general.scss";
-import "@/scss/vendors/_tailwind.css";
-import "@/scss/pages/_sample.scss";
 import Layout from "@/layouts/Layout.astro";
 import LowerTitle from "@/components/LowerTitle.astro";
 import Breadcrumbs from "@/components/Breadcrumbs.astro";
-import Hoge from "@/pages/hoge/_parts/_hoge.astro";
+import Hoge from "@/pages/_parts/_hoge/_hoge.astro";
+
+import "@/scss/pages/_sample.scss";
 
 const page = {
   head: {
@@ -30,6 +27,7 @@ const page = {
     lowerTitle: "XXXについて",
   },
 };
+const imgPath = "/_assets/img/" + page.head.slug + "/";
 ---
 
 <Layout page={page.head}>
