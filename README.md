@@ -38,23 +38,33 @@ Astro開発環境
 
 ```
 src/
-├── components/             # 再利用コンポーネント
-│   ├── Breadcrumbs.astro   # パンくずナビ
-│   ├── ImageImport.astro   # 画像インポート
+├── components/             # Astroコンポーネント
+│   ├── Breadcrumbs.astro   # パンくずリスト
+│   ├── Picture.astro       # 画像インポート
+│   ├── SetTime.astro       # timeタグ
 │   └── LowerTitle.astro    # 下層タイトル
 ├── layouts/                # レイアウトコンポーネント
+│   ├── BeginBody.astro     # bodyタグ開始直後
+│   ├── BeginHead.astro     # headタグ開始直後
+│   ├── Common.astro        # サイト共通設定
 │   ├── Layout.astro        # メインレイアウト
-│   ├── Head.astro          # <head>要素
+│   ├── JsonLd.astro        # JSON-LD
+│   ├── Head.astro          # head要素
 │   ├── Header.astro        # ヘッダー
 │   └── Footer.astro        # フッター
 ├── pages/                  # ページファイル
 │   ├── index.astro         # トップページ
-│   └── hoge/               # サブページ
-├── data/                   # サイト設定・データ
-│   └── common.ts           # 共通設定
+│   ├── hoge/               # サブページ
+│   └── _parts/             # 各ページのコンポーネントパーツ
+├── public/                 # ビルドディレクトリににそのままコピーされるディレクトリ
+│   ├── _assets/            # 画像など静的アセットディレクトリ
+│   └── favicon.ico         # ファビコン
 ├── scss/                   # スタイルシート
 │   ├── abstracts/          # 変数・mixin・function
 │   ├── base/               # ベーススタイル
+│   ├── components/         # サイト共有コンポーネントスタイル
+│   ├── layouts/            # サイト共通セクションスタイル
+│   ├── vendors/            # Tailwindやreset.cssなど外部ライブラリスタイル
 │   └── pages/              # ページ固有スタイル
 └── js/                     # JavaScript
     ├── app.js              # メインJS

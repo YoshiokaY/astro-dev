@@ -5,7 +5,12 @@ export interface Props {
 }
 
 const { time } = Astro.props;
-
 ---
 
-<time datetime={new Date(time).getFullYear() + "-" + (new Date(time).getMonth() + 1).toString().padStart(2, "0") + "-" + new Date(time).getDate().toString().padStart(2, "0")}>{time}</time>
+<time
+  datetime={new Date(time).getFullYear() +
+    "-" +
+    (new Date(time).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(time).getDate().toString().padStart(2, "0")}>{time}</time
+>
