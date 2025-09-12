@@ -2,10 +2,14 @@ import tailwindcss from "@tailwindcss/vite";
 import viteImagemin from "@vheemstra/vite-plugin-imagemin";
 import relativeLinks from "astro-relative-links";
 import { defineConfig } from "astro/config";
+import fs from "fs";
+import { glob } from "glob";
+import imagemin from "imagemin";
 import imageminMozjpeg from "imagemin-mozjpeg";
 import imageminPngquant from "imagemin-pngquant";
 import imageminSvgo from "imagemin-svgo";
 import imageminWebp from "imagemin-webp";
+import path from "path";
 import sassGlobImports from "vite-plugin-sass-glob-import";
 import simpleWebpIntegration from "./plugins/convertWebp";
 
@@ -28,6 +32,96 @@ console.log(`  アセットディレクトリ: ${ASSETS_DIR}`);
 console.log(`  ベースパス: ${BASE_PATH}`);
 console.log(`  相対パス: ${USE_RELATIVE_PATHS ? "ON" : "OFF"}`);
 
+/**
+ * 独立したWebP変換処理
+ */
+async function convertToWebp(outputDir, logger) {
+  if (!CONVERT_TO_WEBP) return;
+
+  logger.info("🖼️ WebP変換処理を開始...");
+
+  // 除外パターン（simpleWebpIntegrationと同じ設定）
+  const excludePatterns = [
+    /^https?:\/\//, // 外部画像
+    /\/ogimg/, // OG画像
+    /\/favicon/, // ファビコン
+    /\/apple-touch-icon/, // アップルタッチアイコン
+    /\/android-chrome/, // Androidアイコン
+    /noWebp/, // noWebpを含むファイル名は除外
+  ];
+
+  try {
+    // 対象画像ファイルを検索（jpg, jpeg, png, gif）
+    const imagePatterns = [path.join(outputDir, "**/*.jpg"), path.join(outputDir, "**/*.jpeg"), path.join(outputDir, "**/*.png"), path.join(outputDir, "**/*.gif")];
+
+    let totalFiles = 0;
+    let convertedFiles = 0;
+    let excludedFiles = 0;
+
+    for (const pattern of imagePatterns) {
+      const files = glob.sync(pattern, { ignore: ["**/node_modules/**"] });
+      totalFiles += files.length;
+
+      for (const filePath of files) {
+        // 除外パターンをチェック
+        const relativePath = path.relative(outputDir, filePath);
+        const shouldExclude = excludePatterns.some(pattern => pattern.test(relativePath) || pattern.test(filePath));
+        
+        if (shouldExclude) {
+          excludedFiles++;
+          logger.info(`⏭️ 除外対象: ${relativePath}`);
+          continue;
+        }
+        const webpPath = filePath + ".webp";
+
+        // 既にWebPファイルが存在する場合はスキップ
+        if (fs.existsSync(webpPath)) {
+          continue;
+        }
+
+        try {
+          // imageminを使用してWebP変換
+          await imagemin([filePath], {
+            destination: path.dirname(filePath),
+            plugins: [
+              imageminWebp({
+                quality: 85,
+                method: 4, // 圧縮品質（0-6、4が推奨）
+              }),
+            ],
+          });
+
+          // 生成されたWebPファイルを正しい名前にリネーム
+          const originalWebpName = path.basename(filePath, path.extname(filePath)) + ".webp";
+          const originalWebpPath = path.join(path.dirname(filePath), originalWebpName);
+
+          if (fs.existsSync(originalWebpPath) && originalWebpPath !== webpPath) {
+            fs.renameSync(originalWebpPath, webpPath);
+          }
+
+          convertedFiles++;
+
+          // WebP変換成功後、オリジナルファイルを削除
+          try {
+            fs.unlinkSync(filePath);
+            logger.info(`🗑️ オリジナルファイル削除: ${path.relative(outputDir, filePath)}`);
+          } catch (deleteError) {
+            logger.warn(`⚠️ オリジナルファイル削除失敗: ${path.relative(outputDir, filePath)} - ${deleteError.message}`);
+          }
+
+          // logger.info(`✅ WebP変換: ${path.relative(outputDir, webpPath)}`);
+        } catch (error) {
+          logger.warn(`⚠️ WebP変換失敗: ${path.relative(outputDir, filePath)} - ${error.message}`);
+        }
+      }
+    }
+
+    logger.info(`🎉 WebP変換完了: ${convertedFiles}/${totalFiles - excludedFiles} ファイル処理済み (${excludedFiles}ファイル除外)`);
+  } catch (error) {
+    logger.error("❌ WebP変換処理でエラーが発生:", error.message);
+  }
+}
+
 export default defineConfig({
   // ベースパスの設定
   base: BASE_PATH,
@@ -49,7 +143,7 @@ export default defineConfig({
             enableFallback: false, // 2025年推奨
             excludePatterns: [
               /^https?:\/\//, // 外部画像
-              /\/og-/, // OG画像
+              /\/ogimg/, // OG画像
               /\/favicon/, // ファビコン
               /\/apple-touch-icon/, // アップルタッチアイコン
               /\/android-chrome/, // Androidアイコン
@@ -60,6 +154,20 @@ export default defineConfig({
         ]
       : []),
     ...(USE_RELATIVE_PATHS ? [relativeLinks()] : []),
+
+    // 独立したWebP変換処理を統合として追加
+    ...(CONVERT_TO_WEBP
+      ? [
+          {
+            name: "standalone-webp-converter",
+            hooks: {
+              "astro:build:done": async ({ dir, logger }) => {
+                await convertToWebp(dir.pathname, logger);
+              },
+            },
+          },
+        ]
+      : []),
   ],
 
   // ビルド設定
@@ -210,7 +318,7 @@ export default defineConfig({
       // SCSS Glob Import
       sassGlobImports(),
 
-      // 画像最適化
+      // 画像最適化（WebP変換は除外）
       ...(IMAGEMIN
         ? [
             viteImagemin({
@@ -229,17 +337,6 @@ export default defineConfig({
                   ],
                 }),
               },
-              // Webp変換
-              ...(CONVERT_TO_WEBP
-                ? {
-                    makeWebp: {
-                      plugins: {
-                        jpg: imageminWebp(),
-                        png: imageminWebp(),
-                      },
-                    },
-                  }
-                : {}),
             }),
           ]
         : []),
