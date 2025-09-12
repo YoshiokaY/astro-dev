@@ -1,5 +1,6 @@
 ---
 import BeginHead from './BeginHead.astro';
+import JsonLd from './JsonLd.astro';
 
 /**
  * `<head>`コンポーネントのProps。
@@ -17,6 +18,10 @@ import BeginHead from './BeginHead.astro';
      * ウェブサイトの名前。
      */
     siteName: string;
+    /**
+     * ロゴのパス。
+     */
+    logo: string;
     /**
      * ファビコンファイルのパス。
      */
@@ -57,7 +62,7 @@ import BeginHead from './BeginHead.astro';
     /**
      * 現在のページのタイトル。
      */
-    title: string;
+    ttl: string;
     /**
      * 現在のページの説明。
      */
@@ -67,11 +72,67 @@ import BeginHead from './BeginHead.astro';
      */
     url: string;
   };
+  /**
+   * イベント情報（JSON-LD用）。
+   */
+  event?: {
+    /**
+     * イベント名。
+     */
+    name: string;
+    /**
+     * イベント開始日 (ISO 8601形式)。
+     */
+    startDate: string;
+    /**
+     * イベント終了日 (ISO 8601形式)。
+     */
+    endDate: string;
+    /**
+     * イベントの説明。
+     */
+    description: string;
+    /**
+     * イベント画像のURL配列。
+     */
+    image: string[];
+    /**
+     * イベント開催地情報。
+     */
+    location: {
+      /**
+       * 会場名。
+       */
+      name: string;
+      /**
+       * 住所情報。
+       */
+      address: {
+        /**
+         * 番地・建物名。
+         */
+        streetAddress: string;
+        /**
+         * 市区町村。
+         */
+        addressLocality: string;
+        /**
+         * 郵便番号。
+         */
+        postalCode: string;
+        /**
+         * 都道府県。
+         */
+        addressRegion: string;
+      };
+    };
+  };
 }
 
 const {
   site,
-  page
+  page,
+  event
 } = Astro.props;
 ---
 
@@ -85,12 +146,12 @@ const {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no" />
 	<meta name="format-detection" content="telephone=no" />
-	<title>{page.title}</title>
+	<title>{page.ttl}</title>
 	<meta name="description" content={page.description} />
 	<meta property="og:type" content={page.slug == "top" ? "website" : "article"} />
 	<meta property="og:local" content="ja_JP" />
 	<meta property="og:site_name" content={site.siteName} />
-	<meta property="og:title" content={page.title} />
+	<meta property="og:title" content={page.ttl} />
 	<meta property="og:description" content={page.description} />
 	<meta property="og:url" content={site.domain + page.url} />
 	<meta property="og:image" content={site.ogImg} />
@@ -98,7 +159,7 @@ const {
     <meta property="fb:app_id", content={site.facebookID} />
   )}
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content={page.title} />
+	<meta name="twitter:title" content={page.ttl} />
 	<meta name="twitter:description" content={page.description} />
 	<meta name="twitter:image" content={site.ogImg} />
   {site.twitterName && (
@@ -120,4 +181,5 @@ const {
       <link rel="stylesheet" href={site.webfont}>
     </noscript>
   )}
+    <JsonLd site={site} page={page} event={event} />
 </head>
