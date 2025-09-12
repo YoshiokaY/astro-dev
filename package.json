@@ -1,7 +1,7 @@
 {
   "name": "astro-dev",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.5.1",
   "type": "module",
   "scripts": {
     "start": "astro dev",
@@ -42,7 +42,9 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-astro": "^1.0.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "glob": "^11.0.3",
     "globals": "^16.2.0",
+    "imagemin": "^9.0.1",
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",
     "imagemin-svgo": "^11.0.1",

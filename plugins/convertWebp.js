@@ -10,7 +10,7 @@ function simpleWebpIntegration(options = {}) {
     enableFallback = false,
     excludePatterns = [
       /^https?:\/\//, // 絶対URL（OG画像など）
-      /\/og-/, // OG画像
+      /\/ogp/, // OG画像
       /\/favicon/, // ファビコン
       /\/apple-touch-icon/, // アップルタッチアイコン
       /\/android-chrome/, // Androidアイコン
@@ -131,21 +131,16 @@ async function processHtmlFile(filePath, enableFallback, excludePatterns, suppor
     let content = await fs.promises.readFile(filePath, "utf-8");
     let modified = false;
 
-    // 既存のpicture要素内は処理しない
-    const pictureRegex = /<picture[\s\S]*?<\/picture>/gi;
-    const pictureElements = content.match(pictureRegex) || [];
-    const placeholders = [];
-
-    // picture要素を一時的にプレースホルダーに置換
-    pictureElements.forEach((element, index) => {
-      const placeholder = `__PICTURE_PLACEHOLDER_${index}__`;
-      content = content.replace(element, placeholder);
-      placeholders.push({ placeholder, element });
-    });
-
     // img要素のsrc属性を処理
     content = content.replace(/<img([^>]*)\ssrc=["']([^"']+)["']([^>]*)>/gi, (match, before, src, after) => {
       const result = processImageTag(match, before, src, after, enableFallback, excludePatterns, supportedExtensions);
+      if (result !== match) modified = true;
+      return result;
+    });
+
+    // source要素のsrcset属性を処理
+    content = content.replace(/<source([^>]*)\ssrcset=["']([^"']+)["']([^>]*)>/gi, (match, before, srcset, after) => {
+      const result = processSourceTag(match, before, srcset, after, excludePatterns, supportedExtensions);
       if (result !== match) modified = true;
       return result;
     });
@@ -154,11 +149,6 @@ async function processHtmlFile(filePath, enableFallback, excludePatterns, suppor
     const originalContent = content;
     content = processCssUrls(content, excludePatterns, supportedExtensions);
     if (content !== originalContent) modified = true;
-
-    // picture要素を復元
-    placeholders.forEach(({ placeholder, element }) => {
-      content = content.replace(placeholder, element);
-    });
 
     // ファイルが変更された場合のみ書き込み
     if (modified) {
@@ -192,6 +182,10 @@ async function processCssFile(filePath, excludePatterns, supportedExtensions, lo
     logger.error(`CSSファイル処理エラー (${filePath}):`, error.message);
   }
 }
+
+/**
+ * 画像タグを処理
+ */
 function processImageTag(match, before, src, after, enableFallback, excludePatterns, supportedExtensions) {
   // 除外パターンをチェック
   if (shouldExclude(src, excludePatterns)) {
@@ -214,7 +208,44 @@ function processImageTag(match, before, src, after, enableFallback, excludePatte
 }
 
 /**
- * 画像タグを処理
+ * source要素のsrcset属性を処理
+ */
+function processSourceTag(match, before, srcset, after, excludePatterns, supportedExtensions) {
+  // srcsetは複数のソースを含む可能性があるため、分割して処理
+  const sources = srcset.split(",").map((source) => source.trim());
+  let modified = false;
+
+  const processedSources = sources.map((source) => {
+    // "画像パス サイズ記述子" の形式を分析
+    const parts = source.split(/\s+/);
+    const imagePath = parts[0];
+    const descriptor = parts.slice(1).join(" ");
+
+    // 除外パターンをチェック
+    if (shouldExclude(imagePath, excludePatterns)) {
+      return source;
+    }
+
+    // 対象拡張子かチェック
+    const webpPath = convertToWebpPath(imagePath, supportedExtensions);
+    if (!webpPath) {
+      return source; // 対象外の画像
+    }
+
+    modified = true;
+    return descriptor ? `${webpPath} ${descriptor}` : webpPath;
+  });
+
+  if (!modified) {
+    return match;
+  }
+
+  const newSrcset = processedSources.join(", ");
+  return `<source${before} srcset="${newSrcset}"${after}>`;
+}
+
+/**
+ * CSS内のurl()を処理
  */
 function processCssUrls(content, excludePatterns, supportedExtensions) {
   return content.replace(/url\(["']?([^"')]+)["']?\)/gi, (match, url) => {

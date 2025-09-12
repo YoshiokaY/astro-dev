@@ -1,9 +1,113 @@
 /* empty css             */
-import { a as createComponent, r as renderTemplate, c as createAstro, b as addAttribute, d as renderComponent, e as renderHead, m as maybeRenderHead, f as renderSlot, g as renderScript } from './astro/server.js';
+import { a as createComponent, r as renderTemplate, c as createAstro, u as unescapeHTML, b as addAttribute, d as renderComponent, e as renderHead, m as maybeRenderHead, f as renderSlot, g as renderScript } from './astro/server.js';
 
 const $$BeginHead = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`<!-- GTAG -->`;
 }, "/Users/yoshioka.y/project/astro-dev/src/layouts/BeginHead.astro", void 0);
+
+var __freeze = Object.freeze;
+var __defProp = Object.defineProperty;
+var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(cooked.slice()) }));
+var _a, _b;
+const $$Astro$4 = createAstro("http://localhost:3000");
+const $$JsonLd = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$4, $$props, $$slots);
+  Astro2.self = $$JsonLd;
+  const { site, page, event } = Astro2.props;
+  return renderTemplate`${page.slug === "top" ? renderTemplate(_a || (_a = __template(['<script type="application/ld+json">', "<\/script>"])), unescapeHTML(JSON.stringify([
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      url: site.domain,
+      logo: site.logo
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: page.ttl
+        }
+      ]
+    },
+    ...event ? [
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        name: event.name,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventScheduled",
+        location: {
+          "@type": "Place",
+          name: event.location.name,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: event.location.address.streetAddress,
+            addressLocality: event.location.address.addressLocality,
+            postalCode: event.location.address.postalCode,
+            addressRegion: event.location.address.addressRegion,
+            addressCountry: "JP"
+          }
+        },
+        image: event.image,
+        description: event.description
+      }
+    ] : []
+  ]))) : renderTemplate(_b || (_b = __template(['<script type="application/ld+json">', "<\/script>"])), unescapeHTML(JSON.stringify([
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      url: site.domain,
+      logo: site.logo
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: site.siteName,
+          item: site.domain
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: page.ttl
+        }
+      ]
+    },
+    ...event ? [
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        name: event.name,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventScheduled",
+        location: {
+          "@type": "Place",
+          name: event.location.name,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: event.location.address.streetAddress,
+            addressLocality: event.location.address.addressLocality,
+            postalCode: event.location.address.postalCode,
+            addressRegion: event.location.address.addressRegion,
+            addressCountry: "JP"
+          }
+        },
+        image: event.image,
+        description: event.description
+      }
+    ] : []
+  ])))}`;
+}, "/Users/yoshioka.y/project/astro-dev/src/layouts/JsonLd.astro", void 0);
 
 const $$Astro$3 = createAstro("http://localhost:3000");
 const $$Head = createComponent(($$result, $$props, $$slots) => {
@@ -11,12 +115,13 @@ const $$Head = createComponent(($$result, $$props, $$slots) => {
   Astro2.self = $$Head;
   const {
     site,
-    page
+    page,
+    event
   } = Astro2.props;
-  return renderTemplate`<head${addAttribute(page.slug == "top" ? "og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#" : "og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# http://ogp.me/ns/fb# article: http://ogp.me/ns/article#", "prefix")}><meta charset="utf-8">${renderComponent($$result, "BeginHead", $$BeginHead, {})}<meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no"><meta name="format-detection" content="telephone=no"><title>${page.title}</title><meta name="description"${addAttribute(page.description, "content")}><meta property="og:type"${addAttribute(page.slug == "top" ? "website" : "article", "content")}><meta property="og:local" content="ja_JP"><meta property="og:site_name"${addAttribute(site.siteName, "content")}><meta property="og:title"${addAttribute(page.title, "content")}><meta property="og:description"${addAttribute(page.description, "content")}><meta property="og:url"${addAttribute(site.domain + page.url, "content")}><meta property="og:image"${addAttribute(site.ogImg, "content")}>${site.facebookID && renderTemplate`<meta property="fb:app_id" ,${addAttribute(site.facebookID, "content")}>`}<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title"${addAttribute(page.title, "content")}><meta name="twitter:description"${addAttribute(page.description, "content")}><meta name="twitter:image"${addAttribute(site.ogImg, "content")}>${site.twitterName && renderTemplate`<meta name="twitter:site" ,${addAttribute("@" + site.twitterName, "content")}>`}<link rel="icon"${addAttribute(site.favicon, "href")} sizes="32x32">${site.svgIcon && renderTemplate`<link rel="icon"${addAttribute(site.svgIcon, "href")} type="image/svg+xml">`}${site.touchIcon && renderTemplate`<link rel="apple-touch-icon"${addAttribute(site.touchIcon, "href")}>`}<link rel="canonical"${addAttribute(site.domain + page.url, "href")}>${site.webfont && renderTemplate`<link rel="preconnect" href="https://fonts.googleapis.com">
+  return renderTemplate`<head${addAttribute(page.slug == "top" ? "og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#" : "og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# http://ogp.me/ns/fb# article: http://ogp.me/ns/article#", "prefix")}><meta charset="utf-8">${renderComponent($$result, "BeginHead", $$BeginHead, {})}<meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no"><meta name="format-detection" content="telephone=no"><title>${page.ttl}</title><meta name="description"${addAttribute(page.description, "content")}><meta property="og:type"${addAttribute(page.slug == "top" ? "website" : "article", "content")}><meta property="og:local" content="ja_JP"><meta property="og:site_name"${addAttribute(site.siteName, "content")}><meta property="og:title"${addAttribute(page.ttl, "content")}><meta property="og:description"${addAttribute(page.description, "content")}><meta property="og:url"${addAttribute(site.domain + page.url, "content")}><meta property="og:image"${addAttribute(site.ogImg, "content")}>${site.facebookID && renderTemplate`<meta property="fb:app_id" ,${addAttribute(site.facebookID, "content")}>`}<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title"${addAttribute(page.ttl, "content")}><meta name="twitter:description"${addAttribute(page.description, "content")}><meta name="twitter:image"${addAttribute(site.ogImg, "content")}>${site.twitterName && renderTemplate`<meta name="twitter:site" ,${addAttribute("@" + site.twitterName, "content")}>`}<link rel="icon"${addAttribute(site.favicon, "href")} sizes="32x32">${site.svgIcon && renderTemplate`<link rel="icon"${addAttribute(site.svgIcon, "href")} type="image/svg+xml">`}${site.touchIcon && renderTemplate`<link rel="apple-touch-icon"${addAttribute(site.touchIcon, "href")}>`}<link rel="canonical"${addAttribute(site.domain + page.url, "href")}>${site.webfont && renderTemplate`<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload"${addAttribute(site.webfont, "href")} as="style" onload="this.onload=null;this.rel='stylesheet'">
-    ${maybeRenderHead()}<noscript><link rel="stylesheet"${addAttribute(site.webfont, "href")}></noscript>`}${renderHead()}</head>`;
+    ${maybeRenderHead()}<noscript><link rel="stylesheet"${addAttribute(site.webfont, "href")}></noscript>`}${renderComponent($$result, "JsonLd", $$JsonLd, { "site": site, "page": page, "event": event })}${renderHead()}</head>`;
 }, "/Users/yoshioka.y/project/astro-dev/src/layouts/Head.astro", void 0);
 
 const $$Astro$2 = createAstro("http://localhost:3000");
