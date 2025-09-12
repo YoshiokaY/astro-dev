@@ -1,0 +1,145 @@
+---
+interface Props {
+  site: {
+    domain: string;
+    logo: string;
+    siteName: string;
+  };
+  page: {
+    slug: string;
+    ttl: string;
+  };
+  event?: {
+    name: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+    image: string[];
+    location: {
+      name: string;
+      address: {
+        streetAddress: string;
+        addressLocality: string;
+        postalCode: string;
+        addressRegion: string;
+      };
+    };
+  };
+}
+
+const { site, page, event } = Astro.props;
+---
+
+{
+  page.slug === "top" ? (
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify([
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          url: site.domain,
+          logo: site.logo,
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: page.ttl,
+            },
+          ],
+        },
+        ...(event
+          ? [
+              {
+                "@context": "https://schema.org",
+                "@type": "Event",
+                name: event.name,
+                startDate: event.startDate,
+                endDate: event.endDate,
+                eventAttendanceMode:
+                  "https://schema.org/OfflineEventAttendanceMode",
+                eventStatus: "https://schema.org/EventScheduled",
+                location: {
+                  "@type": "Place",
+                  name: event.location.name,
+                  address: {
+                    "@type": "PostalAddress",
+                    streetAddress: event.location.address.streetAddress,
+                    addressLocality: event.location.address.addressLocality,
+                    postalCode: event.location.address.postalCode,
+                    addressRegion: event.location.address.addressRegion,
+                    addressCountry: "JP",
+                  },
+                },
+                image: event.image,
+                description: event.description,
+              },
+            ]
+          : []),
+      ])}
+    />
+  ) : (
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify([
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          url: site.domain,
+          logo: site.logo,
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: site.siteName,
+              item: site.domain,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: page.ttl,
+            },
+          ],
+        },
+        ...(event
+          ? [
+              {
+                "@context": "https://schema.org",
+                "@type": "Event",
+                name: event.name,
+                startDate: event.startDate,
+                endDate: event.endDate,
+                eventAttendanceMode:
+                  "https://schema.org/OfflineEventAttendanceMode",
+                eventStatus: "https://schema.org/EventScheduled",
+                location: {
+                  "@type": "Place",
+                  name: event.location.name,
+                  address: {
+                    "@type": "PostalAddress",
+                    streetAddress: event.location.address.streetAddress,
+                    addressLocality: event.location.address.addressLocality,
+                    postalCode: event.location.address.postalCode,
+                    addressRegion: event.location.address.addressRegion,
+                    addressCountry: "JP",
+                  },
+                },
+                image: event.image,
+                description: event.description,
+              },
+            ]
+          : []),
+      ])}
+    />
+  )
+}
