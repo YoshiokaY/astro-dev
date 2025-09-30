@@ -65,8 +65,8 @@ async function convertToWebp(outputDir, logger) {
       for (const filePath of files) {
         // 除外パターンをチェック
         const relativePath = path.relative(outputDir, filePath);
-        const shouldExclude = excludePatterns.some(pattern => pattern.test(relativePath) || pattern.test(filePath));
-        
+        const shouldExclude = excludePatterns.some((pattern) => pattern.test(relativePath) || pattern.test(filePath));
+
         if (shouldExclude) {
           excludedFiles++;
           logger.info(`⏭️ 除外対象: ${relativePath}`);
@@ -104,7 +104,7 @@ async function convertToWebp(outputDir, logger) {
           // WebP変換成功後、オリジナルファイルを削除
           try {
             fs.unlinkSync(filePath);
-            logger.info(`🗑️ オリジナルファイル削除: ${path.relative(outputDir, filePath)}`);
+            // logger.info(`🗑️ オリジナルファイル削除: ${path.relative(outputDir, filePath)}`);
           } catch (deleteError) {
             logger.warn(`⚠️ オリジナルファイル削除失敗: ${path.relative(outputDir, filePath)} - ${deleteError.message}`);
           }
@@ -137,8 +137,12 @@ export default defineConfig({
 
   // Astro統合
   integrations: [
+    ...(USE_RELATIVE_PATHS ? [relativeLinks()] : []),
+
+    // WebP変換とパス書き換え
     ...(CONVERT_TO_WEBP
       ? [
+          // 1. HTMLとCSS内の画像パスを書き換え
           simpleWebpIntegration({
             enableFallback: false, // 2025年推奨
             excludePatterns: [
@@ -151,15 +155,9 @@ export default defineConfig({
             ],
             supportedExtensions: [".jpg", ".jpeg", ".png", ".gif"], // 変換対象
           }),
-        ]
-      : []),
-    ...(USE_RELATIVE_PATHS ? [relativeLinks()] : []),
-
-    // 独立したWebP変換処理を統合として追加
-    ...(CONVERT_TO_WEBP
-      ? [
+          // 2. 実際のWebPファイル生成
           {
-            name: "standalone-webp-converter",
+            name: "webp-converter",
             hooks: {
               "astro:build:done": async ({ dir, logger }) => {
                 await convertToWebp(dir.pathname, logger);
@@ -168,6 +166,21 @@ export default defineConfig({
           },
         ]
       : []),
+
+    // Astro内部ファイルのクリーンアップ
+    {
+      name: "cleanup-astro-internal",
+      hooks: {
+        "astro:build:done": async ({ dir, logger }) => {
+          const internalDir = path.join(dir.pathname, ".astro-internal");
+
+          if (fs.existsSync(internalDir)) {
+            fs.rmSync(internalDir, { recursive: true, force: true });
+            // logger.info("🗑️ Astro internal files cleaned up");
+          }
+        },
+      },
+    },
   ],
 
   // ビルド設定
@@ -232,7 +245,7 @@ export default defineConfig({
                 const relativePath = astroPath.split("/src/layouts/")[1];
                 const layoutName = relativePath.replace(/\.astro$/, "");
 
-                // Footer.astroの場合はcommon.astro.jsにする
+                // 共通のjsはcommon.astro.jsにする
                 const fileName = layoutName === "Layout" ? "common" : layoutName;
 
                 return `${ASSETS_DIR}/js/${fileName}.astro.js`;
@@ -258,10 +271,9 @@ export default defineConfig({
 
           // チャンクファイル名
           chunkFileNames: (chunkInfo) => {
-            // .astroファイルから生成されるスクリプトの場合
-            if (chunkInfo.name.includes("astro_type_script")) {
-              const simpleName = chunkInfo.name.replace(/_astro_type_script_index_\d+_lang$/, "");
-              return `${ASSETS_DIR}/js/${simpleName}.js`;
+            // Astroの内部ファイルをhtdocs外に配置
+            if (chunkInfo.name && (chunkInfo.name.includes("astro") || chunkInfo.name === "Layout")) {
+              return `.astro-internal/[name].js`;
             }
 
             return `${ASSETS_DIR}/js/chunks/[name].js`;
@@ -269,20 +281,22 @@ export default defineConfig({
 
           // アセットファイル名
           assetFileNames: (assetInfo) => {
-            const ext = assetInfo.names[0];
+            const fileName = assetInfo.names[0];
+
+            // WebP変換ON時：オリジナル画像は出力しない
 
             // 画像ファイル
-            if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(ext)) {
+            if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(fileName)) {
               return `${ASSETS_DIR}/img/[name][extname]`;
             }
 
             // CSSファイル
-            if (/css/i.test(ext)) {
+            if (/css/i.test(fileName)) {
               return `${ASSETS_DIR}/css/[name][extname]`;
             }
 
             // フォントファイル
-            if (/woff2?|eot|ttf|otf/i.test(ext)) {
+            if (/woff2?|eot|ttf|otf/i.test(fileName)) {
               return `${ASSETS_DIR}/fonts/[name][extname]`;
             }
 
@@ -318,8 +332,8 @@ export default defineConfig({
       // SCSS Glob Import
       sassGlobImports(),
 
-      // 画像最適化（WebP変換は除外）
-      ...(IMAGEMIN
+      // 画像最適化（WebP変換時は不要）
+      ...(IMAGEMIN && !CONVERT_TO_WEBP
         ? [
             viteImagemin({
               plugins: {

@@ -49,7 +49,7 @@ $time: 1s;
       opacity $time ease-out;
     @for $i from 2 through 10 {
       &.-each ~ .-each:nth-of-type(#{$i}) {
-        animation-delay: #{$i * 800}ms;
+        transition-delay: #{$i * 800}ms;
       }
     }
   }
