@@ -1,3 +1,52 @@
-/* トップ */
+// ================================================
+// サンプルページ用スタイル
+// ================================================
 
-/* /トップ */
+.p_sample_hero {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgb(0 0 255 / 0.1) 0%, rgb(255 0 255 / 0.1) 100%);
+
+  h1 {
+    color: $color-prime;
+  }
+
+  h2 {
+    padding-bottom: 8px;
+    color: $color-second;
+    border-bottom: 2px solid $color-second;
+  }
+
+  ul {
+    li {
+      padding: 12px 20px;
+      background: rgb(255 255 255 / 0.8);
+      border-left: 4px solid $color-prime;
+      border-radius: 8px;
+    }
+  }
+
+  p {
+    line-height: 1.8;
+  }
+
+  // Pictureコンポーネントデモ
+  .picture-demo-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    box-shadow: 0 0.8rem 3.2rem rgb(0 0 0 / 0.1);
+
+    @include mq() {
+      max-width: 100rem;
+    }
+  }
+
+  .picture-demo-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}

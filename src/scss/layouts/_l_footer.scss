@@ -1,8 +1,94 @@
-/* フッター */
+// ================================================
+// フッター
+// ================================================
 
 .l_footer {
-  height: 20rem;
-  border: 0.4rem solid $color-second;
-}
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-top: 1px solid rgb(0 0 0 / 0.1);
 
-/* /フッター */
+  // メインフッターエリア
+  .footer-main {
+    padding: 60px 0 40px;
+
+    @include mq(sp) {
+      padding: 40px 0 30px;
+    }
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+
+    @include mq(sp) {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  }
+
+  .footer-section {
+    .footer-title {
+      margin-bottom: 16px;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: $color-prime;
+
+      @include mq(sp) {
+        font-size: 1.6rem;
+      }
+    }
+  }
+
+  // 会社情報セクション
+  .footer-company {
+    .footer-description {
+      line-height: 1.7;
+      color: #666;
+    }
+  }
+
+  // リンクセクション
+  .footer-links,
+  .footer-tech {
+    .footer-list {
+      list-style: none;
+
+      .footer-list-item {
+        margin-bottom: 8px;
+
+        .footer-link {
+          color: $color-txt;
+          text-decoration: none;
+          transition: $easing;
+
+          &:hover {
+            color: $color-prime;
+            text-decoration: underline;
+          }
+        }
+
+        .footer-tech-item {
+          display: inline-block;
+          padding: 4px 8px;
+          font-size: 0.9em;
+          color: #666;
+          background: rgb(0 0 255 / 0.1);
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+
+  // コピーライトエリア
+  .footer-copyright {
+    padding: 20px 0;
+    color: $color-reversal;
+    background: $color-prime;
+
+    .copyright-text {
+      margin: 0;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  }
+}

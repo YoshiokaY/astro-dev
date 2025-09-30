@@ -7,6 +7,17 @@ export interface MenuItem {
   blank?: boolean;
 }
 
+export interface FooterData {
+  companyInfo: {
+    name: string;
+    desc: string;
+  };
+  tech: {
+    ttl: string;
+    items: string[];
+  };
+}
+
 export interface CommonConfig {
   head: {
     siteName: string;
@@ -20,16 +31,17 @@ export interface CommonConfig {
     facebookID?: string;
   };
   menu: MenuItem[];
+  footer: FooterData;
 }
 
 export const common: CommonConfig = {
   head: {
-    siteName: "◯◯◯◯◯◯",
-    domain: "https://www.XXXXX.XX.XX/",
+    siteName: "Astroサンプルサイト",
+    domain: "https://www.example.com/",
     favicon: "/favicon.ico",
-    ogImg: "https://www.XXXXX.XX.XX/_assets/img/ogimg.jpg",
-    logo: "https://www.XXXXX.XX.XX/_assets/img/logo.svg", // JSON LD用企業ロゴ
-    copyright: "XXXX",
+    ogImg: "https://www.example.com/_assets/img/ogimg.jpg",
+    logo: "https://www.example.com/_assets/img/logo.svg", // JSON LD用企業ロゴ
+    copyright: "Sample Site",
     webfont:
       "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap", // 不要の場合は空
     twitterName: "", // Twitterアカウントある場合記述
@@ -38,37 +50,31 @@ export const common: CommonConfig = {
   menu: [
     {
       link: "/",
-      txt: "トップ",
-    },
-    {
-      link: "/news/",
-      txt: "お知らせ",
+      txt: "ホーム",
     },
     {
       link: "/about/",
       txt: "概要",
     },
     {
-      link: "/sample/",
-      txt: "コンポーネント",
-      child: [
-        {
-          link: "#tab",
-          txt: "タブ",
-          anchor: true,
-        },
-        {
-          link: "#accordion",
-          txt: "アコーディオン",
-          blank: true,
-          anchor: true,
-        },
-        {
-          link: "/sample/filter/",
-          txt: "フィルター",
-        },
-      ],
+      link: "/contact/",
+      txt: "お問い合わせ",
     },
   ],
+  footer: {
+    companyInfo: {
+      name: "Astroサンプルサイト",
+      desc: "モダンなWebサイト構築のためのデモンストレーションサイトです。Astroフレームワークを使用して作成されています。"
+    },
+    tech: {
+      ttl: "使用技術",
+      items: [
+        "Astro",
+        "TypeScript",
+        "SCSS",
+        "Tailwind CSS"
+      ]
+    }
+  },
 };
 ---
