@@ -1,7 +1,6 @@
 @layer base {
   * {
     box-sizing: border-box;
-    font-size: 100%;
     // scroll-margin-top: var(--headerHeight);
     // scroll-behavior: smooth;
 
@@ -103,20 +102,17 @@
   }
 
   html {
-    overflow: auto;
     font-size: 62.5%;
   }
 
   body {
     width: 100%;
-    overflow: hidden;
-    font: var(--font-setting-base);
-    font-feature-settings: var(--font-feature-settings);
+    font-family: $baseFont;
+    font-size: $text-base;
     color: $color-txt;
-    letter-spacing: var(--font-tracking);
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background-color: $color-body;
+    background-color: $color-reversal;
     -webkit-font-smoothing: antialiased;
     backface-visibility: hidden;
   }
@@ -124,16 +120,6 @@
   ::selection {
     color: $color-reversal;
     background-color: $color-prime;
-  }
-
-  main {
-    min-height: 70vh;
-    padding-top: var(--headerHeight);
-  }
-
-  p {
-    font: var(--font-setting-base);
-    font-feature-settings: var(--font-feature-settings);
   }
 
   a,
@@ -158,16 +144,6 @@
       color: inherit !important;
       text-decoration: none !important;
       pointer-events: none;
-    }
-  }
-  @include mq(sp) {
-    html:has(.headerNavi.-open) {
-      overflow: hidden;
-
-      body {
-        overflow: auto;
-        scrollbar-gutter: stable;
-      }
     }
   }
 }

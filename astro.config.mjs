@@ -316,7 +316,6 @@ export default defineConfig({
             $base-path: "${BASE_PATH}";
             @use "./src/scss/abstracts/_mixins.scss" as *;
             @use "./src/scss/abstracts/_variables.scss" as *;
-            @use "./src/scss/abstracts/_config.scss" as *;
             @use "./src/scss/abstracts/_functions.scss" as *;
             @use "./src/scss/abstracts/_svg.scss" as *;
           `,
