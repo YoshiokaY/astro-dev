@@ -17,10 +17,10 @@ $text-h1: clamp(4rem, calc(100vw / 375 * 40), 6.4rem);
 $text-base: clamp(1.4rem, calc(100vw / 375 * 14), 1.6rem);
 
 // カラーパレット
-$color-txt: #333;
+$color-txt: #334155;
 $color-reversal: #fff;
-$color-prime: #00f;
-$color-second: #f0f;
+$color-prime: #3b82f6;
+$color-second: #8b5cf6;
 
 // イージング
 $easing: 0.4s ease-out;

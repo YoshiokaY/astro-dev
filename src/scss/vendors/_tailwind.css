@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --color-prime: #3b82f6;
+  --text-h1: clamp(4rem, calc(100vw / 375 * 40), 6.4rem);
+  --text-base: clamp(1.4rem, calc(100vw / 375 * 14), 1.6rem);
+}
+
 @layer theme {
   :root {
     --spacing: 0.1rem;
