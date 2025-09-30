@@ -7,21 +7,13 @@
 .text-box {
   &-ttl {
     margin-bottom: 0.5em;
-    font-size: $text-h3;
     color: $color-prime;
   }
 
   &-txt {
-    font-size: $text-lg;
-
     &-span {
-      font-size: $text-xl;
       color: $color-reversal;
       background-color: $color-prime;
-    }
-
-    &-span--blue {
-      color: $color-third;
     }
   }
 }
