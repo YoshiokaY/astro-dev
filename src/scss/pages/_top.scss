@@ -13,17 +13,17 @@
   }
 
   h2 {
-    padding-bottom: 8px;
+    padding-bottom: 0.8rem;
     color: $color-second;
     border-bottom: 2px solid $color-second;
   }
 
   ul {
     li {
-      padding: 12px 20px;
+      padding: 1.2rem 2rem;
       background: rgb(255 255 255 / 0.8);
-      border-left: 4px solid $color-prime;
-      border-radius: 8px;
+      border-left: 0.4rem solid $color-prime;
+      border-radius: 0.8rem;
     }
   }
 

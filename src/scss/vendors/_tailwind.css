@@ -1,9 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-prime: #3b82f6;
-  --text-h1: clamp(4rem, calc(100vw / 375 * 40), 6.4rem);
-  --text-base: clamp(1.4rem, calc(100vw / 375 * 14), 1.6rem);
+  --color-txt: var(--color-txt);
+  --color-reversal: var(--color-reversal);
+  --color-gray: var(--color-gray);
+  --color-prime: var(--color-prime);
+  --color-second: var(--color-second);
+  --color-third: var(--color-third);
+  --color-body: var(--color-body);
+  --font-base: var(--font-size-base);
+  --text-h1: var(--font-size-h1);
+  --text-h2: var(--font-size-h2);
+  --text-h3: var(--font-size-h3);
+  --text-h4: var(--font-size-h4);
+  --text-h5: var(--font-size-h5);
+  --text-xl: var(--font-size-xl);
+  --text-lg: var(--font-size-lg);
+  --text-base: var(--font-size-base);
+  --text-sm: var(--font-size-sm);
+  --text-xs: var(--font-size-xs);
 }
 
 @layer theme {

@@ -1,7 +1,10 @@
+@use "sass:list";
+@use "sass:math";
+
 // ブレークポイント
 $brakePoint: 768;
 
-//　コンテナサイズ
+// コンテナサイズ
 $containerSize: 1200; // コンテンツ幅
 $containerPadding: 16; // コンテンツ余白
 
@@ -11,16 +14,100 @@ $imgPath: "/_assets/img/";
 // フォント
 $baseFont: "Noto Sans JP", "NotoSansJP", "Noto Sans Japanese", sans-serif;
 
-//　テキストサイズ
-
-$text-h1: clamp(4rem, calc(100vw / 375 * 40), 6.4rem);
-$text-base: clamp(1.4rem, calc(100vw / 375 * 14), 1.6rem);
-
-// カラーパレット
-$color-txt: #334155;
-$color-reversal: #fff;
-$color-prime: #3b82f6;
-$color-second: #8b5cf6;
+// テキストサイズ
+$spFontVw: "false"; // SP時にフォントサイズを可変(vw)にする
+$h1: 64, 40;
+$h2: 44, 36;
+$h3: 36, 28;
+$h4: 28, 24;
+$h5: 24, 20;
+$xl: 20, 18;
+$lg: 18, 16;
+$base: 16, 14;
+$sm: 14, 12;
+$xs: 12, 10;
 
 // イージング
 $easing: 0.4s ease-out;
+
+// カラーパレット
+$color-body: #fff;
+$color-txt: #334155;
+$color-reversal: #fff;
+$color-gray: #d6d4d0;
+$color-prime: #3b82f6;
+$color-second: #8b5cf6;
+$color-third: #00f;
+
+// SPのデザインサイズ
+$spDesign: 375;
+// SPデザインに応じた倍率設定
+$magnification: 1;
+@if $spDesign < 750 {
+  $magnification: 2;
+}
+
+// ------------------------------------------------
+// SCSS・Tailwind内共通化用内部設定
+// ------------------------------------------------
+
+// rem変換
+@function rem($pxSize) {
+  @return ($pxSize * 0.1) + rem;
+}
+
+// ループ用のマップ定義
+$colorMap: (
+  "txt": $color-txt,
+  "reversal": $color-reversal,
+  "prime": $color-prime,
+  "second": $color-second,
+  "third": $color-third,
+  "body": $color-body,
+  "gray": $color-gray,
+);
+$fontSizeMap: (
+  "h1": $h1,
+  "h2": $h2,
+  "h3": $h3,
+  "h4": $h4,
+  "h5": $h5,
+  "xl": $xl,
+  "lg": $lg,
+  "base": $base,
+  "sm": $sm,
+  "xs": $xs,
+);
+
+// JSやTailwindで使用できるようにテキストサイズと色の設定をCSS変数に変換
+:root {
+  @each $name, $color in $colorMap {
+    --color-#{$name}: #{$color};
+  }
+
+  @each $name, $sizes in $fontSizeMap {
+    @if $spFontVw == "true" {
+      --font-size-#{$name}: min(#{math.div(100, $spDesign) * list.nth($sizes, 2)}vw, #{rem(list.nth($sizes, 2) * $magnification)});
+    } @else {
+      --font-size-#{$name}: #{rem(list.nth($sizes, 2))};
+    }
+  }
+
+  @media (width >= #{math.div($brakePoint,16)}em) {
+    @each $name, $sizes in $fontSizeMap {
+      --font-size-#{$name}: #{rem(list.nth($sizes, 1))};
+    }
+  }
+}
+
+// scssでも同じ値で使えるようにテキストサイズを再定義
+$text-h1: var(--font-size-h1);
+$text-h2: var(--font-size-h2);
+$text-h3: var(--font-size-h3);
+$text-h4: var(--font-size-h4);
+$text-h5: var(--font-size-h5);
+$text-xl: var(--font-size-xl);
+$text-lg: var(--font-size-lg);
+$text-base: var(--font-size-base);
+$text-sm: var(--font-size-sm);
+$text-xs: var(--font-size-xs);

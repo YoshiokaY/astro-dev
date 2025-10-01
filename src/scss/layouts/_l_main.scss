@@ -3,9 +3,9 @@
 // ================================================
 
 #main {
-  padding-top: 6rem; // 60px(header height)
+  padding-top: 6rem;
 
   @include mq() {
-    padding-top: 7rem; // 70px(header height)
+    padding-top: 7rem;
   }
 }
