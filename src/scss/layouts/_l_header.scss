@@ -1,9 +1,109 @@
-/* ヘッダー */
+// ================================================
+// ヘッダー
+// ================================================
+
 .l_header {
   position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
   width: 100%;
-  height: 20rem;
-  border: 0.4rem solid $color-prime;
-}
+  background: rgb(255 255 255 / 0.95);
+  border-bottom: 0.1rem solid rgb(0 0 255 / 0.2);
+  backdrop-filter: blur(1rem);
 
-/* /ヘッダー */
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 6rem;
+
+    @include mq() {
+      height: 7rem;
+    }
+  }
+
+  // ロゴ
+  .header-logo {
+    .logo-link {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: $color-prime;
+      text-decoration: none;
+
+      @include mq() {
+        font-size: 2rem;
+      }
+
+      &:hover {
+        opacity: 0.8;
+        transition: $easing;
+      }
+    }
+  }
+
+  // ナビゲーション
+  .header-nav {
+    @include mq(sp) {
+      display: none; // SPは非表示（必要に応じてモバイルメニューで実装）
+    }
+
+    .nav-list {
+      display: flex;
+      gap: 3.2rem;
+      list-style: none;
+    }
+
+    .nav-item {
+      .nav-link {
+        display: block;
+        padding: 0.8rem 1.6rem;
+        color: $color-txt;
+        text-decoration: none;
+        border-radius: 0.4rem;
+        transition: $easing;
+
+        &:hover {
+          color: $color-prime;
+          background: rgb(0 0 255 / 0.1);
+        }
+
+        &.is-current {
+          color: $color-reversal;
+          background: $color-prime;
+        }
+      }
+    }
+  }
+
+  // モバイルメニューボタン
+  .header-menu-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    @include mq() {
+      display: none;
+    }
+
+    .menu-btn-line {
+      display: block;
+      width: 2.4rem;
+      height: 0.2rem;
+      background: $color-prime;
+      transition: $easing;
+    }
+
+    &:hover {
+      .menu-btn-line {
+        background: $color-second;
+      }
+    }
+  }
+}
