@@ -1,22 +1,84 @@
 ---
+import { common, type FooterData, type MenuItem } from "@/layouts/Common.astro";
+
 /**
  * フッターコンポーネント
  */
 interface Props {
   copyright: string;
+  footerData?: FooterData;
+  menu?: MenuItem[];
 }
 
-const { copyright } = Astro.props;
+const {
+  copyright,
+  footerData = common.footer,
+  menu = common.menu,
+} = Astro.props;
 ---
 
 <footer class="l_footer">
-  <div class="bg-highlight">
-    <div class="contentInner h-300">フッター</div>
+  <!-- メインフッターエリア -->
+  <div class="footer-main">
+    <div class="contentInner">
+      <div class="footer-content">
+        <!-- 会社情報 -->
+        <div class="footer-section footer-company">
+          <h2 class="footer-title">{footerData.companyInfo.name}</h2>
+          <p class="footer-description">
+            {footerData.companyInfo.desc}
+          </p>
+        </div>
+
+        <!-- サイトリンク（ヘッダーと共有データ） -->
+        <div class="footer-section footer-links">
+          <h2 class="footer-title">サイトリンク</h2>
+          <ul class="footer-list">
+            {
+              menu.map((link) => (
+                <li class="footer-list-item">
+                  <a
+                    href={link.link}
+                    class="footer-link"
+                    target={link.blank ? "_blank" : undefined}
+                    rel={link.blank ? "noopener noreferrer" : undefined}
+                  >
+                    {link.txt}
+                  </a>
+                </li>
+              ))
+            }
+            <!-- 追加のフッター専用リンク -->
+            <li class="footer-list-item">
+              <a href="/privacy/" class="footer-link">プライバシーポリシー</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 使用技術 -->
+        <div class="footer-section footer-tech">
+          <h2 class="footer-title">{footerData.tech.ttl}</h2>
+          <ul class="footer-list">
+            {
+              footerData.tech.items.map((tech) => (
+                <li class="footer-list-item">
+                  <span class="footer-tech-item">{tech}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="bg-prime text-reversal">
-    <p class="py-20 text-center text-sm">
-      &copy; {new Date().getFullYear()}
-      {copyright}
-    </p>
+
+  <!-- コピーライトエリア -->
+  <div class="footer-copyright">
+    <div class="contentInner">
+      <p class="copyright-text">
+        &copy; {new Date().getFullYear()}
+        {copyright}. All rights reserved.
+      </p>
+    </div>
   </div>
 </footer>

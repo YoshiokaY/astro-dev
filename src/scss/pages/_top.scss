@@ -1,38 +1,52 @@
-/* トップ */
-.textLink {
-  position: relative;
-  // PC/SPサイズで一括出力できますPCのみならSP時も同じサイズ
-  @include fontsize(15, 18);
+// ================================================
+// サンプルページ用スタイル
+// ================================================
 
-  // :hoverと:focus-visibleを一括で出力できます
-  @include hover() {
+.p_sample_hero {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgb(0 0 255 / 0.1) 0%, rgb(255 0 255 / 0.1) 100%);
+
+  h1 {
+    color: $color-prime;
+  }
+
+  h2 {
+    padding-bottom: 0.8rem;
     color: $color-second;
+    border-bottom: 2px solid $color-second;
   }
 
-  // "pc" or "sp"でPC時（>=）、SP時（<）になります。デフォルトではPC時の表示。
-  // 第二引数に数値（単位なし）を指定で該当のブレイクポイントになります。デフォルトでは設定ファイルのサイズ
-  @include mq() {
-    color: red;
+  ul {
+    li {
+      padding: 1.2rem 2rem;
+      background: rgb(255 255 255 / 0.8);
+      border-left: 0.4rem solid $color-prime;
+      border-radius: 0.8rem;
+    }
   }
 
-  &::after {
-    display: inline-block;
-    height: 1em;
-    aspect-ratio: 1/1;
-    margin: auto;
-    margin-left: 0.5em;
-    vertical-align: middle;
-    content: "";
-    background-image: url("https://placehold.jp/150x150.png");
+  p {
+    line-height: 1.8;
+  }
+
+  // Pictureコンポーネントデモ
+  .picture-demo-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    box-shadow: 0 0.8rem 3.2rem rgb(0 0 0 / 0.1);
+
+    @include mq() {
+      max-width: 100rem;
+    }
+  }
+
+  .picture-demo-image {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 }
-
-.sec_top {
-  padding-block: 2rem;
-}
-
-.hoge {
-  background: url("/_assets/top/sample.png");
-}
-
-/* /トップ */
