@@ -9,30 +9,30 @@
   z-index: 100;
   width: 100%;
   background: rgb(255 255 255 / 0.95);
-  border-bottom: 1px solid rgb(0 0 255 / 0.2);
-  backdrop-filter: blur(10px);
+  border-bottom: 0.1rem solid rgb(0 0 255 / 0.2);
+  backdrop-filter: blur(1rem);
 
   .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 70px;
+    height: 6rem;
 
-    @include mq(sp) {
-      height: 60px;
+    @include mq() {
+      height: 7rem;
     }
   }
 
   // ロゴ
   .header-logo {
     .logo-link {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: bold;
       color: $color-prime;
       text-decoration: none;
 
-      @include mq(sp) {
-        font-size: 1.8rem;
+      @include mq() {
+        font-size: 2rem;
       }
 
       &:hover {
@@ -50,17 +50,17 @@
 
     .nav-list {
       display: flex;
-      gap: 32px;
+      gap: 3.2rem;
       list-style: none;
     }
 
     .nav-item {
       .nav-link {
         display: block;
-        padding: 8px 16px;
+        padding: 0.8rem 1.6rem;
         color: $color-txt;
         text-decoration: none;
-        border-radius: 4px;
+        border-radius: 0.4rem;
         transition: $easing;
 
         &:hover {
@@ -78,24 +78,24 @@
 
   // モバイルメニューボタン
   .header-menu-btn {
-    display: none;
+    display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.4rem;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 4.4rem;
+    height: 4.4rem;
     cursor: pointer;
     background: none;
     border: none;
 
-    @include mq(sp) {
-      display: flex;
+    @include mq() {
+      display: none;
     }
 
     .menu-btn-line {
       display: block;
-      width: 24px;
-      height: 2px;
+      width: 2.4rem;
+      height: 0.2rem;
       background: $color-prime;
       transition: $easing;
     }
