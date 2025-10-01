@@ -1,12 +1,6 @@
-@use "sass:map";
+@use "variables" as *;
 @use "sass:math";
 @use "sass:string";
-@use "config" as *;
-
-// rem変換
-@function rem($pxSize) {
-  @return ($pxSize * 0.1) + rem;
-}
 
 // SP可変サイズ
 @function spSize($spSize: 1) {

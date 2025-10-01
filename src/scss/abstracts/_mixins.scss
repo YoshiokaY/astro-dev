@@ -1,8 +1,5 @@
-@use "sass:map";
 @use "sass:math";
-@use "sass:string";
-@use "sass:list";
-@use "config" as *;
+@use "variables" as *;
 
 // メディアクエリ
 // ------------------------------------------------
@@ -28,22 +25,6 @@
   }
 }
 
-// @mixin mq($type: pc, $value1: $brakePoint) {
-//   $reverse: "";
-//   $widthType: "min";
-//   @if $type == sp {
-//     // PC用（spMaxサイズ < w）
-//     $reverse: "not";
-//   } @else {
-//     // SP用（w <= spMaxサイズ）
-//     // そのままでOK
-//   }
-//   @media #{$reverse} screen and (#{$widthType}-width: math.div($value1, 16) + em) {
-//     @content;
-//   }
-// }
-
-// ホバークエリ
 // ------------------------------------------------
 // キーボードフォーカスとホバーを一括で設定する
 // ------------------------------------------------
@@ -54,7 +35,8 @@
     }
   }
 
-  &:focus-visible {
+  &:focus-visible,
+  &:active {
     @content;
   }
 }
@@ -63,7 +45,7 @@
 // ------------------------------------------------
 // extendに登録したsvgアイコンをmask-imageで出力
 // ------------------------------------------------
-@mixin mask($svg, $color, $size: contain) {
+@mixin mask($svg, $color, $size: 100%) {
   @extend %#{$svg};
 
   background-color: $color;
