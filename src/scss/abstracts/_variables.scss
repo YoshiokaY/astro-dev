@@ -1,79 +1,113 @@
-@use "config" as *;
-@use "mixins" as *;
-@use "functions" as *;
 @use "sass:list";
+@use "sass:math";
 
+// ブレークポイント
+$brakePoint: 768;
+
+// コンテナサイズ
+$containerSize: 1200; // コンテンツ幅
+$containerPadding: 16; // コンテンツ余白
+
+// 画像パス
+$imgPath: "/_assets/img/";
+
+// フォント
+$baseFont: "Noto Sans JP", "NotoSansJP", "Noto Sans Japanese", sans-serif;
+
+// テキストサイズ
+$spFontVw: "false"; // SP時にフォントサイズを可変(vw)にする
+$h1: 64, 40;
+$h2: 44, 36;
+$h3: 36, 28;
+$h4: 28, 24;
+$h5: 24, 20;
+$xl: 20, 18;
+$lg: 18, 16;
+$base: 16, 14;
+$sm: 14, 12;
+$xs: 12, 10;
+
+// イージング
+$easing: 0.4s ease-out;
+
+// カラーパレット
+$color-body: #fff;
+$color-txt: #334155;
+$color-reversal: #fff;
+$color-gray: #d6d4d0;
+$color-prime: #3b82f6;
+$color-second: #8b5cf6;
+$color-third: #00f;
+
+// SPのデザインサイズ
+$spDesign: 375;
+// SPデザインに応じた倍率設定
+$magnification: 1;
+@if $spDesign < 750 {
+  $magnification: 2;
+}
+
+// ------------------------------------------------
+// SCSS・Tailwind内共通化用内部設定
+// ------------------------------------------------
+
+// rem変換
+@function rem($pxSize) {
+  @return ($pxSize * 0.1) + rem;
+}
+
+// ループ用のマップ定義
+$colorMap: (
+  "txt": $color-txt,
+  "reversal": $color-reversal,
+  "prime": $color-prime,
+  "second": $color-second,
+  "third": $color-third,
+  "body": $color-body,
+  "gray": $color-gray,
+);
+$fontSizeMap: (
+  "h1": $h1,
+  "h2": $h2,
+  "h3": $h3,
+  "h4": $h4,
+  "h5": $h5,
+  "xl": $xl,
+  "lg": $lg,
+  "base": $base,
+  "sm": $sm,
+  "xs": $xs,
+);
+
+// JSやTailwindで使用できるようにテキストサイズと色の設定をCSS変数に変換
 :root {
-  // サイズ
-  --size-container: #{$containerSize}; // コンテナサイズ
-  --size-logo: #{$logoWidth}; // ロゴサイズ
-
-  // line-heightの上下の余白をマージンから消す(marginに指定)
-  --leading-trim: calc((1em - 1lh) / 2);
-
-  // フォント
-  --font-family-base: #{$baseFont};
-  --font-setting-base: var(--font-weight-normal) var(--font-size-base) / var(--font-leading) var(--font-family-base);
-  // SP時のフォントサイズにvwを使用
-  @if $spFontVw == "true" {
-    --font-size-heading-1: #{spSize(list.nth($h1, 2))};
-    --font-size-heading-2: #{spSize(list.nth($h2, 2))};
-    --font-size-heading-3: #{spSize(list.nth($h3, 2))};
-    --font-size-heading-4: #{spSize(list.nth($h4, 2))};
-    --font-size-heading-5: #{spSize(list.nth($h5, 2))};
-    --font-size-large-2: #{spSize(list.nth($xl, 2))};
-    --font-size-large-1: #{spSize(list.nth($lg, 2))};
-    --font-size-base: #{spSize(list.nth($base, 2))};
-    --font-size-small-1: #{spSize(list.nth($sm, 2))};
-    --font-size-small-2: #{spSize(list.nth($xs, 2))};
-  } @else {
-    --font-size-heading-1: #{rem(list.nth($h1, 2))};
-    --font-size-heading-2: #{rem(list.nth($h2, 2))};
-    --font-size-heading-3: #{rem(list.nth($h3, 2))};
-    --font-size-heading-4: #{rem(list.nth($h4, 2))};
-    --font-size-heading-5: #{rem(list.nth($h5, 2))};
-    --font-size-large-2: #{rem(list.nth($xl, 2))};
-    --font-size-large-1: #{rem(list.nth($lg, 2))};
-    --font-size-base: #{rem(list.nth($base, 2))};
-    --font-size-small-1: #{rem(list.nth($sm, 2))};
-    --font-size-small-2: #{rem(list.nth($xs, 2))};
+  @each $name, $color in $colorMap {
+    --color-#{$name}: #{$color};
   }
-  // PC時
-  @include mq() {
-    --font-size-heading-1: #{rem(list.nth($h1, 1))};
-    --font-size-heading-2: #{rem(list.nth($h2, 1))};
-    --font-size-heading-3: #{rem(list.nth($h3, 1))};
-    --font-size-heading-4: #{rem(list.nth($h4, 1))};
-    --font-size-heading-5: #{rem(list.nth($h5, 1))};
-    --font-size-large-2: #{rem(list.nth($xl, 1))};
-    --font-size-large-1: #{rem(list.nth($lg, 1))};
-    --font-size-base: #{rem(list.nth($base, 1))};
-    --font-size-small-1: #{rem(list.nth($sm, 1))};
-    --font-size-small-2: #{rem(list.nth($xs, 1))};
+
+  @each $name, $sizes in $fontSizeMap {
+    @if $spFontVw == "true" {
+      --font-size-#{$name}: min(#{math.div(100, $spDesign) * list.nth($sizes, 2)}vw, #{rem(list.nth($sizes, 2) * $magnification)});
+    } @else {
+      --font-size-#{$name}: #{rem(list.nth($sizes, 2))};
+    }
+  }
+
+  @media (width >= #{math.div($brakePoint,16)}em) {
+    @each $name, $sizes in $fontSizeMap {
+      --font-size-#{$name}: #{rem(list.nth($sizes, 1))};
+    }
   }
 }
 
-// フォントサイズ
-$text-h1: var(--font-size-heading-1);
-$text-h2: var(--font-size-heading-2);
-$text-h3: var(--font-size-heading-3);
-$text-h4: var(--font-size-heading-4);
-$text-h5: var(--font-size-heading-5);
-$text-xl: var(--font-size-large-2);
-$text-lg: var(--font-size-large-1);
+// scssでも同じ値で使えるようにテキストサイズを再定義
+$text-h1: var(--font-size-h1);
+$text-h2: var(--font-size-h2);
+$text-h3: var(--font-size-h3);
+$text-h4: var(--font-size-h4);
+$text-h5: var(--font-size-h5);
+$text-xl: var(--font-size-xl);
+$text-lg: var(--font-size-lg);
 $text-base: var(--font-size-base);
-$text-sm: var(--font-size-small-1);
-$text-xs: var(--font-size-small-2);
-
-// カラーパレット
-$color-txt: var(--color-txt);
-$color-reversal: var(--color-reversal);
-$color-gray: var(--color-gray);
-$color-prime: var(--color-prime);
-$color-second: var(--color-second);
-$color-third: var(--color-third);
-$color-body: var(--color-body);
-$color-highlight: var(--color-highlight);
-
-// トランジッション
-$easing: var(--transition);
+$text-sm: var(--font-size-sm);
+$text-xs: var(--font-size-xs);
