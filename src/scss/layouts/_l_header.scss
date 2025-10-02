@@ -43,66 +43,247 @@
   }
 
   // ナビゲーション
-  .header-nav {
-    @include mq(sp) {
-      display: none; // SPは非表示（必要に応じてモバイルメニューで実装）
-    }
-
-    .nav-list {
+  .headerNavi {
+    // ハンバーガーボタン
+    .ac_menu {
+      position: relative;
+      z-index: 102;
       display: flex;
-      gap: 3.2rem;
-      list-style: none;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: center;
+      justify-content: center;
+      width: 5.6rem;
+      height: 5.6rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+
+      @include mq() {
+        display: none;
+      }
+
+      span {
+        font-size: 1rem;
+        color: $color-prime;
+      }
+
+      &::before,
+      &::after {
+        width: 2.8rem;
+        height: 0.3rem;
+        content: "";
+        background: $color-prime;
+        border-radius: 0.2rem;
+        transition: all 0.3s ease;
+      }
+
+      &::before {
+        transform: translateY(-0.4rem);
+      }
+
+      &::after {
+        transform: translateY(0.4rem);
+      }
     }
 
-    .nav-item {
-      .nav-link {
-        display: block;
-        padding: 0.8rem 1.6rem;
-        color: $color-txt;
-        text-decoration: none;
-        border-radius: 0.4rem;
-        transition: $easing;
+    // ナビゲーションラッパー
+    .naviWrapper {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      z-index: 101;
+      width: 100%;
+      height: 100dvh;
+      background: rgb(0 0 0 / 0.5);
+      transition: right 0.3s ease;
 
-        &:hover {
-          color: $color-prime;
-          background: rgb(0 0 255 / 0.1);
+      @include mq() {
+        position: static;
+        width: auto;
+        height: auto;
+        background: none;
+      }
+
+      .contentInner {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+      }
+
+      #navi {
+        width: 80%;
+        max-width: 32rem;
+        height: 100%;
+        padding: 8rem 2rem 2rem;
+        overflow-y: auto;
+        list-style: none;
+        background: #fff;
+
+        @include mq() {
+          display: flex;
+          gap: 3.2rem;
+          width: auto;
+          max-width: none;
+          height: auto;
+          padding: 0;
+          overflow-y: visible;
+          background: none;
         }
 
-        &.is-current {
-          color: $color-reversal;
-          background: $color-prime;
+        > li {
+          border-bottom: 0.1rem solid #e5e7eb;
+
+          @include mq() {
+            border-bottom: none;
+          }
+
+          > a {
+            display: block;
+            padding: 1.6rem 0;
+            font-size: 1.6rem;
+            color: $color-txt;
+            text-decoration: none;
+            transition: $easing;
+
+            @include mq() {
+              padding: 0.8rem 1.6rem;
+              border-radius: 0.4rem;
+            }
+
+            &:hover {
+              color: $color-prime;
+
+              @include mq() {
+                background: rgb(0 0 255 / 0.1);
+              }
+            }
+          }
+
+          // 子メニュー
+          &.has-child {
+            .spAccordion {
+              position: absolute;
+              top: 1.6rem;
+              right: 0;
+              width: 4rem;
+              height: 4rem;
+              cursor: pointer;
+              background: none;
+              border: none;
+
+              @include mq() {
+                display: none;
+              }
+
+              &::before,
+              &::after {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 1.6rem;
+                height: 0.2rem;
+                content: "";
+                background: $color-prime;
+                transition: transform 0.3s ease;
+                transform: translate(-50%, -50%);
+              }
+
+              &::after {
+                transform: translate(-50%, -50%) rotate(90deg);
+              }
+
+              &.-open {
+                &::after {
+                  transform: translate(-50%, -50%) rotate(0deg);
+                }
+              }
+            }
+
+            .subMenu {
+              height: 0;
+              overflow: hidden;
+              list-style: none;
+              transition: height 0.3s ease;
+
+              @include mq() {
+                display: none;
+              }
+
+              &.-open {
+                height: var(--subHeightOpen, auto);
+              }
+
+              li {
+                a {
+                  display: block;
+                  padding: 1.2rem 0 1.2rem 2rem;
+                  font-size: 1.4rem;
+                  color: #666;
+                  text-decoration: none;
+
+                  &:hover {
+                    color: $color-prime;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .closeBtn {
+        position: absolute;
+        top: 1.6rem;
+        right: 1.6rem;
+        z-index: 102;
+        width: 4rem;
+        height: 4rem;
+        cursor: pointer;
+        background: none;
+        border: none;
+
+        @include mq() {
+          display: none;
+        }
+
+        &::before,
+        &::after {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 2.4rem;
+          height: 0.2rem;
+          content: "";
+          background: $color-txt;
+          transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        &::after {
+          transform: translate(-50%, -50%) rotate(-45deg);
         }
       }
     }
-  }
 
-  // モバイルメニューボタン
-  .header-menu-btn {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    justify-content: center;
-    width: 4.4rem;
-    height: 4.4rem;
-    cursor: pointer;
-    background: none;
-    border: none;
+    // 開いている状態
+    &.-open {
+      .ac_menu {
+        span {
+          opacity: 0;
+        }
 
-    @include mq() {
-      display: none;
-    }
+        &::before {
+          transform: rotate(45deg);
+        }
 
-    .menu-btn-line {
-      display: block;
-      width: 2.4rem;
-      height: 0.2rem;
-      background: $color-prime;
-      transition: $easing;
-    }
+        &::after {
+          transform: rotate(-45deg);
+        }
+      }
 
-    &:hover {
-      .menu-btn-line {
-        background: $color-second;
+      .naviWrapper {
+        right: 0;
       }
     }
   }

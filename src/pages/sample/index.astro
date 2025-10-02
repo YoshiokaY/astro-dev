@@ -1,0 +1,159 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import LowerTitle from "@/components/LowerTitle.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import HeroSection from "@/pages/_parts/_sample/_hero.astro";
+import ArticlesSection from "@/pages/_parts/_sample/_articles.astro";
+import CategoriesSection from "@/pages/_parts/_sample/_categories.astro";
+import QaSection from "@/pages/_parts/_sample/_qa.astro";
+import VideosSection from "@/pages/_parts/_sample/_videos.astro";
+
+import "@/scss/pages/_sample.scss";
+
+const page = {
+  head: {
+    slug: "sample",
+    ttl: "オウンドメディア",
+    description: "Astroで構築したオウンドメディアのサンプルページです。",
+    url: "/sample/",
+  },
+  breadcrumbs: [
+    { text: "ホーム", link: "/" },
+    { text: "オウンドメディア", link: "/sample/" },
+  ],
+  contents: {
+    hero: {
+      ttl: "Tech Blog",
+      subtitle: "Web開発に関する情報を発信",
+      desc: "最新のWeb技術やフロントエンド開発のTipsを共有するメディアです。",
+    },
+    articles: {
+      ttl: "最新記事",
+      items: [
+        {
+          ttl: "Astroで始める高速サイト構築",
+          desc: "Astroフレームワークを使った効率的な静的サイト生成の方法を解説します。",
+          date: "2025-09-28",
+          category: "フロントエンド",
+          img: "sample_001.png",
+          imgAlt: "Astroのロゴとコード画面",
+        },
+        {
+          ttl: "TypeScriptで型安全な開発を実現",
+          desc: "TypeScriptの基礎から実践的な使い方まで、型安全な開発手法を紹介します。",
+          date: "2025-09-25",
+          category: "TypeScript",
+          img: "sample_002.png",
+          imgAlt: "TypeScriptのコード例",
+        },
+        {
+          ttl: "SCSSで効率的なスタイル管理",
+          desc: "SCSSの便利な機能を活用して、保守性の高いCSSを書く方法を解説します。",
+          date: "2025-09-20",
+          category: "CSS",
+          img: "sample_003.png",
+          imgAlt: "SCSSのコード画面",
+        },
+        {
+          ttl: "アクセシビリティ対応の基本",
+          desc: "すべてのユーザーが利用できるWebサイトを作るための基礎知識とベストプラクティス。",
+          date: "2025-09-15",
+          category: "アクセシビリティ",
+          img: "sample_001.png",
+          imgAlt: "アクセシビリティの概念図",
+        },
+      ],
+    },
+    categories: {
+      ttl: "カテゴリー",
+      items: [
+        {
+          name: "フロントエンド",
+          children: ["React", "Vue.js", "Next.js", "Astro", "Nuxt.js"],
+        },
+        {
+          name: "バックエンド",
+          children: ["Node.js", "Express", "Nest.js", "GraphQL", "REST API"],
+        },
+        {
+          name: "開発環境",
+          children: ["Git", "Docker", "VSCode", "ESLint", "Prettier"],
+        },
+        {
+          name: "デザイン",
+          children: ["Figma", "CSS", "SCSS", "Tailwind CSS", "UI/UX"],
+        },
+      ],
+    },
+    qa: {
+      ttl: "よくある質問",
+      items: [
+        {
+          q: "Astroとは何ですか？",
+          a: "Astroは、高速な静的サイトを構築するための最新のWebフレームワークです。デフォルトでJavaScriptを最小限に抑え、必要な部分にのみJavaScriptを使用することで、優れたパフォーマンスを実現します。",
+        },
+        {
+          q: "TypeScriptを学ぶメリットは？",
+          a: "TypeScriptを使用することで、コードの型安全性が向上し、開発時のバグを減らすことができます。また、IDEのサポートが強化され、開発効率が大幅に向上します。",
+        },
+        {
+          q: "レスポンシブデザインの基本は？",
+          a: "モバイルファーストの設計思想を採用し、小さい画面から設計することが重要です。メディアクエリを使用して、画面サイズに応じた適切なレイアウトとスタイルを提供します。",
+        },
+        {
+          q: "Webアクセシビリティはなぜ重要？",
+          a: "アクセシビリティは、障がいを持つ方を含むすべてのユーザーがWebサイトを利用できるようにするために不可欠です。セマンティックHTMLやARIA属性の適切な使用により、より多くの人々にコンテンツを届けることができます。",
+        },
+      ],
+    },
+    videos: {
+      ttl: "動画で学ぶWeb開発",
+      items: [
+        {
+          ttl: "Astro入門 - 高速なWebサイトを作ろう",
+          desc: "Astroの基本的な使い方から、プロジェクトのセットアップまでを解説します。",
+          thumbnail: "sample_001.png",
+          videoUrl: "https://www.youtube.com/watch?v=dsTXcSeAZq8",
+        },
+        {
+          ttl: "TypeScript基礎講座",
+          desc: "TypeScriptの型システムを理解して、安全なコードを書く方法を学びます。",
+          thumbnail: "sample_002.png",
+          videoUrl: "https://www.youtube.com/watch?v=BCg4U1FzODs",
+        },
+        {
+          ttl: "レスポンシブデザイン実践",
+          desc: "モバイルファーストで美しいレスポンシブサイトを構築する方法を解説します。",
+          thumbnail: "sample_003.png",
+          videoUrl: "https://www.youtube.com/watch?v=srvUrASNj0s",
+        },
+      ],
+    },
+  },
+};
+
+const imgPath = "/_assets/img/" + page.head.slug + "/";
+---
+
+<Layout page={page.head}>
+  <div class="contentInner">
+    <div class="p_sample">
+      <HeroSection hero={page.contents.hero} />
+      <div class="sample_content">
+        <ArticlesSection articles={page.contents.articles} imgPath={imgPath} />
+        <CategoriesSection categories={page.contents.categories} />
+      </div>
+      <VideosSection videos={page.contents.videos} imgPath={imgPath} />
+      <QaSection qa={page.contents.qa} />
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { Accordion } from "@/js/class/Accordion";
+  import { Tab } from "@/js/class/Tab";
+  import { Modal } from "@/js/class/Modal";
+  new Accordion();
+  new Tab();
+  new Modal();
+</script>

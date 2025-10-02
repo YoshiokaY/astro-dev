@@ -1,0 +1,59 @@
+---
+import SetTime from "@/components/SetTime.astro";
+import Picture from "@/components/Picture.astro";
+
+/**
+ * 記事一覧セクションコンポーネント
+ */
+interface Props {
+  /**
+   * 記事データ
+   */
+  articles: {
+    ttl: string;
+    items: {
+      ttl: string;
+      desc: string;
+      date: string;
+      category: string;
+      img: string;
+      imgAlt: string;
+    }[];
+  };
+  /**
+   * 画像パス
+   */
+  imgPath: string;
+}
+
+const { articles, imgPath } = Astro.props;
+---
+
+<section class="sample_articles">
+  <h2 class="section_ttl">{articles.ttl}</h2>
+  <ul class="article_list">
+    {
+      articles.items.map((article) => (
+        <li class="article_item">
+          <article class="article_card">
+            <div class="card_img">
+              <Picture
+                src={imgPath + article.img}
+                alt={article.imgAlt}
+                sizes={[800, 450]}
+              />
+            </div>
+            <div class="card_body">
+              <div class="card_header">
+                <span class="card_category">{article.category}</span>
+                <SetTime time={article.date} />
+              </div>
+              <h3 class="card_ttl">{article.ttl}</h3>
+              <p class="card_desc">{article.desc}</p>
+            </div>
+          </article>
+        </li>
+      ))
+    }
+  </ul>
+</section>

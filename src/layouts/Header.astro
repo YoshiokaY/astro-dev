@@ -1,4 +1,6 @@
 ---
+import Gnavi from "@/components/Gnavi.astro";
+
 /**
  * ヘッダーコンポーネント。
  */
@@ -53,32 +55,7 @@ const { slug, siteName, menu, domain } = Astro.props;
       }
 
       <!-- グローバルナビゲーション -->
-      <nav class="header-nav">
-        <h2 class="txtHidden">グローバルメニュー</h2>
-        <ul class="nav-list">
-          {
-            menu.map((item) => (
-              <li class="nav-item">
-                <a
-                  href={item.link}
-                  class={`nav-link ${slug === "sample" && item.link === "/" ? "is-current" : ""}`}
-                  target={item.blank ? "_blank" : undefined}
-                  rel={item.blank ? "noopener noreferrer" : undefined}
-                >
-                  {item.txt}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
-
-      <!-- モバイルメニューボタン -->
-      <button class="header-menu-btn" type="button" aria-label="メニューを開く">
-        <span class="menu-btn-line"></span>
-        <span class="menu-btn-line"></span>
-        <span class="menu-btn-line"></span>
-      </button>
+      <Gnavi menu={menu} domain={domain} />
     </div>
   </div>
 </header>

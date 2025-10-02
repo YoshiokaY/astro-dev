@@ -1,0 +1,50 @@
+---
+/**
+ * グロナビコンポーネント
+ */
+interface MenuItem {
+  link: string;
+  txt: string;
+  blank?: boolean;
+  anchor?: boolean;
+  child?: MenuItem[];
+}
+
+interface Props {
+  /**
+   * グローバルナビゲーションのメニュー項目を定義する配列。
+   */
+  menu: MenuItem[];
+  /**
+   * サイトのドメイン名。アンカーリンク (`anchor: true`) の場合にURLを生成するために使用されます。
+   */
+  domain: string;
+}
+
+const { menu, domain } = Astro.props;
+---
+
+<nav class="c_nav">
+  <h2 class="txtHidden">グローバルナビゲーション</h2>
+  <button type="button" class="c_nav_btn"><span>メニューを開く</span></button>
+  <div class="c_nav_wrapper">
+    <ul id="navi">
+      {
+        menu.map((item) => (
+          <li>
+            <a
+              href={item.anchor ? domain + item.link : item.link}
+              target={item.blank ? "_blank" : "_self"}
+            >
+              <span>{item.txt}</span>
+              {item.txt}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <button type="button" class="c_nav_close txtHidden">メニューを閉じる</button>
+  </div>
+</nav>
+
+
