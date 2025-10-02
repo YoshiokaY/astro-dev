@@ -91,4 +91,44 @@
       text-align: center;
     }
   }
+
+  // ページトップへ戻るボタン
+  .page_top {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5.6rem;
+    height: 5.6rem;
+    color: #fff;
+    text-decoration: none;
+    background: $color-prime;
+    border-radius: 50%;
+    box-shadow: 0 0.4rem 1.2rem rgb(0 0 0 / 0.2);
+    transition: all 0.3s ease;
+
+    @include mq() {
+      width: 6rem;
+      height: 6rem;
+    }
+
+    &:hover {
+      background: darken($color-prime, 10%);
+      transform: translateY(-0.4rem);
+      box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 0.3);
+    }
+
+    &:focus-visible {
+      outline: 0.3rem solid $color-prime;
+      outline-offset: 0.4rem;
+    }
+
+    svg {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
 }

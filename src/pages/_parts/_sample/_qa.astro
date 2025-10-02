@@ -1,0 +1,40 @@
+---
+/**
+ * Q&Aセクションコンポーネント
+ */
+interface Props {
+  /**
+   * Q&Aデータ
+   */
+  qa: {
+    ttl: string;
+    items: {
+      q: string;
+      a: string;
+    }[];
+  };
+}
+
+const { qa } = Astro.props;
+---
+
+<section class="sample_qa">
+  <h2 class="section_ttl">{qa.ttl}</h2>
+  <div class="qa_list">
+    {
+      qa.items.map((item, i) => (
+        <details
+          class={"c_pull qa_item" + (i === 0 ? " -open" : "")}
+          open={i === 0}
+        >
+          <summary class="c_pull_ttl qa_q">
+            <span class="qa_q_text">{item.q}</span>
+          </summary>
+          <div class="c_pull_content qa_a">
+            <p class="qa_a_text">{item.a}</p>
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</section>
