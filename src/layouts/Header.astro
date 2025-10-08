@@ -25,13 +25,9 @@ interface Props {
    * グローバルナビゲーションのメニュー項目を定義する配列。
    */
   menu: MenuItem[];
-  /**
-   * サイトのドメイン名。アンカーリンク (`anchor: true`) の場合にURLを生成するために `Gnavi` コンポーネントへ渡されます。
-   */
-  domain: string;
 }
 
-const { slug, siteName, menu, domain } = Astro.props;
+const { slug, siteName, menu } = Astro.props;
 ---
 
 <header class="l_header">
@@ -55,7 +51,7 @@ const { slug, siteName, menu, domain } = Astro.props;
       }
 
       <!-- グローバルナビゲーション -->
-      <Gnavi menu={menu} domain={domain} />
+      <Gnavi menu={menu} slug={slug} />
     </div>
   </div>
 </header>

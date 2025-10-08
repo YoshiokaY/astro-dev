@@ -37,7 +37,7 @@ export interface CommonConfig {
 export const common: CommonConfig = {
   head: {
     siteName: "Astroサンプルサイト",
-    domain: "https://www.example.com/",
+    domain: "https://www.example.com",
     favicon: "/favicon.ico",
     ogImg: "https://www.example.com/_assets/img/ogimg.jpg",
     logo: "https://www.example.com/_assets/img/logo.svg", // JSON LD用企業ロゴ
@@ -59,6 +59,37 @@ export const common: CommonConfig = {
     {
       link: "/sample/",
       txt: "サンプル",
+      child: [
+        {
+          link: "#hero",
+          txt: "ヒーロー",
+          anchor: true,
+        },
+        {
+          link: "#articles",
+          txt: "記事一覧",
+          anchor: true,
+        },
+        {
+          link: "#categories",
+          txt: "カテゴリー",
+          anchor: true,
+        },
+        {
+          link: "#qa",
+          txt: "Q&A",
+          anchor: true,
+        },
+        {
+          link: "#videos",
+          txt: "動画",
+          anchor: true,
+        },
+      ],
+    },
+    {
+      link: "/handson/",
+      txt: "ハンズオン",
     },
   ],
   footer: {
