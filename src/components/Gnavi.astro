@@ -16,12 +16,12 @@ interface Props {
    */
   menu: MenuItem[];
   /**
-   * サイトのドメイン名。アンカーリンク (`anchor: true`) の場合にURLを生成するために使用されます。
+   * 現在のページのスラッグ。アンカーリンクの条件分岐に使用されます。
    */
-  domain: string;
+  slug: string;
 }
 
-const { menu, domain } = Astro.props;
+const { menu, slug } = Astro.props;
 ---
 
 <nav class="c_nav">
@@ -30,21 +30,47 @@ const { menu, domain } = Astro.props;
   <div class="c_nav_wrapper">
     <ul id="navi">
       {
-        menu.map((item) => (
-          <li>
-            <a
-              href={item.anchor ? domain + item.link : item.link}
-              target={item.blank ? "_blank" : "_self"}
-            >
-              <span>{item.txt}</span>
-              {item.txt}
-            </a>
-          </li>
-        ))
+        menu.map((item) => {
+          // 現在のページと一致するか判定
+          const isActive = item.link === "/"
+            ? slug === "top"
+            : item.link.replace(/\/$/, "").endsWith(`/${slug}`);
+
+          return (
+            <li class={item.child ? "has-child" : undefined}>
+              <a
+                href={item.link}
+                target={item.blank ? "_blank" : "_self"}
+                class={isActive ? "-active" : undefined}
+                set:html={item.txt}
+              />
+              {item.child && (
+                <>
+                  <button type="button" class="spAccordion">
+                    <span class="txtHidden">子メニューを表示します</span>
+                  </button>
+                  <ul class="subMenu">
+                    {item.child.map((child) => (
+                      <li>
+                        <a
+                          href={child.anchor && child.link.startsWith("#")
+                            ? slug === "sample" ? child.link : `/sample/${child.link}`
+                            : child.link
+                          }
+                          target={child.blank ? "_blank" : "_self"}
+                          set:html={child.txt}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </li>
+          );
+        })
       }
     </ul>
-    <button type="button" class="c_nav_close txtHidden">メニューを閉じる</button>
+    <button type="button" class="c_nav_close txtHidden">メニューを閉じる</button
+    >
   </div>
 </nav>
-
-

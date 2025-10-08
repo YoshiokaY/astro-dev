@@ -116,9 +116,9 @@
     }
 
     &:hover {
-      background: darken($color-prime, 10%);
-      transform: translateY(-0.4rem);
       box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 0.3);
+      opacity: 0.7;
+      transform: translateY(-0.4rem);
     }
 
     &:focus-visible {

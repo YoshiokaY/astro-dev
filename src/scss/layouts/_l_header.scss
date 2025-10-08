@@ -186,8 +186,8 @@
                 height: 0.2rem;
                 content: "";
                 background: $color-prime;
-                transition: transform 0.3s ease;
                 transform: translate(-50%, -50%);
+                transition: transform 0.3s ease;
               }
 
               &::after {
