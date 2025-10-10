@@ -12,6 +12,7 @@ interface Props {
   articles: {
     ttl: string;
     items: {
+      href: string;
       ttl: string;
       desc: string;
       date: string;
@@ -30,28 +31,30 @@ const { articles, imgPath } = Astro.props;
 ---
 
 <section class="sample_articles">
-  <h2 class="section_ttl">{articles.ttl}</h2>
+  <h2 class="section_ttl" set:html={articles.ttl} />
   <ul class="article_list">
     {
       articles.items.map((article) => (
         <li class="article_item">
-          <article class="article_card">
-            <div class="card_img">
-              <Picture
-                src={imgPath + article.img}
-                alt={article.imgAlt}
-                sizes={[800, 450]}
-              />
-            </div>
-            <div class="card_body">
-              <div class="card_header">
-                <span class="card_category">{article.category}</span>
-                <SetTime time={article.date} />
+          <a href={article.href}>
+            <article class="article_card">
+              <div class="card_img">
+                <Picture
+                  src={imgPath + article.img}
+                  alt={article.imgAlt}
+                  sizes={[800, 450]}
+                />
               </div>
-              <h3 class="card_ttl">{article.ttl}</h3>
-              <p class="card_desc">{article.desc}</p>
-            </div>
-          </article>
+              <div class="card_body">
+                <div class="card_header">
+                  <span class="card_category" set:html={article.category} />
+                  <SetTime time={article.date} />
+                </div>
+                <h3 class="card_ttl" set:html={article.ttl} />
+                <p class="card_desc" set:html={article.desc} />
+              </div>
+            </article>
+          </a>
         </li>
       ))
     }

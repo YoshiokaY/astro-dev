@@ -1,0 +1,17 @@
+---
+interface Props {
+  contents: {
+    ttl: string;
+    desc: string[];
+  };
+}
+
+const { contents } = Astro.props;
+---
+
+<section class="sample_hero">
+  <div class="contentInner">
+    <h1 class="hero_ttl" set:html={contents.ttl} />
+    {contents.desc.map((desc) => <p class="hero_desc" set:html={desc} />)}
+  </div>
+</section>
