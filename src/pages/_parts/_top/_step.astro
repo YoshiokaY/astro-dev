@@ -1,0 +1,35 @@
+---
+interface Props {
+  contents: {
+    id: string;
+    ttl: string;
+    desc: string[];
+    lists: string[];
+  }[];
+}
+
+const { contents } = Astro.props;
+---
+
+<section class="sample_content">
+  <div class="contentInner grid gap-72">
+    {
+      contents.map((step, i) => (
+        <div class="stepContent">
+          <h2 set:html={step.ttl} />
+          {step.desc.map((desc) => (
+            <p set:html={desc} />
+          ))}
+          <ul>
+            {step.lists.map((list, i) => (
+              <li>
+                <input type="checkbox" id={"step-" + step.id + (i + 1)} />
+                <label for={"step-" + step.id + (i + 1)} set:html={list} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>

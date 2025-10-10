@@ -31,6 +31,7 @@ const page = {
       ttl: "最新記事",
       items: [
         {
+          href: "/news/001.html",
           ttl: "Astroで始める高速サイト構築",
           desc: "Astroフレームワークを使った効率的な静的サイト生成の方法を解説します。",
           date: "2025-09-28",
@@ -39,6 +40,7 @@ const page = {
           imgAlt: "Astroのロゴとコード画面",
         },
         {
+          href: "/news/002.html",
           ttl: "TypeScriptで型安全な開発を実現",
           desc: "TypeScriptの基礎から実践的な使い方まで、型安全な開発手法を紹介します。",
           date: "2025-09-25",
@@ -47,6 +49,7 @@ const page = {
           imgAlt: "TypeScriptのコード例",
         },
         {
+          href: "/news/003.html",
           ttl: "SCSSで効率的なスタイル管理",
           desc: "SCSSの便利な機能を活用して、保守性の高いCSSを書く方法を解説します。",
           date: "2025-09-20",
@@ -55,6 +58,7 @@ const page = {
           imgAlt: "SCSSのコード画面",
         },
         {
+          href: "/news/004.html",
           ttl: "アクセシビリティ対応の基本",
           desc: "すべてのユーザーが利用できるWebサイトを作るための基礎知識とベストプラクティス。",
           date: "2025-09-15",
@@ -138,13 +142,26 @@ const imgPath = "/_assets/img/" + page.head.slug + "/";
 <Layout page={page.head}>
   <div class="contentInner">
     <div class="p_sample">
-      <HeroSection hero={page.contents.hero} />
+      <section id="hero">
+        <HeroSection hero={page.contents.hero} />
+      </section>
       <div class="sample_content">
-        <ArticlesSection articles={page.contents.articles} imgPath={imgPath} />
-        <CategoriesSection categories={page.contents.categories} />
+        <section id="articles">
+          <ArticlesSection
+            articles={page.contents.articles}
+            imgPath={imgPath}
+          />
+        </section>
+        <section id="categories">
+          <CategoriesSection categories={page.contents.categories} />
+        </section>
       </div>
-      <VideosSection videos={page.contents.videos} imgPath={imgPath} />
-      <QaSection qa={page.contents.qa} />
+      <section id="videos">
+        <VideosSection videos={page.contents.videos} imgPath={imgPath} />
+      </section>
+      <section id="qa">
+        <QaSection qa={page.contents.qa} />
+      </section>
     </div>
   </div>
 </Layout>
