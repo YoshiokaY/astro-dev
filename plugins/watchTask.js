@@ -1,7 +1,7 @@
+import browserSync from "browser-sync";
 import { execSync } from "child_process";
 import chokidar from "chokidar";
 import path from "path";
-import browserSync from "browser-sync";
 
 /**
  * ファイル監視と選択的ビルドシステム
@@ -43,7 +43,7 @@ class WatchTask {
       .on("ready", () => {
         this.isReady = true;
         console.log("✅ 監視準備完了");
-        
+
         // Browser Syncの初期化
         if (this.useBrowserSync) {
           this.initBrowserSync();
@@ -75,7 +75,7 @@ class WatchTask {
     const ext = path.extname(filePath);
 
     // 対象外のファイル拡張子をフィルタリング
-    const supportedExtensions = [".scss", ".css", ".js", ".ts", ".astro", ".json"];
+    const supportedExtensions = [".scss", ".css", ".js", ".ts", ".astro", ".json", ".php"];
     if (!supportedExtensions.includes(ext)) {
       return;
     }
@@ -100,6 +100,7 @@ class WatchTask {
       ".ts": "js",
       ".astro": "full",
       ".json": "full",
+      ".php": "public", // src/public配下のPHPファイル（functions.phpなど）
     };
 
     return typeMap[extension] || "full";
@@ -128,13 +129,12 @@ class WatchTask {
 
       const duration = Date.now() - startTime;
       console.log(`✅ ビルド完了 (${duration}ms)`);
-      
+
       // Browser Syncでリロード
       if (this.bs && this.useBrowserSync) {
         this.bs.reload();
         console.log("🔄 ブラウザをリロードしました");
       }
-      
     } catch (error) {
       console.error("❌ ビルドエラー:", error.message);
     } finally {
@@ -144,38 +144,37 @@ class WatchTask {
 
   initBrowserSync() {
     this.bs = browserSync.create();
-    
-    this.bs.init({
-      proxy: "localhost:8080", // DockerのWordPress theme-dev環境
-      port: 3001, // Browser Syncのポート
-      ui: {
-        port: 3002 // Browser Sync UIのポート
+
+    this.bs.init(
+      {
+        proxy: "localhost:8080", // DockerのWordPress theme-dev環境
+        port: 3001, // Browser Syncのポート
+        ui: {
+          port: 3002, // Browser Sync UIのポート
+        },
+        files: ["htdocs/**/*.php", "htdocs/**/*.css", "htdocs/**/*.js"],
+        watchEvents: ["change", "add"],
+        injectChanges: true, // CSSの場合はページ全体をリロードせずに変更を注入
+        notify: true,
+        open: true, // 起動時にブラウザを開く
+        logPrefix: "WordPress-BSync",
       },
-      files: [
-        "htdocs/**/*.php",
-        "htdocs/**/*.css", 
-        "htdocs/**/*.js"
-      ],
-      watchEvents: ["change", "add"],
-      injectChanges: true, // CSSの場合はページ全体をリロードせずに変更を注入
-      notify: true,
-      open: true, // 起動時にブラウザを開く
-      logPrefix: "WordPress-BSync"
-    }, (err, bs) => {
-      if (err) {
-        console.error("❌ Browser Sync起動エラー:", err);
-      } else {
-        console.log("🌐 Browser Sync起動完了");
-        console.log(`   プロキシ: http://localhost:3001`);
-        console.log(`   管理画面: http://localhost:3002`);
+      (err, bs) => {
+        if (err) {
+          console.error("❌ Browser Sync起動エラー:", err);
+        } else {
+          console.log("🌐 Browser Sync起動完了");
+          console.log(`   プロキシ: http://localhost:3001`);
+          console.log(`   管理画面: http://localhost:3002`);
+        }
       }
-    });
+    );
   }
 }
 
 // 引数でBrowser Syncの無効化を制御（デフォルトは有効）
 const args = process.argv.slice(2);
-const disableBrowserSync = args.includes('--no-browser-sync') || args.includes('--no-bs');
+const disableBrowserSync = args.includes("--no-browser-sync") || args.includes("--no-bs");
 
 // 監視開始
 new WatchTask({ browserSync: !disableBrowserSync });

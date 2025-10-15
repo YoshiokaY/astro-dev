@@ -1,0 +1,141 @@
+# docker-compose.yml（セキュア構成版）
+version: "3.8"
+services:
+  wordpress:
+    image: wordpress:php8.3-apache
+    container_name: ${SITE_NAME:-astro}-wordpress
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST:-db:3306}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wpuser}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wppassword}
+    working_dir: /var/www/html/wp
+    volumes:
+      - ./public:/var/www/html
+      # PHP設定
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - wordpress-network
+
+  db:
+    image: mysql:8.0
+    container_name: ${SITE_NAME:-astro}-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
+      MYSQL_USER: ${MYSQL_USER:-wpuser}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wppassword}
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/custom.cnf:ro
+      - ./docker/mysql/db_dump:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - wordpress-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: ${SITE_NAME:-astro}-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: ${MYSQL_USER:-wpuser}
+      PMA_PASSWORD: ${MYSQL_PASSWORD:-wppassword}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+    volumes:
+      - ./docker/phpmyadmin/sessions:/sessions
+      - ./docker/phpmyadmin/phpmyadmin-misc.ini:/usr/local/etc/php/conf.d/phpmyadmin-misc.ini
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - wordpress-network
+
+  theme-dev:
+    build:
+      context: ./docker/php
+      target: development
+    container_name: ${SITE_NAME}-php
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST:-db:3306}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wpuser}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wppassword}
+    volumes:
+      - ./public:/var/www/html
+      # テーマファイルをbind mountで確実に同期
+      - ./${THEME_PATH:-wp/wp-content/themes}/${VITE_THEME_NAME:-my-theme}:/var/www/html/wp/wp-content/themes/${VITE_THEME_NAME:-my-theme}:rw
+    depends_on:
+      - db
+    networks:
+      - wordpress-network
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ${SITE_NAME:-astro}-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - wordpress-network
+
+  wpcli:
+    image: wordpress:cli-php8.2
+    container_name: ${SITE_NAME:-astro}-wpcli
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST:-db:3306}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wpuser}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wppassword}
+      WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER:-admin}
+      WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD:-admin123}
+      WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL:-admin@example.com}
+      SITE_NAME: ${SITE_NAME:-Astro WordPress Development}
+      SITE_URL: ${SITE_URL:-http://localhost:8080}
+      VITE_THEME_NAME: ${VITE_THEME_NAME:-my-theme}
+      THEME_PATH: ${THEME_PATH:-wp/wp-content/themes}
+      STATIC_OUTPUT_DIR: ${STATIC_OUTPUT_DIR:-htdocs}
+      MYSQL_CLIENT_FLAGS: SSL_DISABLED
+    volumes:
+      - ./public:/var/www/html
+      # テーマファイルをbind mountで確実に同期
+      - ./${THEME_PATH:-wp/wp-content/themes}/${VITE_THEME_NAME:-my-theme}:/var/www/html/wp/wp-content/themes/${VITE_THEME_NAME:-my-theme}:rw
+      # 静的HTMLファイル読み込み用マウント
+      - ./${STATIC_OUTPUT_DIR:-htdocs}:/var/www/html/static:ro
+      - ./docker/wpcli/setup-wordpress.sh:/usr/local/bin/setup-wordpress.sh
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - wordpress-network
+    entrypoint: /usr/local/bin/setup-wordpress.sh
+    profiles:
+      - tools
+
+volumes:
+  mysql_data:
+    driver: local
+    name: ${SITE_NAME:-astro}_mysql_data
+
+networks:
+  wordpress-network:
+    driver: bridge
+    name: ${SITE_NAME:-astro}_network

@@ -73,7 +73,7 @@ function my_theme_scripts() {
     // メインスタイル
     wp_enqueue_style(
         'my-theme-main',
-        get_template_directory_uri() . '/assets/css/app.css',
+        get_template_directory_uri() . '/_assets/css/style.css',
         array('my-theme-style'),
         wp_get_theme()->get('Version')
     );
@@ -81,7 +81,7 @@ function my_theme_scripts() {
     // メインJavaScript
     wp_enqueue_script(
         'my-theme-main-js',
-        get_template_directory_uri() . '/assets/js/app.js',
+        get_template_directory_uri() . '/_assets/js/app.js',
         array(), // 依存関係（jQueryなど必要に応じて追加）
         wp_get_theme()->get('Version'),
         true // フッターで読み込み
