@@ -12,6 +12,7 @@ import imageminWebp from "imagemin-webp";
 import path from "path";
 import sassGlobImports from "vite-plugin-sass-glob-import";
 import simpleWebpIntegration from "./plugins/convertWebp";
+import phpOutputPlugin from "./plugins/phpOutput.js";
 
 // Node.js環境変数から直接読み込み（astro.config.mjsはNode.js環境で実行される）
 const OUTPUT_FORMAT = import.meta.env.VITE_OUTPUT_FORMAT || "html"; // デフォルトhtml
@@ -22,6 +23,8 @@ const CONVERT_TO_WEBP = import.meta.env.VITE_CONVERT_TO_WEBP === "true"; // デ�
 const ASSETS_DIR = import.meta.env.VITE_ASSETS_DIR || "_assets"; // デフォルト_assets
 const BASE_PATH = import.meta.env.VITE_BASE_PATH || "/"; // デフォルトルート相対
 const USE_RELATIVE_PATHS = import.meta.env.VITE_USE_RELATIVE_PATHS === "true"; // デフォルトfalse
+
+const isPhpOutput = true;
 
 console.log("🔧 Astro設定情報:");
 console.log(`  出力形式: ${OUTPUT_FORMAT}`);
@@ -166,7 +169,8 @@ export default defineConfig({
           },
         ]
       : []),
-
+    // PHP出力用のカスタムプラグイン
+    ...(isPhpOutput ? [phpOutputPlugin()] : []),
     // Astro内部ファイルのクリーンアップ
     {
       name: "cleanup-astro-internal",
@@ -188,6 +192,7 @@ export default defineConfig({
     // アセットディレクトリ名
     assets: ASSETS_DIR,
     compressHTML: false,
+    format: "file",
   },
 
   // HTMLの圧縮設定

@@ -10,7 +10,7 @@ function simpleWebpIntegration(options = {}) {
     enableFallback = false,
     excludePatterns = [
       /^https?:\/\//, // 絶対URL（OG画像など）
-      /\/ogp/, // OG画像
+      /\/ogImg/, // OG画像
       /\/favicon/, // ファビコン
       /\/apple-touch-icon/, // アップルタッチアイコン
       /\/android-chrome/, // Androidアイコン

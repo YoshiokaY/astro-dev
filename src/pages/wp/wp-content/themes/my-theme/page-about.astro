@@ -1,0 +1,66 @@
+---
+import LowerTitle from "@/components/LowerTitle.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import ConceptSection from "@/pages/_parts/_about/_concept.astro";
+import FeaturesSection from "@/pages/_parts/_about/_features.astro";
+import TechSection from "@/pages/_parts/_about/_tech.astro";
+
+import "@/scss/pages/_about.scss";
+import Template from "@/layouts/Template.astro";
+
+const page = {
+  head: {
+    slug: "about",
+    ttl: "概要について",
+    description: "Astroサンプルサイトの概要とコンセプトについて説明します。",
+    url: "/about/",
+  },
+  breadcrumbs: [
+    { text: "ホーム", link: "/" },
+    { text: "概要", link: "/about/" },
+  ],
+  contents: {
+    concept: {
+      ttl: "コンセプト",
+      desc: "このサイトは<strong>Astroフレームワーク</strong>を使用したモダンなWebサイト構築のデモンストレーションです。<br>高速で効率的な静的サイト生成とコンポーネントベースの開発を実現しています。",
+    },
+    features: {
+      ttl: "特徴",
+      items: [
+        "<strong>Astro</strong>による高速な静的サイト生成",
+        "<strong>TypeScript</strong>による型安全な開発",
+        "<strong>SCSS</strong>による効率的なスタイル管理",
+        "コンポーネントベースの<em>再利用可能</em>な設計",
+        "<strong>WebP画像変換</strong>による最適化",
+        "<em>アクセシビリティ</em>を重視した実装",
+      ],
+    },
+    tech: {
+      ttl: "技術スタック",
+      desc: "最新の<strong>Web技術</strong>を組み合わせて構築されています。",
+      items: [
+        { name: "Astro", desc: "<em>静的サイトジェネレーター</em>" },
+        { name: "TypeScript", desc: "<strong>型安全</strong>なJavaScript" },
+        { name: "SCSS", desc: "CSS<em>拡張言語</em>" },
+        {
+          name: "Tailwind CSS",
+          desc: "<strong>ユーティリティファースト</strong>CSS",
+        },
+      ],
+    },
+  },
+};
+---
+
+<LowerTitle title="概要について" />
+<Breadcrumbs bread={page.breadcrumbs} />
+
+<Template>
+  <div class="contentInner">
+    <div class="p_about">
+      <ConceptSection concept={page.contents.concept} />
+      <FeaturesSection features={page.contents.features} />
+      <TechSection tech={page.contents.tech} />
+    </div>
+  </div>
+</Template>

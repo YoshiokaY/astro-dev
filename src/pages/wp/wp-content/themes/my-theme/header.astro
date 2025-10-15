@@ -1,0 +1,32 @@
+---
+import Head from "@/layouts/Head.astro";
+import HeaderComponent from "@/layouts/Header.astro";
+import BeginBody from "@/layouts/BeginBody.astro";
+import { common } from "@/layouts/Common.astro"; // グローバルなサイト設定
+
+/**
+ * レイアウトコンポーネントの Props 型定義。
+ * 現在のページ情報
+ */
+
+const page = {
+  slug: "top",
+  ttl: "サンプルページ",
+  description: "Astro開発環境のサンプルページです。",
+  url: "",
+};
+---
+
+<!doctype html>
+<html dir="ltr" lang="ja">
+  <Head site={common.head} page={page} />
+  <body class={"page-top" + page.slug}>
+    <BeginBody />
+    <HeaderComponent
+      siteName={common.head.siteName}
+      domain={common.head.domain}
+      menu={common.menu}
+      slug={page.slug}
+    />
+  </body>
+</html>
