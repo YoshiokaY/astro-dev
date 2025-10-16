@@ -14,10 +14,7 @@ const $$Picture = createComponent(($$result, $$props, $$slots) => {
   } = Astro2.props;
   const [imgName, imgType] = src.split(/(?=\.[^.]+$)/);
   const spSrc = imgName + "_sp" + imgType;
-  return renderTemplate`${sp ? renderTemplate`${maybeRenderHead()}<picture>
-      ${src && renderTemplate`<source media="(min-width: 768px)"${addAttribute(src, "srcset")}${addAttribute(sizes ? sizes[0] : null, "width")}${addAttribute(sizes ? sizes[1] : null, "height")}>`}
-      ${spSrc && renderTemplate`<img${addAttribute(spSrc, "src")}${addAttribute(alt ? alt : "", "alt")}${addAttribute(sizes ? sizes[2] : null, "width")}${addAttribute(sizes ? sizes[3] : null, "height")}${addAttribute(className, "class")}${addAttribute(lazy ? "lazy" : "eager", "loading")} decoding="async">`}
-    </picture>` : renderTemplate`<img${addAttribute(src, "src")}${addAttribute(alt ? alt : "", "alt")}${addAttribute(sizes ? sizes[0] : null, "width")}${addAttribute(sizes ? sizes[1] : null, "height")}${addAttribute(className, "class")}${addAttribute(lazy ? "lazy" : "eager", "loading")} decoding="async">`}`;
+  return renderTemplate`${sp ? renderTemplate`${maybeRenderHead()}<picture>${src && renderTemplate`<source media="(min-width: 768px)"${addAttribute(src, "srcset")}${addAttribute(sizes ? sizes[0] : null, "width")}${addAttribute(sizes ? sizes[1] : null, "height")}>`}${spSrc && renderTemplate`<img${addAttribute(spSrc, "src")}${addAttribute(alt ? alt : "", "alt")}${addAttribute(sizes ? sizes[2] : null, "width")}${addAttribute(sizes ? sizes[3] : null, "height")}${addAttribute(className, "class")}${addAttribute(lazy ? "lazy" : "eager", "loading")} decoding="async">`}</picture>` : renderTemplate`<img${addAttribute(src, "src")}${addAttribute(alt ? alt : "", "alt")}${addAttribute(sizes ? sizes[0] : null, "width")}${addAttribute(sizes ? sizes[1] : null, "height")}${addAttribute(className, "class")}${addAttribute(lazy ? "lazy" : "eager", "loading")} decoding="async">`}`;
 }, "/Users/yoshioka.y/project/astro-dev/src/components/Picture.astro", void 0);
 
 export { $$Picture as $ };
