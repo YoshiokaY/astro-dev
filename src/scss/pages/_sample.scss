@@ -280,6 +280,7 @@
     overflow: hidden;
     background: #f3f4f6;
 
+    /* stylelint-disable-next-line no-descending-specificity */
     img {
       width: 100%;
       height: 100%;
