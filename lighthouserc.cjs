@@ -25,20 +25,26 @@ module.exports = {
     },
     assert: {
       preset: "lighthouse:recommended",
-      assertions: {
-        "categories:performance": ["error", { minScore: 0.9 }],
-        "categories:accessibility": ["error", { minScore: 0.9 }],
-        "categories:best-practices": ["error", { minScore: 0.9 }],
-        "categories:seo": ["error", { minScore: 0.9 }],
-        "color-contrast": "off",
-        "unused-javascript": "off",
-        "uses-responsive-images": "off",
-        "network-dependency-tree-insight": "off",
-        "unminified-css": "off",
-        "unused-css-rules": "off",
-        "render-blocking-insight": "off",
-        "image-delivery-insight": "off",
-      },
+      assertMatrix: [
+        {
+          matchingUrlPattern: ".*",
+          assertions: {
+            "categories:performance": ["error", { minScore: 0.9 }],
+            "categories:accessibility": ["error", { minScore: 0.9 }],
+            "categories:best-practices": ["error", { minScore: 0.9 }],
+            "categories:seo": ["error", { minScore: 0.9 }],
+            "color-contrast": "off",
+            "unused-javascript": "off",
+            "uses-responsive-images": "off",
+            "network-dependency-tree-insight": "off",
+            "unminified-css": "off",
+            "unused-css-rules": "off",
+            "render-blocking-insight": "off",
+            "image-delivery-insight": "off",
+          },
+        },
+      ],
+      level: "error", // warningレベルは無視、errorのみで失敗させる
     },
     upload: {
       target: "filesystem",
