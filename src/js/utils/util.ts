@@ -56,14 +56,14 @@ export const setScroll = () => {
 
 export const getTime = (date: string) => {
   const formattedDate = new Date(date.replace(/年|月|日/g, "/").replace("日", ""));
-  let year = formattedDate.getFullYear();
-  let month = String(formattedDate.getMonth() + 1).padStart(2, "0");
-  let day = String(formattedDate.getDate()).padStart(2, "0");
+  const year = formattedDate.getFullYear();
+  const month = String(formattedDate.getMonth() + 1).padStart(2, "0");
+  const day = String(formattedDate.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
 export const srcCheck = (src: string) => {
-  let regExp = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?/gi;
+  const regExp = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?/gi;
   if (!src.match(regExp)) {
     return src;
   }
