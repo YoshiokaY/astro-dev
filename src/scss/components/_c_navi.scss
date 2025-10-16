@@ -1,0 +1,353 @@
+/* Gナビ  */
+
+.c_nav {
+  position: relative;
+  color: $color-prime;
+
+  &::before {
+    position: fixed;
+    inset: 0 0 auto auto;
+    z-index: 997;
+    height: 6rem;
+    aspect-ratio: 1;
+    margin: auto;
+    content: "";
+    background-color: $color-prime;
+    border-radius: 50%;
+    opacity: 0;
+    transform: translateZ(0) scale(0);
+    transition:
+      transform 0.6s cubic-bezier(0.6, -0.01, 0.1, 1),
+      opacity 0.2s ease-out 0.3s;
+    @include mq() {
+      content: none;
+    }
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    @include mq() {
+      flex-direction: row;
+      gap: pcSize(32);
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    li {
+      position: relative;
+      @include mq() {
+        display: flex;
+      }
+
+      a {
+        position: relative;
+        font-size: pcSize(14);
+        font-weight: 500;
+        line-height: 170%;
+        color: currentcolor;
+        @include mq(sp) {
+          font-size: spSize(10);
+          font-weight: 400;
+        }
+
+        &::after {
+          position: absolute;
+          bottom: -0.3em;
+          left: 0;
+          width: 0;
+          height: 0.1rem;
+          margin: auto;
+          content: "";
+          background-color: currentcolor;
+          transition: width $easing;
+        }
+
+        @include hover {
+          &::after {
+            width: 100%;
+          }
+        }
+
+        &.-active {
+          &::after {
+            width: 100%;
+          }
+        }
+
+        span {
+          display: block;
+          line-height: 100%;
+          @include fontsize(24);
+          @include mq() {
+            display: none;
+          }
+        }
+      }
+      /// -----------------サブメニュー//
+      &.has-child {
+        @include mq(sp) {
+          overflow: hidden;
+        }
+
+        .spAccordion {
+          position: absolute;
+          inset: 0 0 0 auto;
+          aspect-ratio: 1/1;
+          margin: auto;
+
+          > span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            color: transparent;
+            text-indent: -999rem;
+
+            &::before,
+            &::after {
+              position: absolute;
+              inset: 0;
+              display: block;
+              width: 100%;
+              margin: auto;
+              content: "";
+              transition: rotate $easing;
+            }
+
+            &::before {
+              rotate: 90deg;
+            }
+          }
+
+          &.-open {
+            > span {
+              &::before {
+                rotate: none;
+              }
+            }
+          }
+        }
+
+        // サブメニュー本体
+        > ul.subMenu {
+          @include mq() {
+            position: absolute;
+            inset: 0 0 auto -50%;
+            display: grid;
+            visibility: hidden;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+            width: 200%;
+            padding: 0.8rem;
+            overflow: visible;
+            background-color: $color-prime;
+            opacity: 0;
+            transition:
+              top 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),
+              opacity $easing;
+          }
+          @include mq(sp) {
+            position: relative;
+            visibility: hidden;
+            height: 0;
+            max-height: none;
+            transition:
+              height $easing,
+              opacity $easing;
+
+            &.-open {
+              visibility: visible;
+              height: var(--subHeaderHeight);
+              opacity: 1;
+            }
+          }
+
+          > li {
+            > a {
+              color: $color-reversal;
+              @include mq() {
+                &::before {
+                  right: auto;
+                }
+              }
+            }
+          }
+
+          &.-open {
+            height: var(--subHeightOpen, auto);
+          }
+        }
+        @include mq() {
+          @include hover {
+            ul.subMenu {
+              top: 100%;
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+          // キーボード操作時に子メニューを閉じないようにする
+          &:focus-within {
+            > ul.subMenu {
+              top: 100%;
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+  // ハンバーガーボタン
+  .c_nav_btn {
+    position: relative;
+    z-index: 999;
+    display: block;
+    height: spSize(40);
+    aspect-ratio: 1;
+    margin: auto;
+    color: $color-prime;
+    @include mq() {
+      display: none;
+    }
+
+    > span {
+      position: absolute;
+      inset: 0;
+      width: spSize(18);
+      height: 0.2rem;
+      margin: auto;
+      color: inherit;
+      text-indent: -999rem;
+      background-color: currentcolor;
+      transition: background-color $easing;
+
+      &::before,
+      &::after {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 0.2rem;
+        margin: auto;
+        content: "";
+        background-color: currentcolor;
+        transition:
+          rotate $easing,
+          background-color $easing;
+      }
+
+      &::before {
+        top: spSize(6);
+        bottom: auto;
+      }
+
+      &::after {
+        top: auto;
+        bottom: spSize(6);
+      }
+    }
+  }
+
+  &_wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    display: none;
+    visibility: hidden;
+    width: 100%;
+    height: 100dvh;
+    padding: 14rem 4rem 4rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-out 0.4s;
+    @include mq() {
+      position: relative;
+      display: block;
+      visibility: visible;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: auto;
+      overflow-y: visible;
+      background-color: transparent;
+      opacity: 1;
+    }
+  }
+
+  #navi {
+    @include mq(sp) {
+      position: relative;
+      z-index: 500;
+      visibility: visible;
+      height: 100%;
+      overflow-y: auto;
+      opacity: 1;
+    }
+  }
+
+  &.-open {
+    color: $color-reversal;
+
+    &::before {
+      opacity: 1;
+      transform: translateZ(0) scale(80);
+      transition:
+        transform 0.8s cubic-bezier(0.4, 0.1, 0.3, 1),
+        oapcity 0.3s cubic-bezier(0.4, 0.1, 0.3, 1) 0.5s;
+    }
+
+    .c_nav_wrapper {
+      @include mq(sp) {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+
+        #navi {
+          visibility: visible;
+          animation: fade $easing;
+        }
+      }
+    }
+
+    .c_nav_btn {
+      color: $color-reversal;
+
+      span {
+        background-color: transparent;
+
+        &::before,
+        &::after {
+          inset: 0;
+          rotate: 40deg;
+        }
+
+        &::after {
+          rotate: -40deg;
+        }
+      }
+    }
+  }
+
+  &_close {
+    @include mq() {
+      display: none;
+    }
+  }
+}
+
+@include mq(sp) {
+  html:has(.hamburgerMenu.-open) {
+    // overflow: hidden;
+
+    body {
+      overflow: auto;
+      overflow-y: scroll;
+    }
+
+    .headerLogo {
+      color: $color-reversal;
+    }
+  }
+}
+
+/* /Gナビ  */

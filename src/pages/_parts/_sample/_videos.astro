@@ -1,0 +1,68 @@
+---
+import Picture from "@/components/Picture.astro";
+
+/**
+ * 動画セクションコンポーネント
+ */
+interface Props {
+  /**
+   * 動画データ
+   */
+  videos: {
+    ttl: string;
+    items: {
+      ttl: string;
+      desc: string;
+      thumbnail: string;
+      videoUrl: string;
+    }[];
+  };
+  /**
+   * 画像パス
+   */
+  imgPath: string;
+}
+
+const { videos, imgPath } = Astro.props;
+---
+
+<section class="sample_videos">
+  <h2 class="section_ttl">{videos.ttl}</h2>
+  <ul class="video_list">
+    {
+      videos.items.map((video) => (
+        <li class="video_item">
+          <button
+            type="button"
+            class="c_modal_btn video_card"
+            data-src={video.videoUrl}
+          >
+            <span class="video_thumbnail">
+              <Picture
+                src={imgPath + video.thumbnail}
+                alt={video.ttl}
+                sizes={[800, 450]}
+              />
+              <span class="video_play_icon">
+                <svg
+                  width="60"
+                  height="60"
+                  viewBox="0 0 60 60"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="30" cy="30" r="30" fill="white" opacity="0.9" />
+                  <path d="M24 18L42 30L24 42V18Z" fill="#667eea" />
+                </svg>
+              </span>
+            </span>
+            <span class="video_body">
+              <h3 class="video_ttl">{video.ttl}</h3>
+              <p class="video_desc">{video.desc}</p>
+            </span>
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</section>

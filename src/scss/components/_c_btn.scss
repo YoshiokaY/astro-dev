@@ -1,0 +1,25 @@
+.p_sample {
+  padding: 4rem 0;
+}
+
+// ヒーローセクション
+
+@layer components {
+  .c_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 32rem;
+    min-height: 5.6rem;
+    margin: auto;
+    font-weight: bold;
+    color: $color-reversal;
+    background-color: $color-prime;
+    border-radius: 0.4rem;
+    transition: opacity $easing;
+    @include hover {
+      opacity: 0.7;
+    }
+  }
+}

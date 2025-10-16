@@ -1,0 +1,54 @@
+---
+/**
+ * カテゴリーセクションコンポーネント
+ */
+interface Props {
+  /**
+   * カテゴリーデータ
+   */
+  categories: {
+    ttl: string;
+    items: {
+      name: string;
+      children: string[];
+    }[];
+  };
+}
+
+const { categories } = Astro.props;
+---
+
+<aside class="sample_categories c_tab">
+  <h2 class="section_ttl">{categories.ttl}</h2>
+  <ul class="c_tab_list category_tab_list">
+    {
+      categories.items.map((category, i) => (
+        <li>
+          <button
+            type="button"
+            class={i === 0 ? "-open" : ""}
+            aria-pressed={i === 0 ? "true" : "false"}
+            tabindex={i === 0 ? "-1" : "0"}
+          >
+            {category.name}
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+  {
+    categories.items.map((category, i) => (
+      <div
+        class="c_tab_content category_tab_content"
+        hidden={i !== 0}
+        tabindex="-1"
+      >
+        <ul class="category_child_list">
+          {category.children.map((child) => (
+            <li class="category_child_item">{child}</li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</aside>
