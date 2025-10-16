@@ -1,17 +1,16 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { TEST_PAGES } from '../../test-config.js';
 
 /**
  * アクセシビリティテスト - ページ単位
  * WCAG 2.1 Level AA準拠チェック
  */
 
-const pages = [
-	{ name: 'トップページ', url: '/' },
-	{ name: '概要ページ', url: '/about/' },
-	{ name: 'サンプルページ', url: '/sample/' },
-	{ name: 'プライバシーポリシー', url: '/privacy/' },
-];
+const pages = TEST_PAGES.map((page) => ({
+	name: page.name,
+	url: page.path,
+}));
 
 pages.forEach(({ name, url }) => {
 	test.describe(`${name} (${url})`, () => {
