@@ -72,3 +72,33 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: sh ./markuplint-check.sh
         continue-on-error: false #リポート機能が無いのでエラーの場合警告を出す
+
+  # アクセシビリティテスト（必要に応じてコメント解除）
+  # Accessibility:
+  #   name: Accessibility Tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # リポジトリのチェックアウト
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #
+  #     # 依存関係のインストール
+  #     - name: Install dependencies
+  #       run: npm install
+  #
+  #     # Playwrightブラウザのインストール
+  #     - name: Install Playwright Browsers
+  #       run: npx playwright install --with-deps
+  #
+  #     # アクセシビリティテストの実行
+  #     - name: Run accessibility tests
+  #       run: npm run test:a11y
+  #
+  #     # テスト結果のアップロード（失敗時）
+  #     - name: Upload test results
+  #       if: failure()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: playwright-report
+  #         path: playwright-report/
+  #         retention-days: 30
