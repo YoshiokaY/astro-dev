@@ -43,6 +43,8 @@ const { articles, imgPath } = Astro.props;
                   src={imgPath + article.img}
                   alt={article.imgAlt}
                   sizes={[800, 450]}
+                  lazy={false}
+                  lcp={true}
                 />
               </div>
               <div class="card_body">
