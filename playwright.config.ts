@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { DEV_BASE_URL } from './test-config.js';
 
 /**
  * Playwright設定
@@ -16,7 +17,7 @@ export default defineConfig({
 		['list'],
 	],
 	use: {
-		baseURL: 'http://localhost:3000',
+		baseURL: DEV_BASE_URL,
 		trace: 'on-first-retry',
 		screenshot: 'only-on-failure',
 	},
@@ -46,7 +47,7 @@ export default defineConfig({
 
 	webServer: {
 		command: 'npm run start',
-		url: 'http://localhost:3000',
+		url: DEV_BASE_URL,
 		reuseExistingServer: !process.env.CI,
 	},
 });

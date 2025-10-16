@@ -33,3 +33,6 @@ astro-internal/
 /playwright-report/
 /playwright/.cache/
 /test-results/
+
+# Lighthouse CI
+.lighthouseci/
