@@ -233,6 +233,15 @@
     }
   }
 
+  .video_play_icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease;
+  }
+
   .video_item {
     list-style: none;
   }
@@ -277,15 +286,6 @@
       object-fit: cover;
       transition: transform 0.3s ease;
     }
-  }
-
-  .video_play_icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: block;
-    transform: translate(-50%, -50%);
-    transition: transform 0.3s ease;
   }
 
   .video_body {

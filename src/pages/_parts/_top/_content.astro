@@ -1,0 +1,80 @@
+---
+import Picture from "@/components/Picture.astro";
+
+/**
+ * サンプルヒーローセクションコンポーネント
+ */
+interface Props {
+  /**
+   * サンプルセクションのコンテンツデータ
+   */
+  contents: {
+    ttl: string;
+    desc: string[];
+    features: {
+      ttl: string;
+      items: string[];
+    };
+    textSample: {
+      ttl: string;
+      content: string;
+    };
+    pictureDemo: {
+      ttl: string;
+      desc: string;
+      img: {
+        src: string;
+        alt: string;
+        sizes: number[];
+      };
+    };
+  };
+  /**
+   * 画像パス
+   */
+  imgPath: string;
+}
+
+const { contents, imgPath } = Astro.props;
+---
+
+<section class="p_sample_hero">
+  <div class="contentInner">
+    <div class="grid gap-40 py-60">
+      <div>
+        <h2 class="text-h2">{contents.ttl}</h2>
+        <div class="mt-20">
+          {contents.desc.map((paragraph) => <p set:html={paragraph} />)}
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-h2 mb-16">{contents.features.ttl}</h2>
+        <ul class="grid gap-12">
+          {contents.features.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-h2 mb-16" set:html={contents.textSample.ttl} />
+        <p class="text-base" set:html={contents.textSample.content} />
+      </div>
+
+      <div>
+        <h2 class="text-h2 mb-16" set:html={contents.pictureDemo.ttl} />
+        <p
+          class="text-prime mb-24 text-base"
+          set:html={contents.pictureDemo.desc}
+        />
+        <div class="picture-demo-container">
+          <Picture
+            src={imgPath + contents.pictureDemo.img.src}
+            alt={contents.pictureDemo.img.alt}
+            sizes={contents.pictureDemo.img.sizes}
+            class="picture-demo-image"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
