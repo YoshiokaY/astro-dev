@@ -199,27 +199,69 @@ THEME_PATH=${THEME_PATH:-wp/wp-content/themes}
 STATIC_OUTPUT_DIR=${STATIC_OUTPUT_DIR:-htdocs}
 HTDOCS_DIR="/var/www/html/static"
 if [ -d "$HTDOCS_DIR" ]; then
-    # サブディレクトリ内のindex.htmlファイルを処理
+    # 1. HTDOCS_DIR直下のHTMLファイルを処理（index.html以外）
+    echo "📄 HTDOCS_DIR直下のHTMLファイルを処理中..."
+    for html_file in "$HTDOCS_DIR"/*.html; do
+        # ファイルが存在しない場合はスキップ（globが展開されない場合）
+        [ -f "$html_file" ] || continue
+
+        # ファイル名を取得
+        filename=$(basename "$html_file")
+
+        # index.htmlは除外（ホームページ用）
+        if [ "$filename" = "index.html" ]; then
+            continue
+        fi
+
+        # 拡張子を除いたファイル名をslugとして使用
+        slug="${filename%.html}"
+
+        # HTMLからh1タグの内容を抽出してタイトルとして使用
+        title=$(grep -o '<h1[^>]*>[^<]*</h1>' "$html_file" | sed -e 's/<h1[^>]*>//' -e 's/<\/h1>//' | head -1)
+
+        # h1が見つからない場合はslugをタイトルとして使用
+        if [ -z "$title" ]; then
+            title="$slug"
+        fi
+
+        echo "📝 ページを作成中: $title (slug: $slug)"
+
+        # WordPressページを作成
+        wp post create \
+            --post_type=page \
+            --post_title="$title" \
+            --post_content="" \
+            --post_name="$slug" \
+            --post_status=publish
+    done
+
+    # 2. サブディレクトリ内のindex.htmlファイルを処理
+    echo "📁 サブディレクトリ内のindex.htmlを処理中..."
     for dir in "$HTDOCS_DIR"/*/; do
         # ディレクトリが存在する場合のみ処理
         if [ -d "$dir" ]; then
             # ディレクトリ名からslugを取得
             slug=$(basename "$dir")
-            
+
+            # WordPress本体ディレクトリは除外
+            if [ "$slug" = "wp" ]; then
+                continue
+            fi
+
             # 各ディレクトリのindex.htmlファイルを確認
             html_file="$dir/index.html"
-            
+
             if [ -f "$html_file" ]; then
                 # HTMLからh1タグの内容を抽出してタイトルとして使用
                 title=$(grep -o '<h1[^>]*>[^<]*</h1>' "$html_file" | sed -e 's/<h1[^>]*>//' -e 's/<\/h1>//' | head -1)
-                
+
                 # h1が見つからない場合はslugをタイトルとして使用
                 if [ -z "$title" ]; then
                     title="$slug"
                 fi
-                
+
                 echo "📝 ページを作成中: $title (slug: $slug)"
-                
+
                 # WordPressページを作成
                 wp post create \
                     --post_type=page \
@@ -232,7 +274,7 @@ if [ -d "$HTDOCS_DIR" ]; then
             fi
         fi
     done
-    echo "✅ $STATIC_OUTPUT_DIR配下のディレクトリからのページ作成が完了しました"
+    echo "✅ $STATIC_OUTPUT_DIR配下のHTMLファイルからのページ作成が完了しました"
 else
     echo "⚠️ $STATIC_OUTPUT_DIRディレクトリが見つかりません。手動でページを作成します。"
 
