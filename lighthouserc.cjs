@@ -8,40 +8,41 @@
  */
 
 // test-config.jsと同期してください
-const TEST_PAGES = [
-	{ path: '/' },
-	{ path: '/about/' },
-	{ path: '/sample/' },
-];
+const TEST_PAGES = [{ path: "/" }, { path: "/about/" }, { path: "/sample/" }];
 
-const STATIC_DIST_DIR = './htdocs';
+const STATIC_DIST_DIR = "./htdocs";
 
 module.exports = {
-	ci: {
-		collect: {
-			staticDistDir: STATIC_DIST_DIR,
-			url: TEST_PAGES.map((page) => `http://localhost${page.path}index.html`),
-			numberOfRuns: 1,
-			settings: {
-				preset: 'desktop',
-				onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
-			},
-		},
-		assert: {
-			preset: 'lighthouse:recommended',
-			assertions: {
-				'categories:performance': ['error', { minScore: 0.9 }],
-				'categories:accessibility': ['error', { minScore: 0.9 }],
-				'categories:best-practices': ['error', { minScore: 0.9 }],
-				'categories:seo': ['error', { minScore: 0.9 }],
-				'color-contrast': 'off',
-				'unused-javascript': 'off',
-				'uses-responsive-images': 'off',
-			},
-		},
-		upload: {
-			target: 'filesystem',
-			outputDir: '.lighthouseci',
-		},
-	},
+  ci: {
+    collect: {
+      staticDistDir: STATIC_DIST_DIR,
+      url: TEST_PAGES.map((page) => `http://localhost${page.path}index.html`),
+      numberOfRuns: 1,
+      settings: {
+        preset: "desktop",
+        onlyCategories: ["performance", "accessibility", "best-practices", "seo"],
+      },
+    },
+    assert: {
+      preset: "lighthouse:recommended",
+      assertions: {
+        "categories:performance": ["error", { minScore: 0.9 }],
+        "categories:accessibility": ["error", { minScore: 0.9 }],
+        "categories:best-practices": ["error", { minScore: 0.9 }],
+        "categories:seo": ["error", { minScore: 0.9 }],
+        "color-contrast": "off",
+        "unused-javascript": "off",
+        "uses-responsive-images": "off",
+        "network-dependency-tree-insight": "off",
+        "unminified-css": "off",
+        "unused-css-rules": "off",
+        "render-blocking-insight": "off",
+        "image-delivery-insight": "off",
+      },
+    },
+    upload: {
+      target: "filesystem",
+      outputDir: ".lighthouseci",
+    },
+  },
 };

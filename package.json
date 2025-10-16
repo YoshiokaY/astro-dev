@@ -22,7 +22,8 @@
     "test:a11y:ui": "playwright test --ui",
     "test:a11y:report": "playwright show-report",
     "// === Lighthouseチェックコマンド ===": "",
-    "lighthouse": "lhci autorun && npm run lighthouse:open",
+    "lighthouse:clean": "rm -rf .lighthouseci",
+    "lighthouse": "npm run lighthouse:clean && lhci autorun && npm run lighthouse:open",
     "lighthouse:collect": "lhci collect",
     "lighthouse:assert": "lhci assert",
     "lighthouse:open": "open .lighthouseci/*.html || xdg-open .lighthouseci/*.html || start .lighthouseci/*.html"

@@ -98,6 +98,9 @@
           inset: 0 0 0 auto;
           aspect-ratio: 1/1;
           margin: auto;
+          @include mq() {
+            display: none;
+          }
 
           > span {
             display: block;
@@ -211,6 +214,7 @@
     color: $color-prime;
     @include mq() {
       display: none;
+      pointer-events: none;
     }
 
     > span {
