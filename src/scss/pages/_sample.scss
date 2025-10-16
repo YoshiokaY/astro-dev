@@ -1,0 +1,363 @@
+.p_sample {
+  padding: 4rem 0;
+}
+
+// ヒーローセクション
+.sample_hero {
+  padding: 6rem 2rem;
+  margin-bottom: 6rem;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 0.8rem;
+
+  .hero_ttl {
+    margin-bottom: 1.6rem;
+    font-size: 3.2rem;
+    font-weight: bold;
+
+    @include mq() {
+      font-size: 4.8rem;
+    }
+  }
+
+  .hero_subtitle {
+    margin-bottom: 2.4rem;
+    font-size: 1.6rem;
+    opacity: 0.9;
+
+    @include mq() {
+      font-size: 2rem;
+    }
+  }
+
+  .hero_desc {
+    max-width: 60rem;
+    margin: 0 auto;
+    font-size: 1.4rem;
+    line-height: 1.8;
+    opacity: 0.95;
+
+    @include mq() {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+// コンテンツエリア
+.sample_content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6rem;
+
+  @include mq() {
+    gap: 4rem;
+  }
+}
+
+// 共通セクションタイトル
+.section_ttl {
+  padding-bottom: 1.6rem;
+  margin-bottom: 3rem;
+  font-size: 2rem;
+  font-weight: bold;
+  border-bottom: 0.3rem solid $color-prime;
+
+  @include mq() {
+    font-size: 2.4rem;
+  }
+}
+
+// 記事一覧
+.sample_articles {
+  .article_list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
+
+    @include mq() {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .article_item {
+    list-style: none;
+  }
+
+  .card_img {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #f3f4f6;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  .article_card {
+    overflow: hidden;
+    border: 0.1rem solid #e5e7eb;
+    border-radius: 0.8rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0.4rem 1.2rem rgb(0 0 0 / 0.1);
+      transform: translateY(-0.2rem);
+
+      .card_img img {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .card_body {
+    padding: 2.4rem;
+  }
+
+  .card_header {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+    margin-bottom: 1.6rem;
+  }
+
+  .card_category {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background: $color-prime;
+    border-radius: 0.4rem;
+  }
+
+  .card_ttl {
+    margin-bottom: 1.2rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1.6;
+
+    @include mq() {
+      font-size: 2rem;
+    }
+  }
+
+  .card_desc {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: #6b7280;
+  }
+}
+
+// カテゴリー
+.sample_categories {
+  .category_tab_list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    margin-bottom: 2.4rem;
+
+    @include mq() {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    button {
+      padding: 1.2rem 1.6rem;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #4b5563;
+      background: #f9fafb;
+      border: 0.2rem solid #e5e7eb;
+      border-radius: 0.8rem;
+      transition: all 0.3s ease;
+
+      @include mq() {
+        font-size: 1.6rem;
+      }
+
+      &:hover {
+        background: #f3f4f6;
+      }
+
+      &.-open {
+        color: #fff;
+        background: $color-prime;
+        border-color: $color-prime;
+      }
+    }
+  }
+
+  .category_tab_content {
+    padding: 2.4rem;
+    background: #f9fafb;
+    border-radius: 0.8rem;
+  }
+
+  .category_child_list {
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  .category_child_item {
+    padding: 1.2rem 1.6rem;
+    font-size: 1.4rem;
+    list-style: none;
+    background: #fff;
+    border-radius: 0.6rem;
+    transition: background 0.3s ease;
+
+    @include mq() {
+      font-size: 1.6rem;
+    }
+
+    &:hover {
+      background: #f3f4f6;
+    }
+  }
+}
+
+// 動画
+.sample_videos {
+  margin-top: 8rem;
+
+  .video_list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
+
+    @include mq() {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .video_play_icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease;
+  }
+
+  .video_item {
+    list-style: none;
+  }
+
+  .video_card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: 0.1rem solid #e5e7eb;
+    border-radius: 0.8rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0.4rem 1.2rem rgb(0 0 0 / 0.1);
+      transform: translateY(-0.2rem);
+
+      .video_thumbnail img {
+        transform: scale(1.05);
+      }
+
+      .video_play_icon {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+    }
+  }
+
+  .video_thumbnail {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #f3f4f6;
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  .video_body {
+    display: block;
+    padding: 2.4rem;
+  }
+
+  .video_ttl {
+    margin-bottom: 1.2rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1.6;
+
+    @include mq() {
+      font-size: 2rem;
+    }
+  }
+
+  .video_desc {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: #6b7280;
+  }
+}
+
+// Q&A
+.sample_qa {
+  margin-top: 8rem;
+
+  .qa_list {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .qa_item {
+    border: 0.1rem solid #e5e7eb;
+    border-radius: 0.8rem;
+  }
+
+  .qa_q {
+    padding: 2rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    background: #f9fafb;
+    border-radius: 0.8rem;
+
+    @include mq() {
+      font-size: 1.8rem;
+    }
+
+    &:hover {
+      background: #f3f4f6;
+    }
+
+    .qa_q_text {
+      display: block;
+    }
+  }
+
+  .qa_a {
+    padding: 2rem;
+    background: #fff;
+
+    .qa_a_text {
+      font-size: 1.4rem;
+      line-height: 1.8;
+      color: #4b5563;
+
+      @include mq() {
+        font-size: 1.6rem;
+      }
+    }
+  }
+}

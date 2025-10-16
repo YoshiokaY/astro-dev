@@ -1,0 +1,21 @@
+/* タブ  */
+
+.c_tab {
+  &_list {
+    button {
+      &[tabindex="-1"] {
+        color: $color-prime;
+        pointer-events: none;
+        background-color: $color-reversal;
+      }
+    }
+  }
+
+  &_content {
+    animation: fade $easing;
+
+    &[hidden] {
+      opacity: 0;
+    }
+  }
+}
