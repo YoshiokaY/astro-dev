@@ -1,8 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Hero from "@/pages/_parts/_top/_hearo.astro";
-import Step from "@/pages/_parts/_top/_step.astro";
-import Sample from "@/pages/_parts/_top/_sample.astro";
+import SampleHero from "@/pages/_parts/_top/_content.astro";
 import "@/scss/pages/_top.scss";
 
 const page = {
@@ -13,41 +11,39 @@ const page = {
     url: "",
   },
   contents: {
-    hero: {
-      ttl: "astro-devハンズオン",
+    sample: {
+      ttl: "サンプルページ",
       desc: [
-        "astro-devのデータ駆動コーディングとコンポーネント化設計について<br>実際に手を動かしながらを解説いたします。",
+        "このページはAstro開発環境のサンプルページです。<br>ヘッダー、フッター、メインコンテンツのシンプルな構成で作成されています。",
+        "コンポーネント化とデータ駆動の開発手法のデモンストレーションも兼ねています。",
       ],
+      features: {
+        ttl: "機能紹介",
+        items: [
+          "✅ Astroによる高速な静的サイト生成",
+          "✅ TypeScriptサポート",
+          "✅ SCSS（Dart Sass）",
+          "✅ Tailwind CSSサポート",
+          "✅ WebP画像変換サポート",
+          "✅ コンポーネント化アーキテクチャ",
+          "✅ データ駆動開発",
+        ],
+      },
+      textSample: {
+        ttl: "テキストサンプル",
+        content:
+          "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。また、その奥羽山脈の重畳たる稜線は、濃紫のなつかしい線となって、東北の空にひかえている。",
+      },
+      pictureDemo: {
+        ttl: "Pictureコンポーネントデモ",
+        desc: "<strong>Picture.astro</strong>コンポーネントの使用例です。<br>レスポンシブ対応と遅延読み込みに対応しています。",
+        img: {
+          src: "sample_001.png",
+          alt: "Astroサンプルサイトのデモ画像",
+          sizes: [800, 600],
+        },
+      },
     },
-    steps: [
-      {
-        id: "01",
-        ttl: "実践パート1：データ駆動コーディング",
-        desc: [
-          "テキストや画像などのコンテンツはJSON形式にして、受け皿となるHTML構造とは別に管理することでコンテンツの差し替えなのか、それともHTMLの修正なのか、あるいはスタイルの修正だけで済むのかすぐに判断し、最小限の工数で修正や差し替えに対応できるようになります。",
-        ],
-        lists: [
-          "WFやデザインデータからコンテンツを分解しデータ構造（JSON形式）を作ってみる",
-          "コンテンツデータをHTML構造に流し込んでみる",
-          "コンテンツを修正してみる",
-        ],
-      },
-    ],
-    steps2: [
-      {
-        id: "02",
-        ttl: "実践パート2：コンポーネント化アーキテクチャ",
-        desc: [
-          'コンテンツデータと切り離したことで、同じコードを何度も書く必要がなくなりました。<br>条件分岐やマップ処理など再利用できる形で記述したHTMLのパーツを組み合わせてページを構築していくことで<br class="pcOnly">保守性・拡張性・開発効率を劇的に向上させることができます。',
-        ],
-        lists: [
-          "インンターフェースを作ってみる",
-          "マップ処理でHTML構造を使い回してみる",
-          "条件分岐でHTML構造にオプションを追加してみる",
-          "コンポーネントを修正してみる",
-        ],
-      },
-    ],
   },
 };
 
@@ -55,34 +51,5 @@ const imgPath = "/_assets/img/" + page.head.slug + "/";
 ---
 
 <Layout page={page.head}>
-  <Hero contents={page.contents.hero} />
-  <Step contents={page.contents.steps} />
-  <Sample />
-
-  <!-- <section class="py-80">
-    <div class="contentInner">
-      <h2 class="text-h2 text-prime mb-16 border-b-3 pb-8 font-bold"></h2>
-      <p class="mb-64"></p>
-      <div class="grid gap-64">
-        <div class="flex items-center justify-between gap-32 max-md:flex-col">
-          <img
-            src=""
-            alt=""
-            width="450"
-            height="450"
-            loading="lazy"
-            decoding="async"
-            class="block rounded-2xl max-md:w-full md:max-w-[50%]"
-          />
-          <div class="grid gap-16 md:max-w-[50%]">
-            <h3 class="text-h3 text-prime font-bold"></h3>
-            <p></p>
-            <a href="" class="c_btn mx-0 md:min-w-260"></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> -->
-
-  <Step contents={page.contents.steps2} />
+  <SampleHero contents={page.contents.sample} imgPath={imgPath} />
 </Layout>

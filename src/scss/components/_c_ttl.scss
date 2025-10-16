@@ -1,9 +1,10 @@
 /* 見出し  */
 @layer components {
   .c_ttl_lower {
-    padding-block: 1em;
+    padding-block: 1.5em;
     font-size: $text-h1;
     font-weight: bold;
+    color: $color-reversal;
     text-align: center;
   }
 }
