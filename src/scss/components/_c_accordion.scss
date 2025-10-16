@@ -1,0 +1,73 @@
+/* アコーディオン  */
+
+.c_pull {
+  height: var(--pullHeightClosed, auto);
+  overflow: hidden;
+  transition: height $easing;
+  // タイトル部分
+  .c_pull_ttl {
+    position: relative;
+    padding-right: 5rem;
+    cursor: pointer;
+    @include mq() {
+      padding-right: spSize(30);
+    }
+
+    // 開閉アイコン
+    &::before,
+    &::after {
+      position: absolute;
+      inset: 0 1em 0 auto;
+      width: 2.4rem;
+      height: 0.4rem;
+      margin: auto;
+      content: "";
+      background-color: $color-prime;
+      transform-origin: center;
+      transition: rotate $easing;
+    }
+
+    &::after {
+      rotate: 90deg;
+    }
+
+    &:focus-visible {
+      outline: solid 0.3rem $color-prime;
+      outline-offset: -0.5rem;
+      box-shadow: none;
+    }
+  }
+  // 展開時の状態
+  &.-open {
+    height: var(--pullHeightOpen, auto);
+
+    .c_pull_ttl {
+      &::after {
+        rotate: none;
+      }
+    }
+  }
+  // SP時のみアコーディオン
+  &.-spPull {
+    @include mq(pc) {
+      border: 0;
+
+      .c_pull_ttl {
+        padding: 0;
+        pointer-events: none;
+        cursor: none;
+
+        &::before,
+        &::after {
+          content: none;
+        }
+      }
+
+      .c_pull_content {
+        padding: 0;
+      }
+    }
+  }
+}
+
+/* /アコーディオン  */

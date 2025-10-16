@@ -1,0 +1,19 @@
+---
+/**
+ * ServiceCard コンポーネント
+ * ハンズオン実習1用：サービス紹介カード
+ */
+interface Props {
+  ttl: string;
+  desc: string;
+  icon?: string;
+}
+
+const { ttl, desc, icon } = Astro.props;
+---
+
+<div class="c_service-card">
+  {icon && <div class="c_service-icon">{icon}</div>}
+  <h3 class="c_service-ttl">{ttl}</h3>
+  <p class="c_service-desc">{desc}</p>
+</div>
