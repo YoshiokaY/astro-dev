@@ -72,3 +72,65 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: sh ./markuplint-check.sh
         continue-on-error: false #リポート機能が無いのでエラーの場合警告を出す
+
+  # アクセシビリティテスト（必要に応じてコメント解除）
+  Accessibility:
+    name: Accessibility Tests
+    runs-on: ubuntu-latest
+    steps:
+      # リポジトリのチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 依存関係のインストール
+      - name: Install dependencies
+        run: npm install
+
+      # Playwrightブラウザのインストール
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      # アクセシビリティテストの実行
+      - name: Run accessibility tests
+        run: npm run test:a11y
+
+      # テスト結果のアップロード（失敗時）
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  # Lighthouse CI（デプロイ前のパフォーマンス・アクセシビリティチェック）
+  Lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    steps:
+      # リポジトリのチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 依存関係のインストール
+      - name: Install dependencies
+        run: npm install
+
+      # ビルド実行
+      - name: Build site
+        run: npm run build
+
+      # Lighthouse CI実行
+      - name: Run Lighthouse CI
+        run: npm run lighthouse:ci
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      # Lighthouse結果のアップロード
+      - name: Upload Lighthouse results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-results
+          path: .lighthouseci/
+          retention-days: 30
