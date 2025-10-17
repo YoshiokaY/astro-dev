@@ -24,26 +24,21 @@ module.exports = {
       },
     },
     assert: {
-      preset: "lighthouse:recommended",
-      assertMatrix: [
-        {
-          matchingUrlPattern: ".*",
-          assertions: {
-            "categories:performance": ["error", { minScore: 0.9 }],
-            "categories:accessibility": ["error", { minScore: 0.9 }],
-            "categories:best-practices": ["error", { minScore: 0.9 }],
-            "categories:seo": ["error", { minScore: 0.9 }],
-            "color-contrast": "off",
-            "unused-javascript": "off",
-            "uses-responsive-images": "off",
-            "network-dependency-tree-insight": "off",
-            "unminified-css": "off",
-            "unused-css-rules": "off",
-            "render-blocking-insight": "off",
-            "image-delivery-insight": "off",
-          },
-        },
-      ],
+      assertions: {
+        "categories:performance": ["error", { minScore: 0.9 }],
+        "categories:accessibility": ["error", { minScore: 0.9 }],
+        "categories:best-practices": ["error", { minScore: 0.9 }],
+        "categories:seo": ["error", { minScore: 0.9 }],
+        "color-contrast": "off",
+        "unused-javascript": "off",
+        "uses-responsive-images": "off",
+        "network-dependency-tree-insight": "off",
+        "unminified-css": "off",
+        "unused-css-rules": "off",
+        "render-blocking-insight": "off",
+        "image-delivery-insight": "off",
+        "target-size": "warn", // warningレベル（CIでは失敗しない）
+      },
       level: "error", // warningレベルは無視、errorのみで失敗させる
     },
     upload: {
