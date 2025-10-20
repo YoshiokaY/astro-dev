@@ -26,6 +26,10 @@ interface Props {
   /**
    * SP用の画像があるか否か。デフォルトは false。
    */
+  lcp?: boolean;
+  /**
+   * SP用の画像があるか否か。デフォルトは false。
+   */
   sp?: boolean;
 }
 
@@ -35,6 +39,7 @@ const {
   sizes,
   class: className,
   lazy = true,
+  lcp = false,
   sp = false,
 } = Astro.props;
 
@@ -74,6 +79,7 @@ const spSrc = imgName + "_sp" + imgType;
       class={className}
       loading={lazy ? "lazy" : "eager"}
       decoding="async"
+      fetchpriority={lcp ? "high" : "auto"}
     />
   )
 }

@@ -35,10 +35,12 @@ $color-body: #fff;
 $color-txt: #334155;
 $color-reversal: #fff;
 $color-gray: #d6d4d0;
-$color-prime: #3b82f6;
+$color-prime: #1d4ed8; // WCAG AA準拠（コントラスト比 4.5:1以上）
 $color-second: #8b5cf6;
 $color-third: #00f;
 
+// PCデザインサイズ
+$pcDesign: 1366;
 // SPのデザインサイズ
 $spDesign: 375;
 // SPデザインに応じた倍率設定

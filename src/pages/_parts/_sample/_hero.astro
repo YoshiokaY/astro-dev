@@ -1,0 +1,23 @@
+---
+/**
+ * ヒーローセクションコンポーネント
+ */
+interface Props {
+  /**
+   * ヒーローデータ
+   */
+  hero: {
+    ttl: string;
+    subtitle: string;
+    desc: string;
+  };
+}
+
+const { hero } = Astro.props;
+---
+
+<section class="sample_hero">
+  <h1 class="hero_ttl">{hero.ttl}</h1>
+  <p class="hero_subtitle">{hero.subtitle}</p>
+  <p class="hero_desc">{hero.desc}</p>
+</section>

@@ -1,0 +1,21 @@
+---
+/**
+ * NewsCard コンポーネント
+ * ハンズオン実習2用：ニュース記事カード
+ */
+interface Props {
+  date: string;
+  ttl: string;
+  category: string;
+}
+
+const { date, ttl, category } = Astro.props;
+---
+
+<div class="c_news-card">
+  <div class="c_news-meta">
+    <time class="c_news-date">{date}</time>
+    <span class="c_news-category">{category}</span>
+  </div>
+  <h3 class="c_news-ttl">{ttl}</h3>
+</div>
