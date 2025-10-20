@@ -7,6 +7,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "// === Linterチェックコマンド ===": "",
     "lint": "eslint 'src/**/*.{js,ts,astro,json}' --fix",
     "lint:css": "stylelint 'src/**/*.scss' --fix",
     "lint:markup": "markuplint 'htdocs/**/*.{html,php}' --fix --config .markuplintrc",
@@ -14,19 +15,35 @@
     "lint:ci": "run-s lint:js:ci lint:css:ci lint:markup:ci",
     "lint:js:ci": "eslint 'src/**/*.{js,ts,astro,json}' --format json --output-file eslint-report.json",
     "lint:css:ci": "stylelint 'src/**/*.scss' --formatter json > stylelint-report.json",
-    "lint:markup:ci": "markuplint 'htdocs/**/*.{html,php}' -f JSON > markuplint-report.json"
+    "lint:markup:ci": "markuplint 'htdocs/**/*.{html,php}' -f JSON > markuplint-report.json",
+    "// === Playwrightチェックコマンド ===": "",
+    "test:a11y:setup": "npx playwright install --with-deps",
+    "test:a11y": "playwright test",
+    "test:a11y:ui": "playwright test --ui",
+    "test:a11y:report": "playwright show-report",
+    "// === Lighthouseチェックコマンド ===": "",
+    "lighthouse:clean": "rm -rf .lighthouseci",
+    "lighthouse": "npm run lighthouse:clean && lhci autorun && npm run lighthouse:open",
+    "lighthouse:ci": "npm run lighthouse:clean && lhci autorun",
+    "lighthouse:collect": "lhci collect",
+    "lighthouse:assert": "lhci assert",
+    "lighthouse:open": "open .lighthouseci/*.html 2>/dev/null || xdg-open .lighthouseci/*.html 2>/dev/null || start .lighthouseci/*.html 2>/dev/null || true"
   },
   "browserslist": [
     "last 2 version",
     "not dead"
   ],
   "dependencies": {
-    "astro": "^5.10.0"
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.56.0",
+    "astro": "^5.10.0",
+    "axe-core": "^4.11.0"
   },
   "devDependencies": {
     "@acab/reset.css": "^0.11.0",
     "@astrojs/check": "^0.9.0",
     "@eslint/js": "^9.29.0",
+    "@lhci/cli": "^0.15.1",
     "@markuplint/astro-parser": "^4.6.19",
     "@tailwindcss/vite": "^4.1.10",
     "@types/imagemin-mozjpeg": "^8.0.4",
