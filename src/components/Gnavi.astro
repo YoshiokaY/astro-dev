@@ -26,15 +26,16 @@ const { menu, slug } = Astro.props;
 
 <nav class="c_nav">
   <h2 class="txtHidden">グローバルナビゲーション</h2>
-  <button type="button" class="c_nav_btn"><span>メニューを開く</span></button>
+  <!-- <button type="button" class="c_nav_btn"><span>メニューを開く</span></button> -->
   <div class="c_nav_wrapper">
     <ul id="navi">
       {
         menu.map((item) => {
           // 現在のページと一致するか判定
-          const isActive = item.link === "/"
-            ? slug === "top"
-            : item.link.replace(/\/$/, "").endsWith(`/${slug}`);
+          const isActive =
+            item.link === "/"
+              ? slug === "top"
+              : item.link.replace(/\/$/, "").endsWith(`/${slug}`);
 
           return (
             <li class={item.child ? "has-child" : undefined}>
@@ -53,9 +54,12 @@ const { menu, slug } = Astro.props;
                     {item.child.map((child) => (
                       <li>
                         <a
-                          href={child.anchor && child.link.startsWith("#")
-                            ? slug === "sample" ? child.link : `/sample/${child.link}`
-                            : child.link
+                          href={
+                            child.anchor && child.link.startsWith("#")
+                              ? slug === "sample"
+                                ? child.link
+                                : `/sample/${child.link}`
+                              : child.link
                           }
                           target={child.blank ? "_blank" : "_self"}
                           set:html={child.txt}
@@ -70,7 +74,7 @@ const { menu, slug } = Astro.props;
         })
       }
     </ul>
-    <button type="button" class="c_nav_close txtHidden">メニューを閉じる</button
-    >
+    <!-- <button type="button" class="c_nav_close txtHidden">メニューを閉じる</button
+    > -->
   </div>
 </nav>

@@ -33,10 +33,15 @@
   clip-path: inset(50%);
 }
 
+// 数字リセット（親要素以上に指定）//
+.countReset {
+  counter-reset: number 0;
+}
+
 // キーボード操作時のみに表示
 .skipLink {
   &:focus-visible {
-    z-index: 99;
+    z-index: 999;
     width: 100%;
     height: 1.5em;
     color: $color-reversal;
@@ -44,5 +49,21 @@
     background-color: $color-prime;
     clip: unset;
     clip-path: none;
+  }
+}
+
+// frameコンテナ
+.frameWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
   }
 }

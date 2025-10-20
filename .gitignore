@@ -28,3 +28,11 @@ pnpm-workspace.yaml
 
 # Astro internal files (outside htdocs)
 astro-internal/
+
+# Playwright
+/playwright-report/
+/playwright/.cache/
+/test-results/
+
+# Lighthouse CI
+.lighthouseci/
