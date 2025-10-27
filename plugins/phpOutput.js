@@ -351,7 +351,17 @@ function removeHtmlDocumentStructure(content, filePath = "") {
 
   // footer.phpの場合: <footer>から</html>までを保持
   if (fileName === "footer.php.html" || fileName === "footer.html") {
-    // まず不要な要素を削除
+    // <footer>タグ以降を抽出
+    const footerMatch = content.match(/(<footer[\s\S]*?<\/footer>)/i);
+
+    if (footerMatch) {
+      const footerContent = footerMatch[1];
+
+      // WordPress関数と閉じタグを追加
+      return footerContent.trim() + "\n<?php wp_footer(); ?>\n</body>\n</html>";
+    }
+
+    // <footer>が見つからない場合はフォールバック（従来の処理）
     let footerContent = content;
     footerContent = footerContent.replace(/<!DOCTYPE html>\s*/gi, "");
     footerContent = footerContent.replace(/<link[^>]*rel=["']stylesheet["'][^>]*>/gi, "");
