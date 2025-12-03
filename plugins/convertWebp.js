@@ -138,8 +138,15 @@ async function processHtmlFile(filePath, enableFallback, excludePatterns, suppor
       return result;
     });
 
-    // source要素のsrcset属性を処理
-    content = content.replace(/<source([^>]*)\ssrcset=["']([^"']+)["']([^>]*)>/gi, (match, before, srcset, after) => {
+    // source要素のsrcset属性を処理（media="(width >= 48em)"などに対応）
+    content = content.replace(/<source\s+((?:[^>"']|"[^"]*"|'[^']*')*?)srcset=["']([^"']+)["']((?:[^>"']|"[^"]*"|'[^']*')*)>/gi, (match, before, srcset, after) => {
+      // デバッグログ
+      // logger.info(`🔍 source要素検出:`);
+      // logger.info(`  match: ${match}`);
+      // logger.info(`  before: ${before}`);
+      // logger.info(`  srcset: ${srcset}`);
+      // logger.info(`  after: ${after}`);
+
       const result = processSourceTag(match, before, srcset, after, excludePatterns, supportedExtensions);
       if (result !== match) modified = true;
       return result;
@@ -241,7 +248,10 @@ function processSourceTag(match, before, srcset, after, excludePatterns, support
   }
 
   const newSrcset = processedSources.join(", ");
-  return `<source${before} srcset="${newSrcset}"${after}>`;
+  // before部分が空でない場合は前後に空白を確保
+  const beforeStr = before ? ` ${before.trim()} ` : " ";
+  const afterStr = after ? ` ${after.trim()}` : "";
+  return `<source${beforeStr}srcset="${newSrcset}"${afterStr}>`;
 }
 
 /**
