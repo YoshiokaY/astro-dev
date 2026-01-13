@@ -1,0 +1,335 @@
+// ==========================================
+// Recruit Page Styles
+// ==========================================
+
+.p_recruit {
+	// Hero Section
+	.hero_section {
+		position: relative;
+		min-height: 400px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		margin-bottom: 4rem;
+
+		.hero_bg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(135deg, rgba(0, 123, 255, 0.8), rgba(0, 86, 179, 0.9));
+			}
+		}
+
+		.hero_overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(0, 0, 0, 0.3);
+		}
+
+		.hero_content {
+			position: relative;
+			z-index: 2;
+			text-align: center;
+			color: white;
+			padding: 4rem 2rem;
+		}
+
+		.hero_subtitle {
+			font-size: 1rem;
+			font-weight: 600;
+			letter-spacing: 0.15em;
+			text-transform: uppercase;
+			margin-bottom: 1rem;
+			opacity: 0.95;
+		}
+
+		.hero_title {
+			font-size: 3.5rem;
+			font-weight: 700;
+			margin-bottom: 1.5rem;
+			line-height: 1.2;
+		}
+
+		.hero_description {
+			font-size: 1.25rem;
+			line-height: 1.75;
+			max-width: 600px;
+			margin: 0 auto;
+			opacity: 0.95;
+		}
+	}
+
+	// Recruit Tabs Section
+	.recruit_tabs_section {
+		padding: 4rem 0;
+
+		.c_tab_list {
+			display: flex;
+			gap: 1rem;
+			list-style: none;
+			padding: 0;
+			margin: 0 0 3rem;
+			border-bottom: 2px solid #e0e0e0;
+
+			li {
+				flex: 1;
+			}
+
+			.c_tab_button {
+				width: 100%;
+				padding: 1.25rem 2rem;
+				font-size: 1.125rem;
+				font-weight: 600;
+				color: #666;
+				background: none;
+				border: none;
+				border-bottom: 3px solid transparent;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				position: relative;
+				bottom: -2px;
+
+				&:hover {
+					color: #007bff;
+					background-color: #f0f7ff;
+				}
+
+				&.-active {
+					color: #007bff;
+					border-bottom-color: #007bff;
+					background-color: #f0f7ff;
+				}
+			}
+		}
+
+		.c_tab_content {
+			display: none;
+
+			&.-active {
+				display: block;
+				animation: fadeIn 0.4s ease;
+			}
+		}
+
+		.tab_content_header {
+			text-align: center;
+			margin-bottom: 3rem;
+			padding-bottom: 2rem;
+			border-bottom: 1px solid #e0e0e0;
+
+			.tab_content_title {
+				font-size: 2rem;
+				font-weight: 700;
+				color: #333;
+				margin-bottom: 0.75rem;
+			}
+
+			.tab_content_description {
+				font-size: 1.125rem;
+				color: #666;
+			}
+		}
+
+		.tab_section {
+			background: white;
+			border-radius: 12px;
+			padding: 2.5rem;
+			margin-bottom: 2rem;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+			transition: box-shadow 0.3s ease;
+
+			&:hover {
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+			}
+
+			.tab_section_heading {
+				font-size: 1.5rem;
+				font-weight: 700;
+				color: #333;
+				margin-bottom: 1.5rem;
+				padding-bottom: 0.75rem;
+				border-bottom: 2px solid #007bff;
+				display: inline-block;
+			}
+		}
+
+		.tab_section_items {
+			display: grid;
+			gap: 1.25rem;
+
+			dt {
+				font-weight: 600;
+				color: #007bff;
+				font-size: 0.9375rem;
+				margin-bottom: 0.25rem;
+			}
+
+			dd {
+				color: #333;
+				font-size: 1rem;
+				line-height: 1.75;
+				padding-left: 1rem;
+				border-left: 3px solid #e0e0e0;
+				margin: 0 0 1rem 0;
+			}
+		}
+
+		.tab_section_steps {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 1.5rem;
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			counter-reset: step-counter;
+
+			.tab_step_item {
+				position: relative;
+				padding: 1.5rem;
+				background: linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);
+				border-radius: 8px;
+				text-align: center;
+				font-weight: 600;
+				color: #333;
+				counter-increment: step-counter;
+
+				&::before {
+					content: counter(step-counter);
+					display: block;
+					width: 36px;
+					height: 36px;
+					line-height: 36px;
+					margin: 0 auto 0.75rem;
+					background: #007bff;
+					color: white;
+					border-radius: 50%;
+					font-size: 1.125rem;
+					font-weight: 700;
+				}
+			}
+		}
+
+		.tab_section_benefits {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+			gap: 1rem;
+			list-style: none;
+			padding: 0;
+			margin: 0;
+
+			.tab_benefit_item {
+				padding: 1.25rem 1.5rem;
+				background: #f9f9f9;
+				border-left: 4px solid #007bff;
+				border-radius: 4px;
+				font-size: 1rem;
+				color: #333;
+				transition: all 0.3s ease;
+
+				&:hover {
+					background: #f0f7ff;
+					transform: translateX(4px);
+				}
+
+				&::before {
+					content: '✓';
+					display: inline-block;
+					margin-right: 0.75rem;
+					color: #007bff;
+					font-weight: 700;
+					font-size: 1.25rem;
+				}
+			}
+		}
+	}
+}
+
+// Animations
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+// Responsive
+@media (max-width: 768px) {
+	.p_recruit {
+		.hero_section {
+			min-height: 300px;
+
+			.hero_title {
+				font-size: 2rem;
+			}
+
+			.hero_description {
+				font-size: 1rem;
+			}
+		}
+
+		.recruit_tabs_section {
+			.c_tab_list {
+				flex-direction: column;
+				gap: 0.5rem;
+				border-bottom: none;
+
+				.c_tab_button {
+					border-bottom: 1px solid #e0e0e0;
+					border-radius: 8px;
+					bottom: 0;
+
+					&.-active {
+						border-bottom: 1px solid #007bff;
+					}
+				}
+			}
+
+			.tab_content_header {
+				.tab_content_title {
+					font-size: 1.5rem;
+				}
+
+				.tab_content_description {
+					font-size: 1rem;
+				}
+			}
+
+			.tab_section {
+				padding: 1.5rem;
+
+				.tab_section_heading {
+					font-size: 1.25rem;
+				}
+			}
+
+			.tab_section_steps {
+				grid-template-columns: 1fr;
+			}
+
+			.tab_section_benefits {
+				grid-template-columns: 1fr;
+			}
+		}
+	}
+}
