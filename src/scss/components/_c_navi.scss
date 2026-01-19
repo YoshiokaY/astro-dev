@@ -8,17 +8,16 @@
   // ----------------------------------------
   &_btn {
     position: relative;
-    z-index: 102;
+    z-index: 9999;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
     align-items: center;
     justify-content: center;
-    width: 5.6rem;
     height: 5.6rem;
+    aspect-ratio: 1;
+    color: $color-prime;
     cursor: pointer;
-    background: none;
-    border: none;
 
     @include mq() {
       display: none;
@@ -29,9 +28,9 @@
       position: relative;
       width: 2.8rem;
       height: 0.3rem;
-      background: $color-prime;
+      background: currentcolor;
       border-radius: 0.2rem;
-      transition: background 0.3s ease;
+      transition: background-color $easing;
 
       &::before,
       &::after {
@@ -40,9 +39,9 @@
         width: 100%;
         height: 100%;
         content: "";
-        background: inherit;
+        background: currentcolor;
         border-radius: inherit;
-        transition: transform 0.3s ease;
+        transition: transform $easing;
       }
 
       &::before {
@@ -56,14 +55,10 @@
 
     // ラベル
     &_label {
+      margin-top: 0.5em;
       font-size: 1rem;
-      color: $color-prime;
+      color: currentcolor;
       transition: opacity 0.3s ease;
-    }
-
-    &:focus-visible {
-      outline: solid 0.2rem $color-prime;
-      outline-offset: 0.2rem;
     }
   }
 
@@ -74,7 +69,7 @@
     // SP: ドロワー
     position: fixed;
     inset: 0;
-    z-index: 101;
+    z-index: 998;
     visibility: hidden;
     overflow-y: auto;
     overscroll-behavior-y: contain;
@@ -84,15 +79,21 @@
       visibility 0.3s,
       opacity 0.3s ease;
 
-    // 背景オーバーレイ
     &::before {
       position: fixed;
-      inset: 0;
+      inset: 0 0 auto auto;
       z-index: -1;
+      height: 6rem;
+      aspect-ratio: 1;
+      margin: auto;
       content: "";
-      background: rgba(#000, 0.5);
+      background-color: $color-gray;
+      border-radius: 50%;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transform: translateZ(0) scale(0);
+      transition:
+        transform 0.6s cubic-bezier(0.6, -0.01, 0.1, 1),
+        opacity 0.2s ease-out 0.3s;
     }
 
     @include mq() {
@@ -117,14 +118,12 @@
     right: 0;
     display: flex;
     flex-direction: column;
-    width: 85%;
-    max-width: 36rem;
+    width: 100%;
     height: 100%;
     padding: 8rem 2rem 4rem;
     overflow-y: auto;
-    background: #fff;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
+    opacity: 0;
+    transition: opacity $easing;
 
     @include mq() {
       // PC: 無効化
@@ -136,6 +135,7 @@
       padding: 0;
       overflow: visible;
       background: transparent;
+      opacity: 1;
       transform: none;
     }
   }
@@ -144,8 +144,6 @@
   // メニュー本体
   // ----------------------------------------
   &_menu {
-    list-style: none;
-
     @include mq() {
       // PC: 横並び
       display: flex;
@@ -165,31 +163,39 @@
     }
 
     > a {
+      position: relative;
       display: block;
       padding: 1.6rem 0;
-      font-size: 1.6rem;
       color: $color-txt;
       text-decoration: none;
       transition:
-        color 0.3s ease,
-        background 0.3s ease;
+        color $easing,
+        background-color $easing;
 
       @include mq() {
         padding: 0.8rem 1.6rem;
         border-radius: 0.4rem;
+
+        &::before {
+          position: absolute;
+          inset: auto 0 0;
+          width: 0;
+          height: 0.2rem;
+          margin: auto;
+          content: "";
+          background-color: $color-prime;
+          transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
       }
 
       @include hover() {
         color: $color-prime;
 
         @include mq() {
-          background: rgba($color-prime, 0.1);
+          &::before {
+            width: 100%;
+          }
         }
-      }
-
-      &:focus-visible {
-        outline: solid 0.2rem $color-prime;
-        outline-offset: -0.2rem;
       }
     }
 
@@ -200,6 +206,24 @@
 
         @include mq() {
           padding-right: 2.4rem;
+        }
+      }
+
+      // PC: ホバーまたはフォーカス時に子メニュー表示
+      @include mq() {
+        &:hover,
+        &:focus-within {
+          .c_nav_child {
+            visibility: visible;
+            opacity: 1;
+          }
+
+          .c_nav_trigger {
+            &::before {
+              transform: rotate(-135deg) translateY(-0.2rem);
+              transform-origin: center;
+            }
+          }
         }
       }
     }
@@ -217,9 +241,8 @@
     justify-content: center;
     width: 4.8rem;
     height: 5.2rem;
+    color: $color-txt;
     cursor: pointer;
-    background: none;
-    border: none;
 
     @include mq() {
       width: 2.4rem;
@@ -233,7 +256,7 @@
       width: 1.4rem;
       height: 0.2rem;
       content: "";
-      background: $color-prime;
+      background: currentcolor;
       transition: transform 0.3s ease;
     }
 
@@ -247,7 +270,7 @@
         width: 0.6rem;
         height: 0.6rem;
         background: transparent;
-        border: solid $color-prime;
+        border: solid currentcolor;
         border-width: 0 0.2rem 0.2rem 0;
         transform: rotate(45deg) translateY(-0.2rem);
       }
@@ -255,11 +278,6 @@
       &::after {
         content: none;
       }
-    }
-
-    &:focus-visible {
-      outline: solid 0.2rem $color-prime;
-      outline-offset: -0.2rem;
     }
   }
 
@@ -278,7 +296,7 @@
       position: absolute;
       top: 100%;
       left: 0;
-      z-index: 100;
+      visibility: hidden;
       min-width: 20rem;
       height: auto;
       padding: 0.8rem 0;
@@ -292,12 +310,6 @@
         visibility 0.2s;
     }
 
-    &[hidden] {
-      @include mq() {
-        visibility: hidden;
-      }
-    }
-
     li {
       a {
         display: block;
@@ -306,8 +318,8 @@
         color: $color-txt;
         text-decoration: none;
         transition:
-          color 0.3s ease,
-          background 0.3s ease;
+          color $easing,
+          background-color $easing;
 
         @include mq() {
           padding: 1rem 1.6rem;
@@ -319,11 +331,6 @@
           @include mq() {
             background: rgba($color-prime, 0.05);
           }
-        }
-
-        &:focus-visible {
-          outline: solid 0.2rem $color-prime;
-          outline-offset: -0.2rem;
         }
       }
     }
@@ -357,42 +364,8 @@
   // 閉じるボタン
   // ----------------------------------------
   &_close {
-    position: absolute;
-    top: 1.6rem;
-    right: 1.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 4.4rem;
-    height: 4.4rem;
-    cursor: pointer;
-    background: none;
-    border: none;
-
     @include mq() {
       display: none;
-    }
-
-    &::before,
-    &::after {
-      position: absolute;
-      width: 2.4rem;
-      height: 0.2rem;
-      content: "";
-      background: $color-txt;
-    }
-
-    &::before {
-      transform: rotate(45deg);
-    }
-
-    &::after {
-      transform: rotate(-45deg);
-    }
-
-    &:focus-visible {
-      outline: solid 0.2rem $color-prime;
-      outline-offset: 0.2rem;
     }
   }
 
@@ -402,20 +375,23 @@
   &.-open {
     // ハンバーガーボタン変形
     .c_nav_btn {
+      color: $color-reversal;
+
       &_line {
         background: transparent;
 
+        &::before,
+        &::after {
+          inset: 0;
+        }
+
         &::before {
-          transform: rotate(45deg) translate(0.5rem, 0.5rem);
+          transform: rotate(45deg);
         }
 
         &::after {
-          transform: rotate(-45deg) translate(0.5rem, -0.5rem);
+          transform: rotate(-45deg);
         }
-      }
-
-      &_label {
-        opacity: 0;
       }
     }
 
@@ -426,12 +402,16 @@
 
       &::before {
         opacity: 1;
+        transform: translateZ(0) scale(80);
+        transition:
+          transform 0.8s cubic-bezier(0.4, 0.1, 0.3, 1),
+          oapcity 0.3s cubic-bezier(0.4, 0.1, 0.3, 1) 0.5s;
       }
     }
 
     // ドロワーパネルスライドイン
     .c_nav_inner {
-      transform: translateX(0);
+      opacity: 1;
     }
   }
 
