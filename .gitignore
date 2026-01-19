@@ -34,5 +34,8 @@ astro-internal/
 /playwright/.cache/
 /test-results/
 
+.playwright-mcp/
+
 # Lighthouse CI
 .lighthouseci/
+

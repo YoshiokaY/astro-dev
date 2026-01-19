@@ -1,0 +1,327 @@
+// ==========================================
+// Recruit Page Styles
+// ==========================================
+
+.p_recruit {
+	// Hero Section
+	.hero_section {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 400px;
+		margin-bottom: 4rem;
+		overflow: hidden;
+
+		.hero_bg {
+			position: absolute;
+			inset: 0;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+
+			&::before {
+				position: absolute;
+				inset: 0;
+				content: '';
+				background: linear-gradient(135deg, rgb(0 123 255 / 0.8), rgb(0 86 179 / 0.9));
+			}
+		}
+
+		.hero_overlay {
+			position: absolute;
+			inset: 0;
+			background: rgb(0 0 0 / 0.3);
+		}
+
+		.hero_content {
+			position: relative;
+			z-index: 2;
+			padding: 4rem 2rem;
+			color: white;
+			text-align: center;
+		}
+
+		.hero_subtitle {
+			margin-bottom: 1rem;
+			font-size: 1rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.15em;
+			opacity: 0.95;
+		}
+
+		.hero_title {
+			margin-bottom: 1.5rem;
+			font-size: 3.5rem;
+			font-weight: 700;
+			line-height: 1.2;
+		}
+
+		.hero_description {
+			max-width: 600px;
+			margin: 0 auto;
+			font-size: 1.25rem;
+			line-height: 1.75;
+			opacity: 0.95;
+		}
+	}
+
+	// Recruit Tabs Section
+	.recruit_tabs_section {
+		padding: 4rem 0;
+
+		.c_tab_list {
+			display: flex;
+			gap: 1rem;
+			padding: 0;
+			margin: 0 0 3rem;
+			list-style: none;
+			border-bottom: 2px solid #e0e0e0;
+
+			li {
+				flex: 1;
+			}
+
+			.c_tab_button {
+				position: relative;
+				bottom: -2px;
+				width: 100%;
+				padding: 1.25rem 2rem;
+				font-size: 1.125rem;
+				font-weight: 600;
+				color: #666;
+				cursor: pointer;
+				background: none;
+				border: none;
+				border-bottom: 3px solid transparent;
+				transition: all 0.3s ease;
+
+				&:hover {
+					color: #007bff;
+					background-color: #f0f7ff;
+				}
+
+				&.-active {
+					color: #007bff;
+					background-color: #f0f7ff;
+					border-bottom-color: #007bff;
+				}
+			}
+		}
+
+		.c_tab_content {
+			display: none;
+
+			&.-active {
+				display: block;
+				animation: fadeIn 0.4s ease;
+			}
+		}
+
+		.tab_content_header {
+			padding-bottom: 2rem;
+			margin-bottom: 3rem;
+			text-align: center;
+			border-bottom: 1px solid #e0e0e0;
+
+			.tab_content_title {
+				margin-bottom: 0.75rem;
+				font-size: 2rem;
+				font-weight: 700;
+				color: #333;
+			}
+
+			.tab_content_description {
+				font-size: 1.125rem;
+				color: #666;
+			}
+		}
+
+		.tab_section {
+			padding: 2.5rem;
+			margin-bottom: 2rem;
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+			transition: box-shadow 0.3s ease;
+
+			&:hover {
+				box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+			}
+
+			.tab_section_heading {
+				display: inline-block;
+				padding-bottom: 0.75rem;
+				margin-bottom: 1.5rem;
+				font-size: 1.5rem;
+				font-weight: 700;
+				color: #333;
+				border-bottom: 2px solid #007bff;
+			}
+		}
+
+		.tab_section_items {
+			display: grid;
+			gap: 1.25rem;
+
+			dt {
+				margin-bottom: 0.25rem;
+				font-size: 0.9375rem;
+				font-weight: 600;
+				color: #007bff;
+			}
+
+			dd {
+				padding-left: 1rem;
+				margin: 0 0 1rem;
+				font-size: 1rem;
+				line-height: 1.75;
+				color: #333;
+				border-left: 3px solid #e0e0e0;
+			}
+		}
+
+		.tab_section_steps {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 1.5rem;
+			padding: 0;
+			margin: 0;
+			list-style: none;
+			counter-reset: step-counter;
+
+			.tab_step_item {
+				position: relative;
+				padding: 1.5rem;
+				font-weight: 600;
+				color: #333;
+				text-align: center;
+				counter-increment: step-counter;
+				background: linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);
+				border-radius: 8px;
+
+				&::before {
+					display: block;
+					width: 36px;
+					height: 36px;
+					margin: 0 auto 0.75rem;
+					font-size: 1.125rem;
+					font-weight: 700;
+					line-height: 36px;
+					color: white;
+					content: counter(step-counter);
+					background: #007bff;
+					border-radius: 50%;
+				}
+			}
+		}
+
+		.tab_section_benefits {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+			gap: 1rem;
+			padding: 0;
+			margin: 0;
+			list-style: none;
+
+			.tab_benefit_item {
+				padding: 1.25rem 1.5rem;
+				font-size: 1rem;
+				color: #333;
+				background: #f9f9f9;
+				border-left: 4px solid #007bff;
+				border-radius: 4px;
+				transition: all 0.3s ease;
+
+				&:hover {
+					background: #f0f7ff;
+					transform: translateX(4px);
+				}
+
+				&::before {
+					display: inline-block;
+					margin-right: 0.75rem;
+					font-size: 1.25rem;
+					font-weight: 700;
+					color: #007bff;
+					content: '✓';
+				}
+			}
+		}
+	}
+}
+
+// Animations
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+// Responsive
+@media (max-width: 768px) {
+	.p_recruit {
+		.hero_section {
+			min-height: 300px;
+
+			.hero_title {
+				font-size: 2rem;
+			}
+
+			.hero_description {
+				font-size: 1rem;
+			}
+		}
+
+		.recruit_tabs_section {
+			.c_tab_list {
+				flex-direction: column;
+				gap: 0.5rem;
+				border-bottom: none;
+
+				.c_tab_button {
+					bottom: 0;
+					border-bottom: 1px solid #e0e0e0;
+					border-radius: 8px;
+
+					&.-active {
+						border-bottom: 1px solid #007bff;
+					}
+				}
+			}
+
+			.tab_content_header {
+				.tab_content_title {
+					font-size: 1.5rem;
+				}
+
+				.tab_content_description {
+					font-size: 1rem;
+				}
+			}
+
+			.tab_section {
+				padding: 1.5rem;
+
+				.tab_section_heading {
+					font-size: 1.25rem;
+				}
+			}
+
+			.tab_section_steps {
+				grid-template-columns: 1fr;
+			}
+
+			.tab_section_benefits {
+				grid-template-columns: 1fr;
+			}
+		}
+	}
+}
