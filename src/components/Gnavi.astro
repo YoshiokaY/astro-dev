@@ -1,6 +1,10 @@
 ---
 /**
- * グロナビコンポーネント
+ * グローバルナビゲーションコンポーネント
+ *
+ * @remarks
+ * SP時のハンバーガーメニュー、PC時のドロップダウン/メガメニューに対応。
+ * アクセシビリティ対応（ARIA属性、キーボード操作、フォーカストラップ）を含みます。
  */
 interface MenuItem {
   link: string;
@@ -8,6 +12,9 @@ interface MenuItem {
   blank?: boolean;
   anchor?: boolean;
   child?: MenuItem[];
+  mega?: boolean;
+  class?: string;
+  data?: string;
 }
 
 interface Props {
@@ -25,56 +32,93 @@ const { menu, slug } = Astro.props;
 ---
 
 <nav class="c_nav">
-  <h2 class="txtHidden">グローバルナビゲーション</h2>
-  <!-- <button type="button" class="c_nav_btn"><span>メニューを開く</span></button> -->
-  <div class="c_nav_wrapper">
-    <ul id="navi">
-      {
-        menu.map((item) => {
-          // 現在のページと一致するか判定
-          const isActive =
-            item.link === "/"
-              ? slug === "top"
-              : item.link.replace(/\/$/, "").endsWith(`/${slug}`);
+  <!-- スクリーンリーダー用見出し -->
+  <h2 class="txtHidden">メニュー</h2>
 
-          return (
-            <li class={item.child ? "has-child" : undefined}>
-              <a
-                href={item.link}
-                target={item.blank ? "_blank" : "_self"}
-                class={isActive ? "-active" : undefined}
-                set:html={item.txt}
-              />
-              {item.child && (
-                <>
-                  <button type="button" class="spAccordion">
-                    <span class="txtHidden">子メニューを表示します</span>
-                  </button>
-                  <ul class="subMenu">
-                    {item.child.map((child) => (
-                      <li>
-                        <a
-                          href={
-                            child.anchor && child.link.startsWith("#")
-                              ? slug === "sample"
-                                ? child.link
-                                : `/sample/${child.link}`
-                              : child.link
-                          }
-                          target={child.blank ? "_blank" : "_self"}
-                          set:html={child.txt}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </li>
-          );
-        })
-      }
-    </ul>
-    <!-- <button type="button" class="c_nav_close txtHidden">メニューを閉じる</button
-    > -->
+  <!-- ハンバーガーボタン -->
+  <button
+    type="button"
+    class="c_nav_btn"
+    aria-expanded="false"
+    aria-controls="nav-menu"
+    aria-label="メニューを開く"
+  >
+    <span class="c_nav_btn_line"></span>
+    <span class="c_nav_btn_label">MENU</span>
+  </button>
+
+  <!-- ラッパー -->
+  <div class="c_nav_wrapper" id="nav-menu">
+    <!-- ドロワーパネル -->
+    <div class="c_nav_inner">
+      <!-- メニュー本体 -->
+      <ul class="c_nav_menu">
+        {
+          menu.map((item) => {
+            const isActive =
+              item.link === "/"
+                ? slug === "top"
+                : item.link.replace(/\/$/, "").endsWith(`/${slug}`);
+
+            return (
+              <li class={"c_nav_item" + (item.child ? " -hasChild" : "")}>
+                <a
+                  href={item.link}
+                  target={item.blank ? "_blank" : "_self"}
+                  class={
+                    (item.class ? item.class : "") +
+                    (isActive ? " -active" : "")
+                  }
+                  set:html={item.txt}
+                  data-tab={item.data ? item.data : ""}
+                />
+                {item.child && (
+                  <>
+                    <button
+                      type="button"
+                      class="c_nav_trigger"
+                      aria-expanded="false"
+                    >
+                      <span class="visually-hidden">
+                        {item.txt}のサブメニューを開く
+                      </span>
+                    </button>
+                    <ul
+                      class={"c_nav_child" + (item.mega ? " -mega" : "")}
+                      hidden
+                    >
+                      {item.child.map((child) => (
+                        <li>
+                          <a
+                            href={
+                              child.anchor && child.link.startsWith("#")
+                                ? slug === "sample"
+                                  ? child.link
+                                  : `/sample/${child.link}`
+                                : child.link
+                            }
+                            target={child.blank ? "_blank" : "_self"}
+                            set:html={child.txt}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <!-- SP専用エリア -->
+      <div class="c_nav_extra">
+        <slot name="extra" />
+      </div>
+    </div>
+    <!-- 閉じるボタン -->
+    <button type="button" class="c_nav_close">
+      <span class="txtHidden">メニューを閉じる</span>
+    </button>
   </div>
 </nav>
