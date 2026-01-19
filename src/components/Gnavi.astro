@@ -13,6 +13,8 @@ interface MenuItem {
   anchor?: boolean;
   child?: MenuItem[];
   mega?: boolean;
+  class?: string;
+  data?: string;
 }
 
 interface Props {
@@ -31,7 +33,7 @@ const { menu, slug } = Astro.props;
 
 <nav class="c_nav">
   <!-- スクリーンリーダー用見出し -->
-  <h2 class="visually-hidden">メニュー</h2>
+  <h2 class="txtHidden">メニュー</h2>
 
   <!-- ハンバーガーボタン -->
   <button
@@ -42,18 +44,13 @@ const { menu, slug } = Astro.props;
     aria-label="メニューを開く"
   >
     <span class="c_nav_btn_line"></span>
-    <span class="c_nav_btn_label">メニュー</span>
+    <span class="c_nav_btn_label">MENU</span>
   </button>
 
   <!-- ラッパー -->
   <div class="c_nav_wrapper" id="nav-menu">
     <!-- ドロワーパネル -->
     <div class="c_nav_inner">
-      <!-- 閉じるボタン -->
-      <button type="button" class="c_nav_close">
-        <span class="visually-hidden">メニューを閉じる</span>
-      </button>
-
       <!-- メニュー本体 -->
       <ul class="c_nav_menu">
         {
@@ -64,12 +61,16 @@ const { menu, slug } = Astro.props;
                 : item.link.replace(/\/$/, "").endsWith(`/${slug}`);
 
             return (
-              <li class={`c_nav_item${item.child ? " -hasChild" : ""}`}>
+              <li class={"c_nav_item" + (item.child ? " -hasChild" : "")}>
                 <a
                   href={item.link}
                   target={item.blank ? "_blank" : "_self"}
-                  class={isActive ? "-active" : undefined}
+                  class={
+                    (item.class ? item.class : "") +
+                    (isActive ? " -active" : "")
+                  }
                   set:html={item.txt}
+                  data-tab={item.data ? item.data : ""}
                 />
                 {item.child && (
                   <>
@@ -83,7 +84,7 @@ const { menu, slug } = Astro.props;
                       </span>
                     </button>
                     <ul
-                      class={`c_nav_child${item.mega ? " -mega" : ""}`}
+                      class={"c_nav_child" + (item.mega ? " -mega" : "")}
                       hidden
                     >
                       {item.child.map((child) => (
@@ -115,5 +116,9 @@ const { menu, slug } = Astro.props;
         <slot name="extra" />
       </div>
     </div>
+    <!-- 閉じるボタン -->
+    <button type="button" class="c_nav_close">
+      <span class="txtHidden">メニューを閉じる</span>
+    </button>
   </div>
 </nav>

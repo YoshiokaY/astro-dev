@@ -29,13 +29,14 @@ interface GlobalNavOptions {
 }
 
 export class GlobalNav {
-  private nav: HTMLElement | null;
-  private btn: HTMLElement | null;
-  private wrapper: HTMLElement | null;
-  private closeBtn: HTMLElement | null;
-  private triggers: NodeListOf<HTMLElement>;
-  private openClass: string;
-  private breakpoint: number;
+  private nav: HTMLElement | null = null;
+  private btn: HTMLElement | null = null;
+  private btnLabel: HTMLElement | null = null;
+  private wrapper: HTMLElement | null = null;
+  private closeBtn: HTMLElement | null = null;
+  private triggers: NodeListOf<HTMLElement> | null = null;
+  private openClass: string = "-open";
+  private breakpoint: number = 768;
   private isOpen: boolean = false;
   private focusableElements: HTMLElement[] = [];
   private firstFocusable: HTMLElement | null = null;
@@ -52,6 +53,7 @@ export class GlobalNav {
     if (!this.nav) return;
 
     this.btn = this.nav.querySelector(`${navSelector}_btn`);
+    this.btnLabel = this.nav.querySelector(`${navSelector}_btn_label`);
     this.wrapper = this.nav.querySelector(`${navSelector}_wrapper`);
     this.closeBtn = this.nav.querySelector(`${navSelector}_close`);
     this.triggers = this.nav.querySelectorAll(`${navSelector}_trigger`);
@@ -98,59 +100,52 @@ export class GlobalNav {
 
     // フォーカストラップ
     this.wrapper?.addEventListener("keydown", (e) => this.handleFocusTrap(e));
+
+    // アンカーリンククリック時にメニューを閉じる
+    this.setupAnchorLinks();
+  }
+
+  /**
+   * アンカーリンクのクリックイベントを設定
+   * SP時にアンカーリンクをクリックした際、スクロール後にメニューを閉じる
+   */
+  private setupAnchorLinks(): void {
+    const anchorLinks = this.nav?.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
+
+    anchorLinks?.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (this.isSP() && this.isOpen) {
+          // スクロール後にメニューを閉じる
+          setTimeout(() => {
+            this.close();
+          }, 100);
+        }
+      });
+    });
   }
 
   /**
    * 子メニューのセットアップ
    */
   private setupChildMenus(): void {
-    this.triggers.forEach((trigger) => {
+    this.triggers?.forEach((trigger) => {
       const parent = trigger.closest(".c_nav_item");
       const child = parent?.querySelector(".c_nav_child") as HTMLElement;
 
       if (!child) return;
 
       // SP: クリックでアコーディオン開閉
+      // PC: クリックでメガメニュー展開（ホバー表示はCSSで処理）
       trigger.addEventListener("click", (e) => {
         e.preventDefault();
-        if (this.isSP()) {
-          this.toggleChildMenu(trigger, child);
-        }
+        this.toggleChildMenu(trigger, child);
       });
 
-      // PC: ホバーで開閉
-      parent?.addEventListener("mouseenter", () => {
-        if (!this.isSP()) {
-          this.openChildMenu(trigger, child);
-        }
-      });
-
-      parent?.addEventListener("mouseleave", () => {
-        if (!this.isSP()) {
-          this.closeChildMenu(trigger, child);
-        }
-      });
-
-      // PC: キーボード操作
+      // PC: キーボード操作（Enter/Spaceで開閉）
       trigger.addEventListener("keydown", (e) => {
         if (!this.isSP() && (e.key === "Enter" || e.key === " ")) {
           e.preventDefault();
-          const isExpanded = trigger.getAttribute("aria-expanded") === "true";
-          if (isExpanded) {
-            this.closeChildMenu(trigger, child);
-          } else {
-            this.openChildMenu(trigger, child);
-          }
-        }
-      });
-
-      // PC: フォーカスアウトで閉じる
-      parent?.addEventListener("focusout", (e) => {
-        if (!this.isSP()) {
-          const relatedTarget = (e as FocusEvent).relatedTarget as HTMLElement;
-          if (!parent.contains(relatedTarget)) {
-            this.closeChildMenu(trigger, child);
-          }
+          this.toggleChildMenu(trigger, child);
         }
       });
     });
@@ -174,6 +169,10 @@ export class GlobalNav {
     this.isOpen = true;
     this.nav?.classList.add(this.openClass);
     this.btn?.setAttribute("aria-expanded", "true");
+    this.btn?.setAttribute("aria-label", "メニューを閉じる");
+    if (this.btnLabel) {
+      this.btnLabel.textContent = "CLOSE";
+    }
 
     // フォーカス可能な要素を取得
     this.updateFocusableElements();
@@ -194,9 +193,13 @@ export class GlobalNav {
     this.isOpen = false;
     this.nav?.classList.remove(this.openClass);
     this.btn?.setAttribute("aria-expanded", "false");
+    this.btn?.setAttribute("aria-label", "メニューを開く");
+    if (this.btnLabel) {
+      this.btnLabel.textContent = "メニュー";
+    }
 
     // 全ての子メニューを閉じる
-    this.triggers.forEach((trigger) => {
+    this.triggers?.forEach((trigger) => {
       const parent = trigger.closest(".c_nav_item");
       const child = parent?.querySelector(".c_nav_child") as HTMLElement;
       if (child) {
@@ -209,7 +212,7 @@ export class GlobalNav {
   }
 
   /**
-   * 子メニューのトグル（SP用）
+   * 子メニューのトグル
    */
   private toggleChildMenu(trigger: HTMLElement, child: HTMLElement): void {
     const isExpanded = trigger.getAttribute("aria-expanded") === "true";
@@ -229,16 +232,12 @@ export class GlobalNav {
 
     // SP時: 高さアニメーション
     if (this.isSP()) {
-      // 初回は高さ0から開始することを保証
       child.style.setProperty("--childHeight", "0px");
       child.removeAttribute("hidden");
-      // リフロー強制後、次フレームでアニメーション開始
       requestAnimationFrame(() => {
         const height = child.scrollHeight;
         child.style.setProperty("--childHeight", `${height}px`);
       });
-    } else {
-      child.removeAttribute("hidden");
     }
   }
 
@@ -249,14 +248,9 @@ export class GlobalNav {
     trigger.setAttribute("aria-expanded", "false");
     trigger.closest(".c_nav_item")?.classList.remove(this.openClass);
 
+    // SP時: 高さアニメーション後にhidden
     if (this.isSP()) {
       child.style.setProperty("--childHeight", "0px");
-    }
-
-    // PC時は即座に非表示、SP時はアニメーション後
-    if (!this.isSP()) {
-      child.setAttribute("hidden", "");
-    } else {
       setTimeout(() => {
         if (trigger.getAttribute("aria-expanded") === "false") {
           child.setAttribute("hidden", "");
@@ -309,21 +303,26 @@ export class GlobalNav {
    * リサイズ時の処理
    */
   private handleResize(): void {
-    // PCサイズになったらメニューを閉じる
+    // PCサイズになったらSPメニューを閉じる
     if (!this.isSP() && this.isOpen) {
       this.close();
     }
 
-    // PC時は子メニューをhiddenに
-    if (!this.isSP()) {
-      this.triggers.forEach((trigger) => {
-        const parent = trigger.closest(".c_nav_item");
-        const child = parent?.querySelector(".c_nav_child") as HTMLElement;
-        if (child && trigger.getAttribute("aria-expanded") !== "true") {
+    // PC⇔SP切り替え時に子メニューの状態をリセット
+    this.triggers?.forEach((trigger) => {
+      const parent = trigger.closest(".c_nav_item");
+      const child = parent?.querySelector(".c_nav_child") as HTMLElement;
+      if (child) {
+        trigger.setAttribute("aria-expanded", "false");
+        parent?.classList.remove(this.openClass);
+        if (this.isSP()) {
           child.setAttribute("hidden", "");
+          child.style.setProperty("--childHeight", "0px");
+        } else {
+          child.removeAttribute("hidden");
         }
-      });
-    }
+      }
+    });
   }
 
   /**
