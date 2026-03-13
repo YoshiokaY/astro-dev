@@ -365,6 +365,20 @@ export default defineConfig({
 
     // プラグイン設定
     plugins: [
+      // Astro 6がクライアントビルドのminifyをハードコードするため、プラグインで上書き
+      ...(!COMPRESS_OUTPUT
+        ? [
+            {
+              name: "override-client-minify",
+              config(config) {
+                if (config.environments?.client?.build) {
+                  config.environments.client.build.minify = false;
+                }
+              },
+            },
+          ]
+        : []),
+
       // Tailwind CSS
       tailwindcss(),
 
