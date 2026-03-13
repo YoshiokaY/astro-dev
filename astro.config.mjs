@@ -1,7 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import viteImagemin from "@vheemstra/vite-plugin-imagemin";
 import relativeLinks from "astro-relative-links";
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import fs from "fs";
 import { glob } from "glob";
 import imagemin from "imagemin";
@@ -122,6 +122,29 @@ async function convertToWebp(outputDir, logger) {
   }
 }
 
+// アセットファイル名のカスタムロジック（SSR・クライアント両ビルドで共用）
+const customAssetFileNames = (assetInfo) => {
+  const fileName = assetInfo.names[0];
+
+  // 画像ファイル
+  if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(fileName)) {
+    return `${ASSETS_DIR}/img/[name][extname]`;
+  }
+
+  // CSSファイル
+  if (/css/i.test(fileName)) {
+    return `${ASSETS_DIR}/css/[name][extname]`;
+  }
+
+  // フォントファイル
+  if (/woff2?|eot|ttf|otf/i.test(fileName)) {
+    return `${ASSETS_DIR}/fonts/[name][extname]`;
+  }
+
+  // その他のファイル
+  return `${ASSETS_DIR}/[name][extname]`;
+};
+
 export default defineConfig({
   // ベースパスの設定
   base: BASE_PATH,
@@ -200,6 +223,15 @@ export default defineConfig({
     open: import.meta.env.DEV_OPEN === "true",
   },
 
+  // フォント設定（Built-in Fonts API）
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: "Noto Sans JP",
+      cssVariable: "--font-noto-sans-jp",
+    },
+  ],
+
   // Vite設定
   vite: {
     // 環境変数をクライアントサイドで使用可能に
@@ -209,99 +241,85 @@ export default defineConfig({
       __BASE_PATH__: JSON.stringify(BASE_PATH),
     },
 
-    // ビルド設定でインライン化を制御
+    // ビルド設定（SSRビルド側にもassetFileNamesを適用）
     build: {
-      // インライン化閾値を0に設定（常に外部ファイル化）
       assetsInlineLimit: 0,
       cssCodeSplit: CSS_SPLIT,
-      // 圧縮設定
       minify: COMPRESS_OUTPUT ? "esbuild" : false,
       rollupOptions: {
         output: {
-          // JavaScriptファイル名
-          entryFileNames: (chunkInfo) => {
-            // Astroページからの<script>タグの処理
-            if (chunkInfo.facadeModuleId && chunkInfo.facadeModuleId.includes("?astro&type=script")) {
-              const moduleId = chunkInfo.facadeModuleId;
+          assetFileNames: customAssetFileNames,
+        },
+      },
+    },
 
-              // pages配下のastroファイルからの生成の場合
-              if (moduleId.includes("/src/pages/") && moduleId.includes(".astro?astro&type=script")) {
-                const astroPath = moduleId.split("?astro&type=script")[0];
-                const relativePath = astroPath.split("/src/pages/")[1];
-                let pageName = relativePath
-                  .replace(/\.astro$/, "")
-                  .replace(/\/index$/, "")
-                  .replace(/\//g, "-");
+    // Astro 6 / Vite 7: クライアントビルドの出力設定は environments.client に配置
+    environments: {
+      client: {
+        build: {
+          rollupOptions: {
+            output: {
+              // JavaScriptファイル名
+              entryFileNames: (chunkInfo) => {
+                // Astroページからの<script>タグの処理
+                if (chunkInfo.facadeModuleId && chunkInfo.facadeModuleId.includes("?astro&type=script")) {
+                  const moduleId = chunkInfo.facadeModuleId;
 
-                // 空文字の場合はindex（トップページ）
-                if (!pageName) pageName = "index";
+                  // pages配下のastroファイルからの生成の場合
+                  if (moduleId.includes("/src/pages/") && moduleId.includes(".astro?astro&type=script")) {
+                    const astroPath = moduleId.split("?astro&type=script")[0];
+                    const relativePath = astroPath.split("/src/pages/")[1];
+                    let pageName = relativePath
+                      .replace(/\.astro$/, "")
+                      .replace(/\/index$/, "")
+                      .replace(/\//g, "-");
 
-                return `${ASSETS_DIR}/js/page-${pageName}.astro.js`;
-              }
+                    if (!pageName) pageName = "index";
 
-              // layouts配下のastroファイルからの生成の場合
-              if (moduleId.includes("/src/layouts/") && moduleId.includes(".astro?astro&type=script")) {
-                const astroPath = moduleId.split("?astro&type=script")[0];
-                const relativePath = astroPath.split("/src/layouts/")[1];
-                const layoutName = relativePath.replace(/\.astro$/, "");
+                    return `${ASSETS_DIR}/js/page-${pageName}.astro.js`;
+                  }
 
-                // 共通のjsはcommon.astro.jsにする
-                const fileName = layoutName === "Layout" ? "common" : layoutName;
+                  // layouts配下のastroファイルからの生成の場合
+                  if (moduleId.includes("/src/layouts/") && moduleId.includes(".astro?astro&type=script")) {
+                    const astroPath = moduleId.split("?astro&type=script")[0];
+                    const relativePath = astroPath.split("/src/layouts/")[1];
+                    const layoutName = relativePath.replace(/\.astro$/, "");
 
-                return `${ASSETS_DIR}/js/${fileName}.astro.js`;
-              }
-            }
+                    const fileName = layoutName === "Layout" ? "common" : layoutName;
 
-            // .astroファイルから生成されるスクリプトの場合（フォールバック）
-            if (chunkInfo.name.includes("astro_type_script")) {
-              const simpleName = chunkInfo.name.replace(/_astro_type_script_index_\d+_lang$/, "");
-              return `${ASSETS_DIR}/js/${simpleName}.js`;
-            }
+                    return `${ASSETS_DIR}/js/${fileName}.astro.js`;
+                  }
+                }
 
-            // JSファイル自体からの命名処理（src/js配下のファイル）
-            if (chunkInfo.facadeModuleId && chunkInfo.facadeModuleId.includes("/src/js/")) {
-              const jsPath = chunkInfo.facadeModuleId.split("/src/js/")[1];
-              const jsName = jsPath.replace(/\.(js|ts)$/, "");
+                // .astroファイルから生成されるスクリプトの場合（フォールバック）
+                if (chunkInfo.name.includes("astro_type_script")) {
+                  const simpleName = chunkInfo.name.replace(/_astro_type_script_index_\d+_lang$/, "");
+                  return `${ASSETS_DIR}/js/${simpleName}.js`;
+                }
 
-              return `${ASSETS_DIR}/js/${jsName}.js`;
-            }
+                // JSファイル自体からの命名処理（src/js配下のファイル）
+                if (chunkInfo.facadeModuleId && chunkInfo.facadeModuleId.includes("/src/js/")) {
+                  const jsPath = chunkInfo.facadeModuleId.split("/src/js/")[1];
+                  const jsName = jsPath.replace(/\.(js|ts)$/, "");
 
-            return `${ASSETS_DIR}/js/[name].js`;
-          },
+                  return `${ASSETS_DIR}/js/${jsName}.js`;
+                }
 
-          // チャンクファイル名
-          chunkFileNames: (chunkInfo) => {
-            // Astroの内部ファイルをhtdocs外に配置
-            if (chunkInfo.name && (chunkInfo.name.includes("astro") || chunkInfo.name === "Layout")) {
-              return `.astro-internal/[name].js`;
-            }
+                return `${ASSETS_DIR}/js/[name].js`;
+              },
 
-            return `${ASSETS_DIR}/js/chunks/[name].js`;
-          },
+              // チャンクファイル名
+              chunkFileNames: (chunkInfo) => {
+                if (chunkInfo.name && (chunkInfo.name.includes("astro") || chunkInfo.name === "Layout")) {
+                  return `.astro-internal/[name].js`;
+                }
 
-          // アセットファイル名
-          assetFileNames: (assetInfo) => {
-            const fileName = assetInfo.names[0];
+                return `${ASSETS_DIR}/js/chunks/[name].js`;
+              },
 
-            // WebP変換ON時：オリジナル画像は出力しない
-
-            // 画像ファイル
-            if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(fileName)) {
-              return `${ASSETS_DIR}/img/[name][extname]`;
-            }
-
-            // CSSファイル
-            if (/css/i.test(fileName)) {
-              return `${ASSETS_DIR}/css/[name][extname]`;
-            }
-
-            // フォントファイル
-            if (/woff2?|eot|ttf|otf/i.test(fileName)) {
-              return `${ASSETS_DIR}/fonts/[name][extname]`;
-            }
-
-            // その他のファイル
-            return `${ASSETS_DIR}/[name][extname]`;
+              // アセットファイル名（共通関数を使用）
+              assetFileNames: customAssetFileNames,
+            },
           },
         },
       },
@@ -314,10 +332,10 @@ export default defineConfig({
           additionalData: `
             $assets-dir: "${ASSETS_DIR}";
             $base-path: "${BASE_PATH}";
-            @use "./src/scss/abstracts/_mixins.scss" as *;
-            @use "./src/scss/abstracts/_variables.scss" as *;
-            @use "./src/scss/abstracts/_functions.scss" as *;
-            @use "./src/scss/abstracts/_svg.scss" as *;
+            @use "${path.resolve("src/scss/abstracts/_mixins.scss")}" as *;
+            @use "${path.resolve("src/scss/abstracts/_variables.scss")}" as *;
+            @use "${path.resolve("src/scss/abstracts/_functions.scss")}" as *;
+            @use "${path.resolve("src/scss/abstracts/_svg.scss")}" as *;
           `,
         },
       },

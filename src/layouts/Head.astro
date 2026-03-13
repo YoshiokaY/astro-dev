@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets';
 import BeginHead from './BeginHead.astro';
 import JsonLd from './JsonLd.astro';
 
@@ -173,13 +174,6 @@ const {
     <link rel="apple-touch-icon" href={site.touchIcon} />
   )}
 	<link rel="canonical" href={site.domain + page.url} />
-  {site.webfont &&(
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href={site.webfont} as="style" onload="this.onload=null;this.rel='stylesheet'"/>
-    <noscript>
-      <link rel="stylesheet" href={site.webfont}>
-    </noscript>
-  )}
+  <Font cssVariable="--font-noto-sans-jp" />
     <JsonLd site={site} page={page} event={event} />
 </head>
