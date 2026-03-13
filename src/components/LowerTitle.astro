@@ -6,14 +6,14 @@ interface Props {
   /**
    * 下層タイトル
    */
-  title: string;
+  ttl: string;
 }
 
-const { title } = Astro.props;
+const { ttl } = Astro.props;
 ---
 
 <div class="bg-prime">
   <div class="contentInner">
-    <h1 class="c_ttl_lower">{title}</h1>
+    <h1 class="c_ttl_lower" set:html={ttl} />
   </div>
 </div>
