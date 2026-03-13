@@ -12,7 +12,7 @@ $containerPadding: 16; // コンテンツ余白
 $imgPath: "/_assets/img/";
 
 // フォント
-$baseFont: var(--font-noto-sans-jp), "Noto Sans JP", sans-serif;
+$baseFont: var(--font-noto-sans-jp, "Noto Sans JP"), sans-serif;
 
 // テキストサイズ
 $spFontVw: "false"; // SP時にフォントサイズを可変(vw)にする

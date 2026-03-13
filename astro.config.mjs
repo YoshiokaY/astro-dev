@@ -39,6 +39,7 @@ const CONVERT_TO_WEBP = env.VITE_CONVERT_TO_WEBP === "true";
 const ASSETS_DIR = env.VITE_ASSETS_DIR || "_assets";
 const BASE_PATH = env.VITE_BASE_PATH || "/";
 const USE_RELATIVE_PATHS = env.VITE_USE_RELATIVE_PATHS === "true";
+const SELF_HOSTED_FONTS = env.VITE_SELF_HOSTED_FONTS === "true";
 
 console.log("🔧 Astro設定情報:");
 console.log(`  出力形式: ${OUTPUT_FORMAT}`);
@@ -48,6 +49,7 @@ console.log(`  WebP変換: ${CONVERT_TO_WEBP ? "ON" : "OFF"}`);
 console.log(`  アセットディレクトリ: ${ASSETS_DIR}`);
 console.log(`  ベースパス: ${BASE_PATH}`);
 console.log(`  相対パス: ${USE_RELATIVE_PATHS ? "ON" : "OFF"}`);
+console.log(`  フォント: ${SELF_HOSTED_FONTS ? "セルフホスティング" : "CDN"}`);
 
 /**
  * 独立したWebP変換処理
@@ -245,14 +247,18 @@ export default defineConfig({
     rustCompiler: true,
   },
 
-  // フォント設定（Built-in Fonts API）
-  fonts: [
-    {
-      provider: fontProviders.google(),
-      name: "Noto Sans JP",
-      cssVariable: "--font-noto-sans-jp",
-    },
-  ],
+  // フォント設定（Built-in Fonts API / セルフホスティング時のみ有効）
+  ...(SELF_HOSTED_FONTS
+    ? {
+        fonts: [
+          {
+            provider: fontProviders.google(),
+            name: "Noto Sans JP",
+            cssVariable: "--font-noto-sans-jp",
+          },
+        ],
+      }
+    : {}),
 
   // Vite設定
   vite: {
