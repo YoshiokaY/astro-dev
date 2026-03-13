@@ -10,18 +10,35 @@ import imageminPngquant from "imagemin-pngquant";
 import imageminSvgo from "imagemin-svgo";
 import imageminWebp from "imagemin-webp";
 import path from "path";
+import { fileURLToPath } from "url";
 import sassGlobImports from "vite-plugin-sass-glob-import";
 import simpleWebpIntegration from "./plugins/convertWebp";
 
-// Node.js環境変数から直接読み込み（astro.config.mjsはNode.js環境で実行される）
-const OUTPUT_FORMAT = import.meta.env.VITE_OUTPUT_FORMAT || "html"; // デフォルトhtml
-const COMPRESS_OUTPUT = import.meta.env.VITE_COMPRESS_OUTPUT !== "false"; // デフォルトtrue
-const CSS_SPLIT = import.meta.env.VITE_CSS_SPLIT !== "false"; // デフォルトtrue
-const IMAGEMIN = import.meta.env.VITE_IMAGEMIN !== "false"; // デフォルトtrue
-const CONVERT_TO_WEBP = import.meta.env.VITE_CONVERT_TO_WEBP === "true"; // デフォルトfalse
-const ASSETS_DIR = import.meta.env.VITE_ASSETS_DIR || "_assets"; // デフォルト_assets
-const BASE_PATH = import.meta.env.VITE_BASE_PATH || "/"; // デフォルトルート相対
-const USE_RELATIVE_PATHS = import.meta.env.VITE_USE_RELATIVE_PATHS === "true"; // デフォルトfalse
+// .envファイルを読み込み、process.envにマージ
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const envPath = path.join(__dirname, ".env");
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, "utf-8");
+  for (const line of envContent.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const [key, ...rest] = trimmed.split("=");
+    const value = rest.join("=");
+    if (key && !(key in process.env)) {
+      process.env[key] = value;
+    }
+  }
+}
+const env = process.env;
+
+const OUTPUT_FORMAT = env.VITE_OUTPUT_FORMAT || "html";
+const COMPRESS_OUTPUT = env.VITE_COMPRESS_OUTPUT !== "false";
+const CSS_SPLIT = env.VITE_CSS_SPLIT !== "false";
+const IMAGEMIN = env.VITE_IMAGEMIN !== "false";
+const CONVERT_TO_WEBP = env.VITE_CONVERT_TO_WEBP === "true";
+const ASSETS_DIR = env.VITE_ASSETS_DIR || "_assets";
+const BASE_PATH = env.VITE_BASE_PATH || "/";
+const USE_RELATIVE_PATHS = env.VITE_USE_RELATIVE_PATHS === "true";
 
 console.log("🔧 Astro設定情報:");
 console.log(`  出力形式: ${OUTPUT_FORMAT}`);
@@ -156,7 +173,7 @@ export default defineConfig({
   publicDir: "./src/public",
 
   // サイト設定
-  site: import.meta.env.SITE_URL || "http://localhost:3000",
+  site: env.SITE_URL || "http://localhost:3000",
 
   // Astro統合
   integrations: [
@@ -218,9 +235,14 @@ export default defineConfig({
 
   // 開発サーバー設定
   server: {
-    port: parseInt(import.meta.env.DEV_PORT || "3000", 10),
-    host: import.meta.env.DEV_HOST === "false" ? false : true,
-    open: import.meta.env.DEV_OPEN === "true",
+    port: parseInt(env.DEV_PORT || "3000", 10),
+    host: env.DEV_HOST === "false" ? false : true,
+    open: env.DEV_OPEN === "true",
+  },
+
+  // Rustコンパイラの有効化
+  experimental: {
+    rustCompiler: true,
   },
 
   // フォント設定（Built-in Fonts API）
