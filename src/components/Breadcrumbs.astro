@@ -11,7 +11,7 @@ interface Props {
     /**
      * パンくずのテキスト。
      */
-    text: string;
+    txt: string;
     /**
      * パンくずのリンク先URL。
      */
@@ -45,10 +45,10 @@ const isLastItem = (index: number): boolean => index === bread.length - 1;
               itemtype="https://schema.org/ListItem"
             >
               {isLastItem(i) ? (
-                <span itemprop="name">{item.text}</span>
+                <span itemprop="name">{item.txt}</span>
               ) : (
                 <a href={item.link} itemprop="item">
-                  <span itemprop="name">{item.text}</span>
+                  <span itemprop="name">{item.txt}</span>
                 </a>
               )}
               <meta itemprop="position" content={String(i + 1)} />
