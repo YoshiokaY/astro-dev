@@ -17,9 +17,12 @@ pnpm-debug.log*
 # Local files
 .claude/
 CLAUDE.md
-package-lock.json
-pnpm-lock.yaml
 pnpm-workspace.yaml
+
+# Environment variables
+.env
+.env.local
+.env.*.local
 
 # macOS-specific files
 .DS_Store

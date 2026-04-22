@@ -99,6 +99,9 @@ src/
 # 依存関係をインストール
 npm install
 
+# 環境変数ファイルを作成（初回のみ）
+cp .env.example .env
+
 # 開発サーバー起動
 npm start
 # → http://localhost:3000 でアクセス
@@ -130,6 +133,14 @@ npm run lint:ci         # 全リンターのCI用実行
 ## ⚙️ 設定・カスタマイズ
 
 ### 環境変数による機能制御
+
+`.env` ファイルはGit管理対象外です。初回セットアップ時にテンプレートからコピーしてください。
+
+```bash
+# .env ファイルを作成
+cp .env.example .env
+```
+
 ```bash
 # .env ファイルで設定可能
 VITE_COMPRESS_OUTPUT=true      # コード圧縮（デフォルト: true）
@@ -141,6 +152,8 @@ VITE_BASE_PATH=/               # ベースパス
 VITE_USE_RELATIVE_PATHS=false  # 相対パス使用（デフォルト: false = ルート相対）
 VITE_SELF_HOSTED_FONTS=false   # フォント配信（true: セルフホスティング / false: CDN）
 ```
+
+> **注意**: `.env` にAPIキーやパスワードなどの機密情報を追加した場合でも、Git管理外のため安全です。設定項目を追加する際は `.env.example` にもテンプレートとして反映してください。
 
 ### サイト設定
 - **共通設定**: `src/layouts/Common.astro` でサイト名、ドメイン、メニューを設定
