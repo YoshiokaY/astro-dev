@@ -20,7 +20,7 @@ jobs:
     steps:
       # リポジトリのチェックアウト
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0 # 全履歴を取得（変更ファイルの検出用）
 
@@ -31,7 +31,7 @@ jobs:
       # 変更されたファイルの検出（オプション）
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@2d756ea4c53f7f6b397767d8723b3a10a9f35bf2 # v44
         with:
           files: |
             src/**/*.{js,ts,scss}
@@ -45,7 +45,7 @@ jobs:
 
       # ESLintのレポート生成
       - name: ESLint Report
-        uses: reviewdog/action-eslint@v1
+        uses: reviewdog/action-eslint@556a3fdaf8b4201d4d74d406013386aa4f7dab96 # v1
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
@@ -60,7 +60,7 @@ jobs:
 
       # Stylelintのレポート生成
       - name: Stylelint Report
-        uses: reviewdog/action-stylelint@v1
+        uses: reviewdog/action-stylelint@dd2b435cc6a7c82705307a9dee740c9bbaa10411 # v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
@@ -81,7 +81,7 @@ jobs:
   #   steps:
   #     # リポジトリのチェックアウト
   #     - name: Checkout code
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
   #     # 依存関係のインストール
   #     - name: Install dependencies
@@ -98,7 +98,7 @@ jobs:
   #     # テスト結果のアップロード（失敗時）
   #     - name: Upload test results
   #       if: failure()
-  #       uses: actions/upload-artifact@v4
+  #       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
   #       with:
   #         name: playwright-report
   #         path: playwright-report/
@@ -111,7 +111,7 @@ jobs:
   #   steps:
   #     # リポジトリのチェックアウト
   #     - name: Checkout code
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
   #     # 依存関係のインストール
   #     - name: Install dependencies
@@ -130,7 +130,7 @@ jobs:
   #     # Lighthouse結果のアップロード
   #     - name: Upload Lighthouse results
   #       if: always()
-  #       uses: actions/upload-artifact@v4
+  #       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
   #       with:
   #         name: lighthouse-results
   #         path: .lighthouseci/
