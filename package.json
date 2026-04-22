@@ -87,5 +87,16 @@
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@tailwindcss/oxide",
+      "cwebp-bin",
+      "esbuild",
+      "mozjpeg",
+      "pngquant-bin",
+      "sharp"
+    ]
   }
 }
