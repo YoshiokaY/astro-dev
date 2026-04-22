@@ -9,6 +9,8 @@ on:
       - opened
       - synchronize
       - reopened
+# 権限の最小化（デフォルトで全権限を無効化）
+permissions: {}
 # 並行実行の制御
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -17,6 +19,10 @@ jobs:
   Linters:
     name: Linters
     runs-on: ubuntu-latest
+    permissions:
+      contents: read        # リポジトリのチェックアウト
+      pull-requests: write  # reviewdogのPRコメント
+      checks: write         # reviewdogのレポート
     steps:
       # リポジトリのチェックアウト
       - name: Checkout code
