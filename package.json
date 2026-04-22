@@ -46,26 +46,16 @@
     "@lhci/cli": "^0.15.1",
     "@markuplint/astro-parser": "^4.6.19",
     "@tailwindcss/vite": "^4.1.10",
-    "@types/imagemin-mozjpeg": "^8.0.4",
-    "@types/imagemin-svgo": "^10.0.5",
-    "@types/imagemin-webp": "^7.0.3",
     "@types/jquery": "^3.5.32",
     "@types/node": "^22.15.3",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
-    "@vheemstra/vite-plugin-imagemin": "^2.0.0",
     "astro-relative-links": "^0.4.2",
     "chokidar-cli": "^3.0.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-astro": "^1.0.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "glob": "^11.0.3",
     "globals": "^16.2.0",
-    "imagemin": "^9.0.1",
-    "imagemin-mozjpeg": "^10.0.0",
-    "imagemin-pngquant": "^10.0.0",
-    "imagemin-svgo": "^11.0.1",
-    "imagemin-webp": "^8.0.0",
     "jquery": "^3.7.1",
     "markuplint": "^4.12.0",
     "npm-run-all2": "^7.0.0",
@@ -74,6 +64,7 @@
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "sass": "^1.89.2",
+    "sharp": "^0.34.5",
     "stylelint": "^16.21.0",
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-recess-order": "^6.0.0",
@@ -87,5 +78,13 @@
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@tailwindcss/oxide",
+      "esbuild",
+      "sharp"
+    ]
   }
 }
