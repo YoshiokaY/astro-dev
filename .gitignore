@@ -46,6 +46,10 @@ astro-internal/
 # Lighthouse CI
 .lighthouseci/
 
+# phpMyAdmin sessions（DB接続情報を含むため除外）
+docker/phpmyadmin/sessions/*
+!docker/phpmyadmin/sessions/.gitkeep
+
 /public/wp/*
 !/public/wp/wp-content/
 /public/wp/wp-content/*
