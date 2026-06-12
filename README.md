@@ -14,7 +14,7 @@
 - **除外設定** - OGP画像、ファビコンなどを自動除外
 
 ### 🛠️ 開発環境
-- **Astro 5.10.0** - 最新の静的サイトジェネレーター
+- **Astro 6 / Vite 7** - 最新の静的サイトジェネレーター + Rustコンパイラ対応
 - **TypeScript** - 型安全な開発（strict mode）
 - **TailwindCSS v4** - 最新のユーティリティファーストCSS
 - **SCSS** - グローバル変数・mixin・function対応
@@ -91,8 +91,8 @@ src/
 ## 🚀 開発開始
 
 ### 必要な環境
-- Node.js >= 18.0.0
-- npm >= 8.0.0
+- Node.js >= 20.19.0
+- npm >= 10.0.0
 
 ### セットアップ
 ```bash
@@ -143,13 +143,14 @@ cp .env.example .env
 
 ```bash
 # .env ファイルで設定可能
-VITE_COMPRESS_OUTPUT=true     # コード圧縮（デフォルト: true）
-VITE_CSS_SPLIT=false          # CSS分離（デフォルト: false = 全てのcssファイルを統合）
-VITE_IMAGEMIN=true            # 画像最適化（デフォルト: true）
-VITE_CONVERT_TO_WEBP=true     # WebP変換（デフォルト: true）
-VITE_ASSETS_DIR=assets        # アセットディレクトリ名
-VITE_BASE_PATH=/              # ベースパス
-VITE_USE_RELATIVE_PATHS=false # 相対パス使用（デフォルト: false = ルート相対）
+VITE_COMPRESS_OUTPUT=true      # コード圧縮（デフォルト: true）
+VITE_CSS_SPLIT=false           # CSS分離（デフォルト: false = 全てのcssファイルを統合）
+VITE_IMAGEMIN=true             # 画像最適化（デフォルト: true）
+VITE_CONVERT_TO_WEBP=true      # WebP変換（デフォルト: true）
+VITE_ASSETS_DIR=assets         # アセットディレクトリ名
+VITE_BASE_PATH=/               # ベースパス
+VITE_USE_RELATIVE_PATHS=false  # 相対パス使用（デフォルト: false = ルート相対）
+VITE_SELF_HOSTED_FONTS=false   # フォント配信（true: セルフホスティング / false: CDN）
 ```
 
 > **注意**: `.env` にAPIキーやパスワードなどの機密情報を追加した場合でも、Git管理外のため安全です。設定項目を追加する際は `.env.example` にもテンプレートとして反映してください。
@@ -208,6 +209,7 @@ VITE_CONVERT_TO_WEBP=true      # WebP変換
 VITE_ASSETS_DIR=_assets        # アセットディレクトリ名
 VITE_BASE_PATH=/               # ベースパス
 VITE_USE_RELATIVE_PATHS=false  # 相対パス使用
+VITE_SELF_HOSTED_FONTS=false   # フォント配信（true: セルフホスティング / false: CDN）
 ```
 
 #### 3. 🌐 サイト全体設定
