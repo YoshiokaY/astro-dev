@@ -1,16 +1,16 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import LowerTitle from "@/components/LowerTitle.astro";
-import Breadcrumbs from "@/components/Breadcrumbs.astro";
 import HeroSection from "@/pages/_parts/_sample/_hero.astro";
 import ArticlesSection from "@/pages/_parts/_sample/_articles.astro";
 import CategoriesSection from "@/pages/_parts/_sample/_categories.astro";
 import QaSection from "@/pages/_parts/_sample/_qa.astro";
 import VideosSection from "@/pages/_parts/_sample/_videos.astro";
+import { resolveSamplePage } from "@/data/resolvers/page";
+import type { SamplePageData } from "@/data/types";
 
 import "@/scss/pages/_sample.scss";
 
-const page = {
+const staticData: SamplePageData = {
   head: {
     slug: "sample",
     ttl: "オウンドメディア",
@@ -18,8 +18,8 @@ const page = {
     url: "/sample/",
   },
   breadcrumbs: [
-    { text: "ホーム", link: "/" },
-    { text: "オウンドメディア", link: "/sample/" },
+    { txt: "ホーム", link: "/" },
+    { txt: "オウンドメディア", link: "/sample/" },
   ],
   contents: {
     hero: {
@@ -136,6 +136,7 @@ const page = {
   },
 };
 
+const page = await resolveSamplePage(staticData);
 const imgPath = "/_assets/img/" + page.head.slug + "/";
 ---
 

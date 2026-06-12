@@ -1,0 +1,279 @@
+// ================================================
+// ニュース一覧ページ用スタイル
+// ================================================
+
+.p_news_archive {
+  padding: 2.5rem 0;
+
+  @include mq() {
+    padding: 3.75rem 0;
+  }
+
+  .article_list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
+
+    @include mq() {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .article_item {
+    list-style: none;
+  }
+
+  .article_card {
+    overflow: hidden;
+    border: 0.1rem solid #e5e7eb;
+    border-radius: 0.8rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0.4rem 1.2rem rgb(0 0 0 / 0.1);
+      transform: translateY(-0.2rem);
+
+      .card_img img {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .card_img {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #f3f4f6;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  .card_body {
+    padding: 2.4rem;
+  }
+
+  .card_header {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+    margin-bottom: 1.6rem;
+
+    time {
+      font-size: 1.4rem;
+      color: $color-gray;
+    }
+  }
+
+  .card_category {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background: $color-prime;
+    border-radius: 0.4rem;
+  }
+
+  .card_ttl {
+    margin-bottom: 1.2rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1.6;
+
+    @include mq() {
+      font-size: 2rem;
+    }
+  }
+
+  .card_desc {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: #6b7280;
+  }
+}
+
+// ================================================
+// ページネーション
+// ================================================
+
+.c_pager {
+  margin-top: 4rem;
+
+  @include mq() {
+    margin-top: 6rem;
+  }
+}
+
+.c_pager_list {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+}
+
+.c_pager_list-item {
+  a,
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4rem;
+    height: 4rem;
+    padding: 0 0.8rem;
+    font-size: 1.4rem;
+    text-decoration: none;
+    border: 0.1rem solid #d1d5db;
+    border-radius: 0.4rem;
+    transition: all 0.2s ease;
+  }
+
+  a:hover {
+    color: #fff;
+    background: $color-prime;
+    border-color: $color-prime;
+  }
+
+  &.-current span {
+    color: #fff;
+    background: $color-prime;
+    border-color: $color-prime;
+  }
+
+  &.-dots span {
+    border: none;
+  }
+
+  &.-first a,
+  &.-last a,
+  &.-prev a,
+  &.-next a {
+    font-size: 1.2rem;
+  }
+}
+
+// ================================================
+// 記事詳細ページ用スタイル
+// ================================================
+
+.p_news {
+  padding: 2.5rem 0;
+
+  @include mq() {
+    padding: 3.75rem 0;
+  }
+
+  .news_header {
+    margin-bottom: 2rem;
+
+    @include mq() {
+      margin-bottom: 3rem;
+    }
+  }
+
+  .news_meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    time {
+      font-size: 1.4rem;
+      color: $color-gray;
+    }
+  }
+
+  .news_category {
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    font-size: 1.2rem;
+    color: $color-prime;
+    border: 0.1rem solid $color-prime;
+    border-radius: 0.2rem;
+  }
+
+  .news_ttl {
+    font-size: 2.4rem;
+    font-weight: bold;
+    line-height: 1.5;
+
+    @include mq() {
+      font-size: 3.2rem;
+    }
+  }
+
+  .news_thumbnail {
+    margin-bottom: 2rem;
+
+    @include mq() {
+      margin-bottom: 3rem;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.4rem;
+    }
+  }
+
+  .news_body {
+    line-height: 1.8;
+
+    h2 {
+      padding-bottom: 0.8rem;
+      margin-top: 3rem;
+      margin-bottom: 1.6rem;
+      font-size: 2rem;
+      font-weight: bold;
+      border-bottom: 0.2rem solid $color-prime;
+
+      @include mq() {
+        font-size: 2.4rem;
+      }
+    }
+
+    h3 {
+      margin-top: 2.4rem;
+      margin-bottom: 1.2rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+
+      @include mq() {
+        font-size: 2rem;
+      }
+    }
+
+    p {
+      margin-bottom: 1.6rem;
+    }
+
+    ul,
+    ol {
+      padding-left: 2rem;
+      margin-bottom: 1.6rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 1.6rem 0;
+      border-radius: 0.4rem;
+    }
+
+    blockquote {
+      padding: 1.2rem 1.6rem;
+      margin: 1.6rem 0;
+      border-left: 0.4rem solid $color-prime;
+      background: #f8fafc;
+    }
+  }
+}
