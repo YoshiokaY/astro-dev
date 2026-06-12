@@ -30,7 +30,7 @@ class WatchTask {
       persistent: true,
       usePolling: false,
       depth: 99,
-      ignored: ["**/node_modules/**", "**/.git/**", "**/dist/**", "**/htdocs/**"],
+      ignored: ["**/node_modules/**", "**/.git/**", "**/dist/**", "**/htdocs/**", "**/htdocs_wp/**"],
       awaitWriteFinish: {
         stabilityThreshold: 300,
         pollInterval: 100,
@@ -152,7 +152,7 @@ class WatchTask {
         ui: {
           port: 3002, // Browser Sync UIのポート
         },
-        files: ["htdocs/**/*.php", "htdocs/**/*.css", "htdocs/**/*.js"],
+        files: ["htdocs_wp/**/*.php", "htdocs_wp/**/*.css", "htdocs_wp/**/*.js"],
         watchEvents: ["change", "add"],
         injectChanges: true, // CSSの場合はページ全体をリロードせずに変更を注入
         notify: true,
