@@ -1,7 +1,7 @@
 {
   "name": "astro-dev",
   "private": true,
-  "version": "1.5.1",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "start": "astro dev",
@@ -34,30 +34,31 @@
     "not dead"
   ],
   "dependencies": {
+    "@astrojs/compiler-rs": "^0.1.4",
     "@axe-core/playwright": "^4.10.2",
     "@playwright/test": "^1.56.0",
-    "astro": "^5.10.0",
+    "astro": "^6.1.8",
     "axe-core": "^4.11.0"
   },
   "devDependencies": {
     "@acab/reset.css": "^0.11.0",
-    "@astrojs/check": "^0.9.0",
+    "@astrojs/check": "^0.9.7",
     "@eslint/js": "^9.29.0",
     "@lhci/cli": "^0.15.1",
-    "@markuplint/astro-parser": "^4.6.19",
-    "@tailwindcss/vite": "^4.1.10",
+    "@markuplint/astro-parser": "^4.6.23",
+    "@tailwindcss/vite": "^4.2.4",
     "@types/jquery": "^3.5.32",
     "@types/node": "^22.15.3",
-    "@typescript-eslint/eslint-plugin": "^8.34.1",
-    "@typescript-eslint/parser": "^8.34.1",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
     "astro-relative-links": "^0.4.2",
     "chokidar-cli": "^3.0.0",
     "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-astro": "^1.0.0",
+    "eslint-plugin-astro": "^1.6.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "globals": "^16.2.0",
     "jquery": "^3.7.1",
-    "markuplint": "^4.12.0",
+    "markuplint": "^4.18.0",
     "npm-run-all2": "^7.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",
@@ -73,11 +74,11 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite-node": "^2.0.0",
-    "vite-plugin-sass-glob-import": "^5.0.0"
+    "vite-plugin-sass-glob-import": "^6.0.3"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=20.19.0",
+    "npm": ">=10.0.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

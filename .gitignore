@@ -15,6 +15,7 @@ pnpm-debug.log*
 
 
 # Local files
+.claude/
 CLAUDE.md
 pnpm-workspace.yaml
 
