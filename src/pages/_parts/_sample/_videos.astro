@@ -39,7 +39,7 @@ const { videos, imgPath } = Astro.props;
           >
             <span class="video_thumbnail">
               <Picture
-                src={imgPath + video.thumbnail}
+                src={video.thumbnail.startsWith("http") ? video.thumbnail : imgPath + video.thumbnail}
                 alt={video.ttl}
                 sizes={[800, 450]}
               />
