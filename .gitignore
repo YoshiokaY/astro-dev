@@ -19,6 +19,9 @@ pnpm-debug.log*
 CLAUDE.md
 pnpm-workspace.yaml
 
+# npm lockfile（パッケージ管理はpnpmに統一）
+package-lock.json
+
 # Environment variables
 .env
 .env.local
@@ -43,3 +46,8 @@ astro-internal/
 # Lighthouse CI
 .lighthouseci/
 
+/public/wp/*
+!/public/wp/wp-content/
+/public/wp/wp-content/*
+!/public/wp/wp-content/uploads/
+!/public/wp/wp-content/plugins/

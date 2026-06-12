@@ -281,7 +281,7 @@ echo "✅ サンプルコンテンツの作成が完了しました"
 # docker/wpcli/activate-theme.sh - テーマ有効化
 # ===========================================
 
-THEME_NAME="${VITE_THEME_NAME:-willient-theme}"  # 環境変数から取得（デフォルト値付き）
+THEME_NAME="${VITE_THEME_NAME:-my-theme}"  # 環境変数から取得（デフォルト値付き）
 
 echo "🎨 テーマ有効化処理を開始..."
 
@@ -320,12 +320,12 @@ else
             echo "✅ テーマファイルのコピーが完了しました"
         else
             echo "❌ テーマファイルのコピーに失敗しました"
-            echo "💡 手動で 'docker cp htdocs/wp/wp-content/themes/willient-theme/. [CONTAINER_ID]:/var/www/html/wp/wp-content/themes/willient-theme/' を実行してください"
+            echo "💡 手動で 'docker cp htdocs_wp/wp/wp-content/themes/$THEME_NAME/. [CONTAINER_ID]:/var/www/html/wp/wp-content/themes/$THEME_NAME/' を実行してください"
             exit 1
         fi
     else
         echo "❌ ホスト側にもテーマファイルが見つかりません"
-        echo "💡 'npm run build' を実行してテーマをビルドしてください"
+        echo "💡 'npm run build:wp' を実行してテーマをビルドしてください"
         exit 1
     fi
 fi
