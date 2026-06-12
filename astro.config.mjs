@@ -7,6 +7,8 @@ import { fileURLToPath } from "url";
 import sassGlobImports from "vite-plugin-sass-glob-import";
 import simpleWebpIntegration from "./plugins/convertWebp";
 import { sharpImageCompress, sharpWebpConverter } from "./plugins/imageOptimizer";
+import phpOutputPlugin from "./plugins/phpOutput.js";
+import themeFilesPlugin from "./plugins/themeFiles.js";
 
 // .envファイルを読み込み、process.envにマージ
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -26,6 +28,10 @@ if (fs.existsSync(envPath)) {
 const env = process.env;
 
 const OUTPUT_FORMAT = env.VITE_OUTPUT_FORMAT || "html";
+const IS_WP_OUTPUT = OUTPUT_FORMAT === "wp";
+const THEME_NAME = env.VITE_THEME_NAME || "my-theme";
+// WPビルドはテーマディレクトリ構造で出力（phpOutput.jsのテーマルート判定がwp-content/themes/xxxパスに依存）
+const OUT_DIR = IS_WP_OUTPUT ? `./htdocs_wp/wp/wp-content/themes/${THEME_NAME}` : "./htdocs";
 const COMPRESS_OUTPUT = env.VITE_COMPRESS_OUTPUT !== "false";
 const CSS_SPLIT = env.VITE_CSS_SPLIT !== "false";
 const IMAGEMIN = env.VITE_IMAGEMIN !== "false";
@@ -37,6 +43,7 @@ const SELF_HOSTED_FONTS = env.VITE_SELF_HOSTED_FONTS === "true";
 
 console.log("🔧 Astro設定情報:");
 console.log(`  出力形式: ${OUTPUT_FORMAT}`);
+console.log(`  出力先: ${OUT_DIR}`);
 console.log(`  コード圧縮: ${COMPRESS_OUTPUT ? "ON" : "OFF"}`);
 console.log(`  画像圧縮: ${IMAGEMIN ? "ON" : "OFF"}`);
 console.log(`  WebP変換: ${CONVERT_TO_WEBP ? "ON" : "OFF"}`);
@@ -53,6 +60,7 @@ const imageExcludePatterns = [
   /\/apple-touch-icon/, // アップルタッチアイコン
   /\/android-chrome/, // Androidアイコン
   /noWebp/, // noWebpを含むファイル名は除外
+  /wp-content/, // テーマテンプレートファイル（screenshot.pngなど）
 ];
 
 // アセットファイル名のカスタムロジック（SSR・クライアント両ビルドで共用）
@@ -82,8 +90,8 @@ export default defineConfig({
   // ベースパスの設定
   base: BASE_PATH,
 
-  // 出力ディレクトリ
-  outDir: "./htdocs",
+  // 出力ディレクトリ（WPビルド時はテーマディレクトリ直下）
+  outDir: OUT_DIR,
 
   // 公開ディレクトリ
   publicDir: "./src/public",
@@ -125,6 +133,18 @@ export default defineConfig({
             jpeg: { quality: 85 },
             png: { quality: 80 },
             excludePatterns: imageExcludePatterns,
+          }),
+        ]
+      : []),
+
+    // src/public/wp のテーマテンプレート配置制御（phpOutputより先に実行）
+    themeFilesPlugin({ isWpOutput: IS_WP_OUTPUT, themeName: THEME_NAME }),
+
+    // WordPressテンプレート変換（outDirがテーマルートなので全HTMLが対象）
+    ...(IS_WP_OUTPUT
+      ? [
+          phpOutputPlugin({
+            convertConditions: [{ pattern: "**/*.html", type: "wordpress" }],
           }),
         ]
       : []),
