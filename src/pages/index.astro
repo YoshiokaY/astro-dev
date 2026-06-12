@@ -1,9 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import SampleHero from "@/pages/_parts/_top/_content.astro";
+import { resolveTopPage } from "@/data/resolvers/page";
+import type { TopPageData } from "@/data/types";
 import "@/scss/pages/_top.scss";
 
-const page = {
+const staticData: TopPageData = {
   head: {
     slug: "top",
     ttl: "サンプルページ",
@@ -12,7 +14,7 @@ const page = {
   },
   contents: {
     sample: {
-      ttl: "サンプルページ",
+      ttl: "サンプルページになります",
       desc: [
         "このページはAstro開発環境のサンプルページです。<br>ヘッダー、フッター、メインコンテンツのシンプルな構成で作成されています。",
         "コンポーネント化とデータ駆動の開発手法のデモンストレーションも兼ねています。",
@@ -20,13 +22,13 @@ const page = {
       features: {
         ttl: "機能紹介",
         items: [
-          "✅ Astroによる高速な静的サイト生成",
-          "✅ TypeScriptサポート",
-          "✅ SCSS（Dart Sass）",
-          "✅ Tailwind CSSサポート",
-          "✅ WebP画像変換サポート",
-          "✅ コンポーネント化アーキテクチャ",
-          "✅ データ駆動開発",
+          "Astroによる高速な静的サイト生成",
+          "TypeScriptサポート",
+          "SCSS（Dart Sass）",
+          "Tailwind CSSサポート",
+          "WebP画像変換サポート",
+          "コンポーネント化アーキテクチャ",
+          "データ駆動開発",
         ],
       },
       textSample: {
@@ -47,6 +49,7 @@ const page = {
   },
 };
 
+const page = (await resolveTopPage()) ?? staticData;
 const imgPath = "/_assets/img/" + page.head.slug + "/";
 ---
 
