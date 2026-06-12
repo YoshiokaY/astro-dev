@@ -5,12 +5,10 @@ import Breadcrumbs from "@/components/Breadcrumbs.astro";
 import ConceptSection from "@/pages/_parts/_about/_concept.astro";
 import FeaturesSection from "@/pages/_parts/_about/_features.astro";
 import TechSection from "@/pages/_parts/_about/_tech.astro";
-import { resolveAboutPage } from "@/data/resolvers/page";
-import type { AboutPageData } from "@/data/types";
 
 import "@/scss/pages/_about.scss";
 
-const staticData: AboutPageData = {
+const page = {
   head: {
     slug: "about",
     ttl: "概要について",
@@ -18,8 +16,8 @@ const staticData: AboutPageData = {
     url: "/about/",
   },
   breadcrumbs: [
-    { txt: "ホーム", link: "/" },
-    { txt: "概要", link: "/about/" },
+    { text: "ホーム", link: "/" },
+    { text: "概要", link: "/about/" },
   ],
   contents: {
     concept: {
@@ -52,8 +50,6 @@ const staticData: AboutPageData = {
     },
   },
 };
-
-const page = await resolveAboutPage(staticData);
 ---
 
 <Layout page={page.head}>

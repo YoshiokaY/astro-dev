@@ -68,7 +68,7 @@ const { contents, imgPath } = Astro.props;
         />
         <div class="picture-demo-container">
           <Picture
-            src={contents.pictureDemo.img.src.startsWith("http") ? contents.pictureDemo.img.src : imgPath + contents.pictureDemo.img.src}
+            src={imgPath + contents.pictureDemo.img.src}
             alt={contents.pictureDemo.img.alt}
             sizes={contents.pictureDemo.img.sizes}
             class="picture-demo-image"
