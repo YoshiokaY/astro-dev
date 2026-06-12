@@ -50,7 +50,8 @@ services:
     container_name: ${SITE_NAME:-astro}-phpmyadmin
     restart: unless-stopped
     ports:
-      - "8082:80"
+      # DB操作は作業者端末のみ（LAN非公開）
+      - "127.0.0.1:8082:80"
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
@@ -93,8 +94,9 @@ services:
     container_name: ${SITE_NAME:-astro}-mailhog
     restart: unless-stopped
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      # メール確認は作業者端末のみ（LAN非公開）
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
     networks:
       - wordpress-network
 
