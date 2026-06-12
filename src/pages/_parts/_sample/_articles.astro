@@ -40,7 +40,7 @@ const { articles, imgPath } = Astro.props;
             <article class="article_card">
               <div class="card_img">
                 <Picture
-                  src={article.img.startsWith("http") ? article.img : imgPath + article.img}
+                  src={imgPath + article.img}
                   alt={article.imgAlt}
                   sizes={[800, 450]}
                   lazy={false}
