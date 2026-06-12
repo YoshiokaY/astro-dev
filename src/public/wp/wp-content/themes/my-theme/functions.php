@@ -585,7 +585,7 @@ require_once('fn/menu.php');        // メニュー設定
 require_once('fn/pagenation.php');  // ページネーション設定
 require_once('fn/shortcode.php');   // ショートコード
 require_once('fn/utility.php');     // 関数など
-require_once('fn/deploy-hook.php'); // 公開時にGitHub Actionsデプロイを起動
 // require_once('fn/post.php');        // カスタム投稿
 // require_once('fn/searchconf.php');  // 検索設定
 // require_once('fn/form.php');        // フォーム設定
+// require_once('fn/deploy-hook.php'); // 公開時にGitHub Actionsデプロイを起動
