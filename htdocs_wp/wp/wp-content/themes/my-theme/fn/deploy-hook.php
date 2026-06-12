@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 }
 
 // デプロイ対象のリポジトリ（owner/repo）
-const MY_THEME_DEPLOY_REPO = 'YoshiokaY/cloud';
+const MY_THEME_DEPLOY_REPO = '';
 
 /**
  * 公開状態が絡む投稿・固定ページの変更で GitHub repository_dispatch を送信

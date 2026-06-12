@@ -373,7 +373,7 @@ function meta_box_change_select( $post, $box ) {
       // post_tagの場合はスラッグを、それ以外はterm_idを使用
       $value = ( $tax_name === 'post_tag' ) ? $term->slug : $term->term_id;
       $selected = in_array( $value, $selected_values ) ? 'selected="selected"' : '';
-      echo '<option value="'.$value.'" '.$selected.'>'.$term->name.'</option>';
+      echo '<option value="'.esc_attr( $value ).'" '.$selected.'>'.esc_html( $term->name ).'</option>';
   }
   echo '</select>';
 }
