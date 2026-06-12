@@ -1,0 +1,80 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { resolveAllPosts } from "@/data/resolvers/posts";
+import type { PostData } from "@/data/types";
+
+import "@/scss/pages/_news.scss";
+
+export async function getStaticPaths() {
+  const posts = await resolveAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: PostData;
+}
+
+const { post } = Astro.props;
+
+const page = {
+  slug: "news",
+  ttl: post.ttl,
+  description: post.desc,
+  url: `/news/${post.slug}/`,
+};
+
+const breadcrumbs = [
+  { txt: "ホーム", link: "/" },
+  { txt: "ニュース", link: "/sample/" },
+  { txt: post.ttl, link: `/news/${post.slug}/` },
+];
+
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr);
+  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+}
+---
+
+<Layout page={page}>
+  <meta name="wp-template" content="single-news" />
+  <div class="contentInner">
+    <article class="p_news">
+      <nav class="breadcrumbs" aria-label="パンくずリスト">
+        <ol>
+          {
+            breadcrumbs.map((item, i) => (
+              <li>
+                {i < breadcrumbs.length - 1 ? (
+                  <a href={item.link}>{item.txt}</a>
+                ) : (
+                  <span aria-current="page">{item.txt}</span>
+                )}
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <header class="news_header">
+        <div class="news_meta">
+          <time datetime={post.date}>{formatDate(post.date)}</time>
+          {post.category && <span class="news_category">{post.category}</span>}
+        </div>
+        <h1 class="news_ttl">{post.ttl}</h1>
+      </header>
+
+      {
+        post.img && (
+          <figure class="news_thumbnail">
+            <img src={post.img} alt={post.imgAlt} loading="eager" />
+          </figure>
+        )
+      }
+
+      <div class="news_body" set:html={post.content} />
+    </article>
+  </div>
+</Layout>
