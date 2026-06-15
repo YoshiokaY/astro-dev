@@ -13,8 +13,10 @@
 ## ✨ 主要機能
 
 ### 🖼️ 画像最適化
-- **自動WebP変換** - .jpg/.png → .webp（オリジナル+WebP形式）
-- **画像圧縮** - JPEG（85%品質）、PNG（80-90%品質）最適化
+- **自動WebP変換** - .jpg/.jpeg/.png/.gif → .webp に置換（HTML/CSS/PHPの参照パスも自動書き換え）
+- **画像圧縮** - JPEG（85%品質）、PNG（80%品質）最適化（WebP変換OFF時に動作）
+- **ビルドキャッシュ** - 最適化済み画像を内容ハッシュでキャッシュし、2回目以降のビルドを高速化
+- **並列処理** - CPUコア数ぶん並列でエンコードし、ビルド時間を短縮
 - **SVG最適化** - 不要な要素を自動削除
 - **除外設定** - OGP画像、ファビコンなどを自動除外
 
@@ -162,6 +164,15 @@ npm run build            # 静的ビルド（htdocs/に出力）
 npm run build:wp         # WPテーマビルド（htdocs_wp/に出力）
 npm run preview          # ビルド結果をプレビュー
 npm run watch            # ウォッチビルド + 開発サーバー（WPテーマ開発用）
+```
+
+### 画像最適化キャッシュ
+ビルドのたびに最適化済み画像をキャッシュ（`node_modules/.cache/image-optimizer/`）し、変更のない画像はエンコードをスキップします。画像を差し替えれば内容ハッシュが変わり自動で再生成されるため、通常は手動操作は不要です。
+
+```bash
+npm run image:clear      # キャッシュを削除するだけ
+npm run build:fresh      # キャッシュ削除 → 静的ビルドを一から最適化（緊急用）
+npm run build:wp:fresh   # キャッシュ削除 → WPテーマビルドを一から最適化（緊急用）
 ```
 
 ### WordPress開発コマンド
@@ -459,9 +470,17 @@ const { title, description } = Astro.props;
 ## ⚠️ 注意事項
 
 ### WebP変換について
+- **命名規則**: 元の拡張子を `.webp` に置換します（例: `sample.png` → `sample.webp`）。生成側（`plugins/imageOptimizer.js`）と参照パス書き換え側（`plugins/convertWebp.js`）は共通の命名関数を共有しています
+- **ファイル名衝突**: 同一ディレクトリに拡張子違いの同名画像（例: `logo.png` と `logo.jpg`）があると、どちらも `logo.webp` になり後勝ちで上書きされます。検知時はビルドログに警告を出します
 - **除外ファイル**: ファイル名に `noWebp` を含む画像は自動でWebP変換から除外されます
 - **OGP画像**: `/ogimg/`、`/favicon/`、`/apple-touch-icon/`、`/android-chrome/` パスの画像は除外対象
 - **外部画像**: `https://` で始まる外部画像URLは変換されません
+
+### 画像最適化キャッシュについて
+- **保存先**: `node_modules/.cache/image-optimizer/`（Git管理外）
+- **キャッシュキー**: 元画像の内容ハッシュ + 出力形式・品質を含むため、画像の差し替えや品質設定の変更で自動的に再生成されます
+- **モード別に独立**: WebP変換と画像圧縮はキャッシュを共有しないため、`.env` を切り替えても互いのキャッシュを壊しません
+- **全再最適化**: キャッシュを無視して一からやり直したい場合は `npm run build:fresh`（静的）/ `npm run build:wp:fresh`（WP）を使用します
 
 ### スタイル設定
 - **CSS Custom Properties**: `--color-*` 形式で定義されています（例: `--color-prime`）

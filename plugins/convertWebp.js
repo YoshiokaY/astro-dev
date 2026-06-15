@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { toWebpPath } from "./imageCache.js";
 
 /**
  * シンプルWebP統合 - パス書き換え版
@@ -290,8 +291,8 @@ function convertToWebpPath(imagePath, supportedExtensions) {
     return null; // 対象外
   }
 
-  // パスの末尾に.webpを追加
-  return imagePath + ".webp";
+  // 末尾の拡張子を .webp に置換（生成側 imageOptimizer.js と同じ命名規則を共有）
+  return toWebpPath(imagePath);
 }
 
 /**

@@ -1,7 +1,7 @@
 {
   "name": "astro-dev",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.5.0",
   "type": "module",
   "packageManager": "pnpm@10.17.1",
   "scripts": {
@@ -10,6 +10,10 @@
     "build:wp": "VITE_OUTPUT_FORMAT=wp astro build",
     "preview": "astro preview",
     "watch": "run-p wp:watch start",
+    "// === 画像最適化キャッシュ ===": "",
+    "image:clear": "node scripts/clearImageCache.js",
+    "build:fresh": "npm run image:clear && npm run build",
+    "build:wp:fresh": "npm run image:clear && npm run build:wp",
     "// === Linterチェックコマンド ===": "",
     "lint": "eslint 'src/**/*.{js,ts,astro,json}' --fix",
     "lint:css": "stylelint 'src/**/*.scss' --fix",
