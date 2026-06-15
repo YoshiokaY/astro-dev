@@ -1,12 +1,15 @@
 {
   "name": "astro-dev",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.5.0",
   "type": "module",
   "scripts": {
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "// === 画像最適化キャッシュ ===": "",
+    "image:clear": "node scripts/clearImageCache.js",
+    "build:fresh": "npm run image:clear && npm run build",
     "// === Linterチェックコマンド ===": "",
     "lint": "eslint 'src/**/*.{js,ts,astro,json}' --fix",
     "lint:css": "stylelint 'src/**/*.scss' --fix",
