@@ -2,30 +2,56 @@ import { wpFetch, hasEndpoint } from "@/data/client";
 import type { PostData, PostSection } from "@/data/types";
 
 /**
+ * セクション配列を本文HTML文字列に結合する
+ * 見出し（ttl）があれば <h2> として出力する
+ */
+function sectionsToHtml(sections: PostSection[]): string {
+  return sections
+    .map((section) => {
+      const heading = section.ttl ? `<h2>${section.ttl}</h2>` : "";
+      return `${heading}${section.content ?? ""}`;
+    })
+    .join("\n");
+}
+
+/**
+ * 本文HTMLからタグを除去した抜粋（説明文）を生成する
+ */
+function htmlToDesc(html: string, length = 100): string {
+  return html.replace(/<[^>]+>/g, "").slice(0, length);
+}
+
+/**
  * Phase 1 用サンプル投稿データ（デザイン確認用）
  * エンドポイント未設定時にこの1件で静的ページを生成する
  */
+const sampleSections: PostSection[] = [
+  {
+    ttl: null,
+    content:
+      "<p>Astroは、高速な静的サイトを構築するための最新のWebフレームワークです。</p>",
+  },
+  {
+    ttl: "Astroの特徴",
+    content:
+      "<p>デフォルトでJavaScriptを最小限に抑え、必要な部分にのみJavaScriptを使用することで、優れたパフォーマンスを実現します。</p>",
+  },
+  {
+    ttl: "開発体験",
+    content:
+      "<p>コンポーネントベースの開発をサポートし、React、Vue、Svelteなど様々なフレームワークのコンポーネントを混在させることができます。</p>",
+  },
+];
+
+const sampleContent = sectionsToHtml(sampleSections);
+
 const samplePost: PostData = {
   slug: "001",
   ttl: "Astroで始める高速サイト構築",
+  desc: htmlToDesc(sampleContent),
   date: "2025-09-28",
-  sections: [
-    {
-      ttl: null,
-      content:
-        "<p>Astroは、高速な静的サイトを構築するための最新のWebフレームワークです。</p>",
-    },
-    {
-      ttl: "Astroの特徴",
-      content:
-        "<p>デフォルトでJavaScriptを最小限に抑え、必要な部分にのみJavaScriptを使用することで、優れたパフォーマンスを実現します。</p>",
-    },
-    {
-      ttl: "開発体験",
-      content:
-        "<p>コンポーネントベースの開発をサポートし、React、Vue、Svelteなど様々なフレームワークのコンポーネントを混在させることができます。</p>",
-    },
-  ],
+  sections: sampleSections,
+  content: sampleContent,
   category: "お知らせ",
   categorySlug: "news",
   img: "/_assets/img/sample/sample_001.png",
@@ -78,12 +104,16 @@ function extractSections(acf: WpPostResponse["acf"]): PostSection[] {
 function toPostData(post: WpPostResponse): PostData {
   const categories = post._embedded?.["wp:term"]?.[0] ?? [];
   const media = post._embedded?.["wp:featuredmedia"]?.[0];
+  const sections = extractSections(post.acf);
+  const content = sectionsToHtml(sections);
 
   return {
     slug: post.slug,
     ttl: post.title.rendered,
+    desc: htmlToDesc(content),
     date: post.date.split("T")[0],
-    sections: extractSections(post.acf),
+    sections,
+    content,
     category: categories[0]?.name ?? "",
     categorySlug: categories[0]?.slug ?? "",
     img: media?.source_url ?? "",

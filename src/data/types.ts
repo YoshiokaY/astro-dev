@@ -154,8 +154,10 @@ export interface PostSection {
 export interface PostData {
   slug: string;
   ttl: string;
+  desc: string;
   date: string;
   sections: PostSection[];
+  content: string;
   category: string;
   categorySlug: string;
   img: string;

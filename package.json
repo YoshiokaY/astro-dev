@@ -1,7 +1,7 @@
 {
   "name": "astro-dev",
   "private": true,
-  "version": "2.5.0",
+  "version": "3.0.0",
   "type": "module",
   "packageManager": "pnpm@10.17.1",
   "scripts": {
@@ -53,11 +53,11 @@
     "not dead"
   ],
   "dependencies": {
-    "@astrojs/compiler-binding-linux-x64-gnu": "0.1.6",
-    "@astrojs/compiler-rs": "^0.1.10",
+    "@astrojs/compiler-binding-linux-x64-gnu": "0.2.3",
+    "@astrojs/compiler-rs": "^0.2.3",
     "@axe-core/playwright": "^4.11.3",
     "@playwright/test": "^1.60.0",
-    "astro": "^6.4.6",
+    "astro": "^7.0.2",
     "axe-core": "^4.12.1"
   },
   "devDependencies": {
@@ -100,7 +100,7 @@
     "vite-plugin-sass-glob-import": "^6.0.3"
   },
   "engines": {
-    "node": ">=20.19.0",
+    "node": ">=22.12.0",
     "npm": ">=10.0.0"
   },
   "pnpm": {
