@@ -162,11 +162,6 @@ export default defineConfig({
     open: env.DEV_OPEN === "true",
   },
 
-  // Rustコンパイラの有効化
-  experimental: {
-    rustCompiler: true,
-  },
-
   // フォント設定（Built-in Fonts API / セルフホスティング時のみ有効）
   ...(SELF_HOSTED_FONTS
     ? {

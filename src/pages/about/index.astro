@@ -16,8 +16,8 @@ const page = {
     url: "/about/",
   },
   breadcrumbs: [
-    { text: "ホーム", link: "/" },
-    { text: "概要", link: "/about/" },
+    { txt: "ホーム", link: "/" },
+    { txt: "概要", link: "/about/" },
   ],
   contents: {
     concept: {
@@ -53,7 +53,7 @@ const page = {
 ---
 
 <Layout page={page.head}>
-  <LowerTitle title="概要について" />
+  <LowerTitle ttl="概要について" />
   <Breadcrumbs bread={page.breadcrumbs} />
 
   <div class="contentInner">
