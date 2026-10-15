@@ -16,7 +16,7 @@
 - **除外設定** - OGP画像、ファビコンなどを自動除外
 
 ### 🛠️ 開発環境
-- **Astro 6 / Vite 7** - 最新の静的サイトジェネレーター + Rustコンパイラ対応
+- **Astro 7 / Vite 8** - 最新の静的サイトジェネレーター（Rustコンパイラ・Rolldownバンドラー標準）
 - **TypeScript** - 型安全な開発（strict mode）
 - **TailwindCSS v4** - 最新のユーティリティファーストCSS
 - **SCSS** - グローバル変数・mixin・function対応
@@ -104,7 +104,7 @@ src/
 ## 🚀 開発開始
 
 ### 必要な環境
-- Node.js >= 20.19.0
+- Node.js >= 22.12.0
 - npm >= 10.0.0
 
 ### セットアップ
@@ -182,7 +182,7 @@ VITE_COMPRESS_OUTPUT=true      # コード圧縮（デフォルト: true）
 VITE_CSS_SPLIT=false           # CSS分離（デフォルト: false = 全てのcssファイルを統合）
 VITE_IMAGEMIN=true             # 画像最適化（デフォルト: true）
 VITE_CONVERT_TO_WEBP=true      # WebP変換（デフォルト: true）
-VITE_ASSETS_DIR=assets         # アセットディレクトリ名
+VITE_ASSETS_DIR=_assets        # アセットディレクトリ名
 VITE_BASE_PATH=/               # ベースパス
 VITE_USE_RELATIVE_PATHS=false  # 相対パス使用（デフォルト: false = ルート相対）
 VITE_SELF_HOSTED_FONTS=false   # フォント配信（true: セルフホスティング / false: CDN）
