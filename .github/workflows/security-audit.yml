@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read # リポジトリのチェックアウト
+      issues: write # 脆弱性検出時のIssue作成・コメント
     strategy:
       fail-fast: false # 片方が失敗してももう片方を実行
       matrix:
@@ -40,5 +41,43 @@ jobs:
         run: npm install -g pnpm@11.28.8
 
       # 脆弱性チェック（lockfileのみを参照するため依存のインストールは不要）
+      # shell: bash を明示して pipefail を有効にし、tee を挟んでも audit の失敗を検知する
       - name: Run pnpm audit
-        run: pnpm audit --audit-level=moderate
+        id: audit
+        shell: bash
+        run: pnpm audit --audit-level=moderate 2>&1 | tee audit-result.txt
+
+      # 脆弱性検出時にIssueを作成（同じブランチの未解決Issueがあればコメントを追加）
+      - name: Report to issue
+        if: failure() && steps.audit.outcome == 'failure'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          BRANCH: ${{ matrix.branch }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="[security] pnpm audit で脆弱性を検出（${BRANCH}）"
+          {
+            echo "\`${BRANCH}\` ブランチで \`pnpm audit\` が新しい脆弱性を検出しました。"
+            echo ""
+            echo "- 実行ログ: ${RUN_URL}"
+            echo "- 対応: \`pnpm update --depth Infinity --lockfile-only\` で範囲内更新 → 解消しないものは親パッケージの更新を検討"
+            echo "- 修正版がない・親の更新待ちの場合は \`pnpm-workspace.yaml\` の \`audit.ignore\` に理由付きで追加"
+            echo ""
+            echo "<details><summary>pnpm audit の結果</summary>"
+            echo ""
+            echo '```'
+            # Issue本文の上限（65,536文字）を超えないよう切り詰める
+            head -c 60000 audit-result.txt
+            echo '```'
+            echo ""
+            echo "</details>"
+          } > issue-body.md
+          number=$(gh issue list --state open --limit 100 --json number,title \
+            | jq -r --arg t "$title" '.[] | select(.title == $t) | .number' | head -n 1)
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file issue-body.md
+          else
+            gh issue create --title "$title" --body-file issue-body.md
+          fi
