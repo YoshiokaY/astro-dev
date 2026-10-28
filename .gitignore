@@ -17,10 +17,6 @@ pnpm-debug.log*
 # Local files
 .claude/
 CLAUDE.md
-pnpm-workspace.yaml
-
-# npm lockfile（パッケージ管理はpnpmに統一）
-package-lock.json
 
 # Environment variables
 .env

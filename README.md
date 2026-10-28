@@ -42,6 +42,10 @@
 - **Prettier** - コード自動整形
 - **TypeScript Check** - 型検証
 
+### ✅ テスト・計測
+- **Playwright + axe-core** - アクセシビリティ自動テスト
+- **Lighthouse CI** - パフォーマンス・SEO計測
+
 ### 🐘 WordPressテーマ開発
 - **PHPテンプレート自動生成** - AstroページからWordPressテーマを生成（header/footer自動分割）
 - **手作りテンプレート優先** - `src/public/wp/` 配下のPHPファイルは自動生成より優先
@@ -55,9 +59,12 @@
 src/
 ├── components/             # 再利用可能なコンポーネント
 │   ├── Breadcrumbs.astro   # パンくずリスト
+│   ├── Gnavi.astro         # グローバルナビゲーション
+│   ├── LowerTitle.astro    # 下層ページタイトル
+│   ├── NewsCard.astro      # ニュースカード
 │   ├── Picture.astro       # 画像コンポーネント（WebP対応）
-│   ├── SetTime.astro       # 日時表示コンポーネント
-│   └── LowerTitle.astro    # 下層ページタイトル
+│   ├── ServiceCard.astro   # サービスカード
+│   └── SetTime.astro       # 日時表示コンポーネント
 ├── layouts/                # レイアウトコンポーネント
 │   ├── Layout.astro        # 🔧 メインレイアウト（編集の起点）
 │   ├── Common.astro        # サイト共通設定・変数
@@ -69,13 +76,14 @@ src/
 │   └── JsonLd.astro        # 構造化データ
 ├── pages/                  # ページとコンポーネントパーツ
 │   ├── index.astro         # 🏠 トップページ
-│   ├── hoge/               # 📄 サブページディレクトリ
-│   │   └── index.astro     # サブページ
+│   ├── about/              # 📄 Aboutページ
+│   │   └── index.astro
+│   ├── sample/             # 📄 サンプルページ
+│   │   └── index.astro
 │   └── _parts/             # 📦 ページ固有コンポーネント
 │       ├── _top/           # トップページ専用パーツ
-│       │   └── _about.astro # About セクション
-│       └── _hoge/          # hogeページ専用パーツ
-│           └── _hoge.astro # Hoge セクション
+│       ├── _about/         # Aboutページ専用パーツ
+│       └── _sample/        # サンプルページ専用パーツ
 ├── scss/                   # スタイルシート（コンポーネント対応）
 │   ├── abstracts/          # 設計トークン
 │   │   ├── _variables.scss # 🎨 デザイントークン（編集推奨）
@@ -85,13 +93,16 @@ src/
 │   ├── base/               # ベーススタイル
 │   ├── components/         # 🧩 コンポーネント専用スタイル
 │   │   ├── _c_ttl.scss     # タイトルコンポーネント
-│   │   └── _c_bread.scss   # パンくずコンポーネント
+│   │   ├── _c_bread.scss   # パンくずコンポーネント
+│   │   ├── _c_navi.scss    # ナビゲーションコンポーネント
+│   │   └── ...             # アコーディオン・モーダル・タブ等
 │   ├── layouts/            # レイアウト専用スタイル
 │   │   ├── _l_header.scss  # ヘッダーレイアウト
 │   │   ├── _l_footer.scss  # フッターレイアウト
 │   │   └── _l_main.scss    # メインレイアウト
 │   ├── pages/              # ページ固有スタイル
 │   │   ├── _top.scss       # トップページ
+│   │   ├── _about.scss     # Aboutページ
 │   │   └── _sample.scss    # サンプルページ
 │   └── vendors/            # 外部ライブラリ
 ├── js/                     # JavaScript（コンポーネント対応）
@@ -112,7 +123,8 @@ plugins/                    # ビルド用カスタムプラグイン
 ├── themeFiles.js           # 手作りテンプレートの配置制御
 ├── watchTask.js            # ウォッチビルド + Browser Sync
 ├── convertWebp.js          # WebP変換
-└── imageOptimizer.js       # 画像最適化
+├── imageOptimizer.js       # 画像最適化
+└── imageCache.js           # 画像最適化キャッシュ
 
 docker/                     # Docker環境設定（WordPress開発用）
 ```
@@ -137,10 +149,10 @@ htdocs_wp/                  # WPテーマビルド出力（npm run build:wp）
 
 ### 必要な環境
 - Node.js >= 22.12.0
-- pnpm 10系（推奨。`packageManager` フィールドで管理）
+- pnpm 11系（ビルドスクリプトの許可設定は `pnpm-workspace.yaml` の `allowBuilds` で管理）
 - Docker Desktop（WordPressテーマ開発時のみ）
 
-> パッケージ管理はpnpmに統一しています。lockファイルは `pnpm-lock.yaml` のみをコミットしてください（`package-lock.json` はGit管理外です）。
+> パッケージ管理はpnpmに統一しています。lockファイルは `pnpm-lock.yaml` のみをコミットしてください。
 
 ### セットアップ
 ```bash
@@ -196,7 +208,21 @@ npm run lint:css        # SCSS
 npm run lint:markup     # HTML/PHP
 
 # CI用（レポート出力）
-npm run lint:ci         # 全リンターのCI用実行
+npm run lint:ci             # 全リンターのCI用実行
+```
+
+### アクセシビリティテスト（Playwright + axe-core）
+```bash
+npm run test:a11y:setup     # 初回のみ: ブラウザのインストール
+npm run test:a11y           # アクセシビリティテスト実行
+npm run test:a11y:ui        # UIモードで実行
+npm run test:a11y:report    # レポート表示
+```
+
+### Lighthouse計測
+```bash
+npm run lighthouse          # 計測してレポートを開く
+npm run lighthouse:ci       # CI用（レポートを開かない）
 ```
 
 ## ⚙️ 設定・カスタマイズ
@@ -231,6 +257,20 @@ STATIC_OUTPUT_DIR=htdocs                   # 静的HTML参照先（固定ペー�
 ```
 
 > **注意**: `.env` にAPIキーやパスワードなどの機密情報を追加した場合でも、Git管理外のため安全です。設定項目を追加する際は `.env.example` にもテンプレートとして反映してください。
+
+### フォント配信の切り替え
+
+`VITE_SELF_HOSTED_FONTS` でGoogle Fontsの配信方法を切り替えられます。
+
+| 設定値 | 配信方法 | 仕組み |
+|---|---|---|
+| `false`（デフォルト） | CDN | `src/layouts/Common.astro` の `webfont` に設定したGoogle Fonts URLを `<link>` で読み込み |
+| `true` | セルフホスティング | Astro標準のFonts API（`fontProviders.google()`）がビルド時にフォントを取得し、`_assets/fonts/` に同梱 |
+
+セルフホスティング時はCSS変数（`--font-noto-sans-jp`）でフォントを参照します。対象フォントを変更する場合は以下をセットで修正してください。
+
+- **CDNの場合**: `src/layouts/Common.astro` の `webfont` URL
+- **セルフホスティングの場合**: `astro.config.mjs` の `fonts` 設定（`name` / `cssVariable`）と `src/layouts/Head.astro` の `<Font cssVariable>` 
 
 ### サイト設定
 - **共通設定**: `src/layouts/Common.astro` でサイト名、ドメイン、メニューを設定
