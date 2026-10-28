@@ -3,3 +3,19 @@ allowBuilds:
   '@tailwindcss/oxide': true
   esbuild: true
   sharp: true
+
+# pnpm audit の設定（.github/workflows/security-audit.yml で週次実行）
+# ignore には「親パッケージの更新待ち」「修正版なし」の既知脆弱性のみを登録する
+# 親側で解消されたら該当行を削除すること
+audit:
+  ignore:
+    # @lhci/cli 配下（開発時のみ使用・親の更新待ち）
+    - GHSA-52f5-9888-hmc6 # tmp: symlink 経由の一時ファイル書き込み
+    - GHSA-ph9p-34f9-6g65 # tmp: prefix/postfix のパストラバーサル
+    - GHSA-w5hq-g745-h8pq # uuid: buf 指定時の境界チェック欠如
+    - GHSA-c475-qrg2-pj4r # basic-ftp: Client.list() の DoS
+    - GHSA-mrhx-c7xc-m3w5 # zod: 巨大コレクション検証時のメモリ枯渇
+    - GHSA-jmr9-qjv8-65gv # extract-zip: symlink のパストラバーサル（修正版なし）
+    - GHSA-7pqw-9j4j-h8q3 # extract-zip: symlink による任意ファイル書き込み（修正版なし）
+    # markuplint 配下（修正版なし）
+    - GHSA-gcqx-w48m-w2h4 # deepmerge: プロトタイプ汚染

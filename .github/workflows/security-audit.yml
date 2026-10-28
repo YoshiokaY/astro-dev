@@ -1,0 +1,44 @@
+name: Security Audit
+# Dependabot が pnpm 11 に未対応の間の代替チェック
+# 既知の脆弱性は pnpm-workspace.yaml の audit.ignore で除外し、新規検出時のみ失敗させる
+# トリガー設定
+on:
+  schedule:
+    - cron: "0 0 * * 1" # 毎週月曜 9:00（JST）
+  workflow_dispatch: # Actionsタブから手動実行
+# 権限の最小化（デフォルトで全権限を無効化）
+permissions: {}
+jobs:
+  Audit:
+    name: pnpm audit (${{ matrix.branch }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # リポジトリのチェックアウト
+    strategy:
+      fail-fast: false # 片方が失敗してももう片方を実行
+      matrix:
+        # Dependabotのアラートはデフォルトブランチのみが対象のため、WPブランチも明示的にチェック
+        branch:
+          - main
+          - feature/update-wp
+    steps:
+      # リポジトリのチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ matrix.branch }}
+          persist-credentials: false
+
+      # Node.jsのセットアップ
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+
+      # pnpmのインストール（ローカルと同じバージョン）
+      - name: Install pnpm
+        run: npm install -g pnpm@11.28.8
+
+      # 脆弱性チェック（lockfileのみを参照するため依存のインストールは不要）
+      - name: Run pnpm audit
+        run: pnpm audit --audit-level=moderate
