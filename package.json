@@ -40,7 +40,7 @@
     "@astrojs/compiler-rs": "^0.2.3",
     "@axe-core/playwright": "^4.11.3",
     "@playwright/test": "^1.60.0",
-    "astro": "^7.2.8",
+    "astro": "^7.4.7",
     "axe-core": "^4.12.1"
   },
   "devDependencies": {
